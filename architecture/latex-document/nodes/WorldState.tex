@@ -1,0 +1,22 @@
+\begin{tabular}{p{\nodeTextWidthRatio\textwidth}} 
+\className{WorldState}
+
+\desc{use: e.g. debug}
+
+\desc{the simulator works in delta-t steps. A worldState can be recorded either before or after evolution of all the objects. A partial worldState is invalid unless every object state is flagged as completed or not. The reason is that the world cannot be initialized with a snapshot of a partially completed worldState without knowing which objects have already evolved in that snapshot.}
+\\  \hline
+\desc{A data structure which keeps a set of states for every objectID}
+ \\ \hline 
+\method{load(file)}
+
+\method{dump(file)}
+
+\method{extractState(objectID)}
+
+\method{recordState(objects[])}
+
+\desc{    For object in objects:}
+
+\desc{         Get and record object.dumpState()}
+\end{tabular} 
+

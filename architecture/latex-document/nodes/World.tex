@@ -1,0 +1,25 @@
+\begin{tabular}{p{\nodeTextWidthRatio\textwidth}} 
+
+\className{World}
+\\  \hline
+\data{Object objects[]}
+
+\data{WorldState lastWorldState}
+ \\ \hline 
+\method{constructor(map, initial state) }
+
+\desc{parsing and interpreting a chosen map format done in this function?}
+
+\method{evolve(delta-t)}
+
+\desc{calls evolve of all objects}
+
+\desc{objects[i].evolve(delta-t, intersectionResult[i])}
+
+\method{run()}
+
+\method{intersect() }
+
+\desc{intersectionResult is an array of array of InIn, where IntersectionResult[i] is an array of InIn pertaining to object i}
+\end{tabular} 
+
