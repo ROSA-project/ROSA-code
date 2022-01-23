@@ -34,30 +34,30 @@
 % in definition of roots. Order of definition matters for that and
 %other type of nodes come later. 
 \node[rootClass] (World) {
-	\input{nodes/World}
+	\input{nodes/rootClasses/World}
 };
 \node[rootClass ] (Object) [below=of World] {
-	\input{nodes/Object}
+	\input{nodes/rootClasses/Object}
 };
 
 \node[rootClass ] (Shape) [right=of Object] {
-	\input{nodes/Shape}
+	\input{nodes/rootClasses/Shape}
 };
 
 \node[rootClass ] (Position) [right=of Shape] {
-	\input{nodes/Position}
+	\input{nodes/rootClasses/Position}
 };
 
 \node[rootClass ] (InIn) [left=of World] {
-	\input{nodes/IntersectionInstance}
+	\input{nodes/rootClasses/IntersectionInstance}
 };
 
 \node[rootClass ] (WorldState) [right=of World] {
-	\input{nodes/WorldState}
+	\input{nodes/rootClasses/WorldState}
 };
 
 \node[rootClass ] (Map) [right=of WorldState] {
-	\input{nodes/Map}
+	\input{nodes/rootClasses/Map}
 };
 
 \draw [instantiatedIn] (Object) -- (World);
@@ -67,23 +67,23 @@
 	%essentials or roots. Order of definition matters for that and
 	%exampleClasses come later. 
 	\node[essentialClass ] (XMLmap) [below=of Map] {
-		\input{nodes/XMLmap}
+		\input{nodes/essentialClasses/XMLmap}
 	};
 
 	\node[essentialClass ] (DiscretizedShape) [below=of Shape] {
-		\input{nodes/DiscretizedShape}
+		\input{nodes/essentialClasses/DiscretizedShape}
 	};
 
 	\node[essentialClass ] (DiscretizedShape2D) [below=of DiscretizedShape] {
-		\input{nodes/DiscretizedShape2D}
+		\input{nodes/essentialClasses/DiscretizedShape2D}
 	};
 
 	\node[essentialClass ] (Robot) [left=of Object] {
-		\input{nodes/Robot}
+		\input{nodes/essentialClasses/Robot}
 	};
 
 	\node[essentialClass ] (Sensor) [above left=of Robot] {
-		\input{nodes/Sensor}
+		\input{nodes/essentialClasses/Sensor}
 	};
 
 	\draw [inheritedFrom] (Robot) -- (Object);
@@ -95,31 +95,31 @@
 
 \if\showExampleClasses1
 	\node[exampleClass ] (Disk) [below=of Shape, right=of DiscretizedShape] {
-		\input{nodes/Disk}
+		\input{nodes/exampleClasses/Disk}
 	};
 
 	\node[exampleClass ] (Cylinder) [below=of Disk] {
-		\input{nodes/Cylinder}
+		\input{nodes/exampleClasses/Cylinder}
 	};
 
 	\node[exampleClass ] (Wheel) [below=of Object] {
-		\input{nodes/Wheel}
+		\input{nodes/exampleClasses/Wheel}
 	};
 
 	\node[exampleClass ] (DiningTable) [right=of Wheel] {
-		\input{nodes/DiningTable}
+		\input{nodes/exampleClasses/DiningTable}
 	};
 
 	\node[exampleClass ] (VaccumCleaner) [below=of Robot] {
-		\input{nodes/VaccumCleaner}
+		\input{nodes/exampleClasses/VaccumCleaner}
 	};
 
 	\node[exampleClass ] (BumperSensor) [below=of Sensor] {
-		\input{nodes/BumperSensor}
+		\input{nodes/exampleClasses/BumperSensor}
 	};
 
 	\node[exampleClass ] (LidarSensor) [left=of BumperSensor] {
-		\input{nodes/LidarSensor}
+		\input{nodes/exampleClasses/LidarSensor}
 	};
 
 	\draw [inheritedFrom] (Disk) -- (Shape);
