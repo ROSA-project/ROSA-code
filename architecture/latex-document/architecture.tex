@@ -9,11 +9,21 @@
 \tikzstyle{essentialClass}=[rectangle,black,draw, fill=green!30, text width=8 cm]
 \tikzstyle{exampleClass}=[rectangle,black,draw, fill=red!30, text width=8 cm]
 
+\tikzstyle{inheritedFrom}=[->,black, line width=2]
+\tikzstyle{instantiatedIn}=[-,black, line width=2] 
+%Note that A instantiatedIn B relationship reduces flexibility as the 
+%children of A cannot be known to B now.
+
 \newcommand{\nodeTextWidthRatio}{0.95}
 \newcommand{\method}[1]{\textbf{\texttt{#1}}}
 \newcommand{\desc}[1]{\ \ \ #1}
 \newcommand{\className}[1]{\large \textbf{#1}}
 \newcommand{\data}[1]{\textbf{\texttt{#1}}}
+
+\def\showExampleClasses{1}
+\def\showEssentialClasses{1}
+%Note that you can't have showExampleClasses=1 with showEssentialClasses=0
+%as the former refer to the later and this will cause error.
 
 \begin{document}
 
@@ -26,13 +36,12 @@
 \node[rootClass,text width=8cm] (Object) [below=of World] {
 	\input{nodes/Object}
 };
-\draw [-] (Object) -- (World);
 
 \node[rootClass,text width=8cm] (Shape) [right=of Object] {
 	\input{nodes/Shape}
 };
 
-\node[rootClass,text width=8cm] (Position) [right=of Object, above=of Shape] {
+\node[rootClass,text width=8cm] (Position) [right=of Shape] {
 	\input{nodes/Position}
 };
 
@@ -48,25 +57,39 @@
 	\input{nodes/Map}
 };
 
-\node[essentialClass,text width=8cm] (XMLmap) [below=of Map] {
-	\input{nodes/XMLmap}
-};
+\draw [instantiatedIn] (Object) -- (World);
 
-\node[essentialClass,text width=8cm] (DiscretizedShape) [below=of Shape] {
-	\input{nodes/DiscretizedShape}
-};
+\if\showEssentialClasses1
+	\node[essentialClass,text width=8cm] (XMLmap) [below=of Map] {
+		\input{nodes/XMLmap}
+	};
 
-\node[essentialClass,text width=8cm] (DiscretizedShape2D) [below=of DiscretizedShape] {
-	\input{nodes/DiscretizedShape2D}
-};
+	\node[essentialClass,text width=8cm] (DiscretizedShape) [below=of Shape] {
+		\input{nodes/DiscretizedShape}
+	};
 
-\node[exampleClass,text width=8cm] (Disk) [below=of Shape, right=of DiscretizedShape] {
-	\input{nodes/Disk}
-};
+	\node[essentialClass,text width=8cm] (DiscretizedShape2D) [below=of DiscretizedShape] {
+		\input{nodes/DiscretizedShape2D}
+	};
 
-\node[exampleClass,text width=8cm] (Cylinder) [below=of Disk] {
-	\input{nodes/Cylinder}
-};
+	\draw [inheritedFrom] (DiscretizedShape) -- (Shape);
+	\draw [inheritedFrom] (DiscretizedShape2D) -- (DiscretizedShape);
+	\draw [inheritedFrom] (XMLmap) -- (Map);
+\fi
+
+\if\showExampleClasses1
+	\node[exampleClass,text width=8cm] (Disk) [below=of Shape, right=of DiscretizedShape] {
+		\input{nodes/Disk}
+	};
+
+	\node[exampleClass,text width=8cm] (Cylinder) [below=of Disk] {
+		\input{nodes/Cylinder}
+	};
+
+	\draw [inheritedFrom] (Disk) -- (Shape);
+	\draw [inheritedFrom] (Cylinder) -- (Shape);
+\fi
+
 
 
 %\node[circle, fill=black, below=of filter2, yshift=-0.5cm, inner sep=0pt, minimum width=0.1cm] {};
