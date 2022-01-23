@@ -23,71 +23,112 @@
 \def\showExampleClasses{1}
 \def\showEssentialClasses{1}
 %Note that you can't have showExampleClasses=1 with showEssentialClasses=0
-%as the former refer to the later and this will cause error.
+%as the former nodes refer to the latter and this will cause error.
 
 \begin{document}
 
 \begin{tikzpicture}
 
 
+%NOTE: you can't refer to exampleClass and essentialClass nodes
+% in definition of roots. Order of definition matters for that and
+%other type of nodes come later. 
 \node[rootClass] (World) {
 	\input{nodes/World}
 };
-\node[rootClass,text width=8cm] (Object) [below=of World] {
+\node[rootClass ] (Object) [below=of World] {
 	\input{nodes/Object}
 };
 
-\node[rootClass,text width=8cm] (Shape) [right=of Object] {
+\node[rootClass ] (Shape) [right=of Object] {
 	\input{nodes/Shape}
 };
 
-\node[rootClass,text width=8cm] (Position) [right=of Shape] {
+\node[rootClass ] (Position) [right=of Shape] {
 	\input{nodes/Position}
 };
 
-\node[rootClass,text width=8cm] (InIn) [left=of World] {
+\node[rootClass ] (InIn) [left=of World] {
 	\input{nodes/IntersectionInstance}
 };
 
-\node[rootClass,text width=8cm] (WorldState) [right=of World] {
+\node[rootClass ] (WorldState) [right=of World] {
 	\input{nodes/WorldState}
 };
 
-\node[rootClass,text width=8cm] (Map) [right=of WorldState] {
+\node[rootClass ] (Map) [right=of WorldState] {
 	\input{nodes/Map}
 };
 
 \draw [instantiatedIn] (Object) -- (World);
 
 \if\showEssentialClasses1
-	\node[essentialClass,text width=8cm] (XMLmap) [below=of Map] {
+	%NOTE: you can't refer to exampleClass nodes in definition of 
+	%essentials or roots. Order of definition matters for that and
+	%exampleClasses come later. 
+	\node[essentialClass ] (XMLmap) [below=of Map] {
 		\input{nodes/XMLmap}
 	};
 
-	\node[essentialClass,text width=8cm] (DiscretizedShape) [below=of Shape] {
+	\node[essentialClass ] (DiscretizedShape) [below=of Shape] {
 		\input{nodes/DiscretizedShape}
 	};
 
-	\node[essentialClass,text width=8cm] (DiscretizedShape2D) [below=of DiscretizedShape] {
+	\node[essentialClass ] (DiscretizedShape2D) [below=of DiscretizedShape] {
 		\input{nodes/DiscretizedShape2D}
 	};
 
+	\node[essentialClass ] (Robot) [left=of Object] {
+		\input{nodes/Robot}
+	};
+
+	\node[essentialClass ] (Sensor) [above left=of Robot] {
+		\input{nodes/Sensor}
+	};
+
+	\draw [inheritedFrom] (Robot) -- (Object);
+	\draw [inheritedFrom] (Sensor) -- (Object);
 	\draw [inheritedFrom] (DiscretizedShape) -- (Shape);
 	\draw [inheritedFrom] (DiscretizedShape2D) -- (DiscretizedShape);
 	\draw [inheritedFrom] (XMLmap) -- (Map);
 \fi
 
 \if\showExampleClasses1
-	\node[exampleClass,text width=8cm] (Disk) [below=of Shape, right=of DiscretizedShape] {
+	\node[exampleClass ] (Disk) [below=of Shape, right=of DiscretizedShape] {
 		\input{nodes/Disk}
 	};
 
-	\node[exampleClass,text width=8cm] (Cylinder) [below=of Disk] {
+	\node[exampleClass ] (Cylinder) [below=of Disk] {
 		\input{nodes/Cylinder}
+	};
+
+	\node[exampleClass ] (Wheel) [below=of Object] {
+		\input{nodes/Wheel}
+	};
+
+	\node[exampleClass ] (DiningTable) [right=of Wheel] {
+		\input{nodes/DiningTable}
+	};
+
+	\node[exampleClass ] (VaccumCleaner) [below=of Robot] {
+		\input{nodes/VaccumCleaner}
+	};
+
+	\node[exampleClass ] (BumperSensor) [below=of Sensor] {
+		\input{nodes/BumperSensor}
+	};
+
+	\node[exampleClass ] (LidarSensor) [left=of BumperSensor] {
+		\input{nodes/LidarSensor}
 	};
 
 	\draw [inheritedFrom] (Disk) -- (Shape);
 	\draw [inheritedFrom] (Cylinder) -- (Shape);
+	\draw [inheritedFrom] (DiningTable) -- (Object);
+	\draw [inheritedFrom] (Wheel) -- (Object);
+	\draw [inheritedFrom] (VaccumCleaner) -- (Robot);
+	\draw [inheritedFrom] (BumperSensor) -- (Sensor);
+	\draw [inheritedFrom] (LidarSensor) -- (Sensor);
 \fi
 
 
