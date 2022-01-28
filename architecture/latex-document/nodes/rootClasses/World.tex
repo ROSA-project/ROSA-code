@@ -18,6 +18,14 @@
 
 \method{run()}
 
+\begin{verbatim}
+    While true
+        worldClass.intersect()
+        t=t+delta_t
+        worldClass.evolve()
+        lastWorldState.recordState(objects)
+\end{verbatim}
+
 \method{intersect() }
 
 \desc{intersectionResult is an array of array of InIn, where IntersectionResult[i] is an array of InIn pertaining to object i}
