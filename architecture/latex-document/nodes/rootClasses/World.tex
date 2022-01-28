@@ -11,23 +11,33 @@
 \desc{parsing and interpreting a chosen map format done in this function?}
 
 \method{evolve(delta-t)}
-
-\desc{calls evolve of all objects}
-
-\desc{objects[i].evolve(delta-t, intersectionResult[i])}
-
+\begin{verbatim}
+    For object i in objects:
+        offspringObjects=objects[i].evolve(delta-t, 
+            intersectionResult[i]))
+        self.addObject(offspringObjects)
+\end{verbatim}
 \method{run()}
-
 \begin{verbatim}
     While true
-        worldClass.intersect()
+        intersectionResult=worldClass.intersect()
         t=t+delta_t
-        worldClass.evolve()
+        worldClass.evolve(intersectionResult)
         lastWorldState.recordState(objects)
 \end{verbatim}
-
-\method{intersect() }
+\method{InIn intersectionResult[]=intersect()}
 
 \desc{intersectionResult is an array of array of InIn, where IntersectionResult[i] is an array of InIn pertaining to object i}
+\begin{verbatim}
+    for every object i:
+        for every other object j:
+            if not cubesIntersect(objects[i].boundingBox()
+                    ,objects[j].boundingBox()):
+                intersectionResult[i]=empty
+            else:
+                intersectionResult[i]=no idea what to do, an instance of InIn 
+                #they still might have no intersection. 
+                #But if they do we need some details
+\end{verbatim}
 \end{tabular} 
 
