@@ -1,6 +1,5 @@
 import intersection_instance
 import map
-import parameters as params
 
 class World:
     """Maintains the state of the world including all its objects. There will be
@@ -14,6 +13,8 @@ class World:
         
         self.objects
         #a list of type Object
+
+        self.total_duration = 10 #in seconds
                 
     def evolve(self, delta_t: float):
         for i in range(len(self.objects)):
@@ -41,7 +42,7 @@ class World:
             delta_t_list.append(object.get_required_delta_t())
         delta_t=min(delta_t_list)
         
-        while t < params.total_duration:
+        while t < self.total_duration:
             intersectionResult=self.intersect()
             self.evolve(intersectionResult)
             t=t+delta_t
