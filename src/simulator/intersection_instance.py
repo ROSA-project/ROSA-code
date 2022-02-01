@@ -4,3 +4,5 @@ class IntersectionInstance:
     """
     def __init__(self):
         pass
+
+    #decision: two object ids or whatever for now.
