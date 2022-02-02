@@ -1,5 +1,6 @@
 import intersection_instance
 import map
+import object
 
 class World:
     """Maintains the state of the world including all its objects. There will be
@@ -11,16 +12,26 @@ class World:
         self.__creation_ts
         self.__num_evolutions = 0
         
-        self.objects
+        self.objects=[]
         #a list of type Object
 
+        #TODO hardcoded parameters here, to be taken care of properly
         self.total_duration = 10 #in seconds
                 
     def evolve(self, delta_t: float):
         for i in range(len(self.objects)):
-            offspring_objects=self.objects[i].evolve(delta_t, self.intersectionResult[i])
-            self.addObject(offspring_objects)
-    
+            if not self.objects[i].owner_object:
+                offspring_objects = self.objects[i].evolve(delta_t, self.intersection_result[i])
+                self.add_object(offspring_objects)
+                #TODO these newly added objects don't get an evolve() in this round?
+
+        # time_to_die() of objects has to be checked after the evolve loop. Because collecting the info
+        # from the hierarchy of dependent objects is messy.
+        for object in self.objects:
+            if object.time_to_die():
+                self.objects.remove(object)
+        #TODO saeed: no idea if this is okay in python :D
+
     def intersect(self) -> set[IntersectionInstance]:
         # for every object i:
         # for every other object j:
@@ -34,15 +45,23 @@ class World:
         pass
     
     def run(self):
-        t=0
+        delta_t_list=[]
+        for object in self.objects:
+            delta_t_list.append(object.get_required_delta_t())
+        delta_t = min(set(delta_t_list)-{0})
+        #TODO what if all objects return 0?
+        #TODO the delta_t based on movement of objects, decided by the world
+        
+        t = 0
         #TODO t to be initialized if an initial state is given
 
-        delta_t_list=[]
-        for object in self.Objects:
-            delta_t_list.append(object.get_required_delta_t())
-        delta_t=min(delta_t_list)
-        
         while t < self.total_duration:
-            intersectionResult=self.intersect()
-            self.evolve(intersectionResult)
-            t=t+delta_t
+            self.intersection_result = self.intersect()
+            self.evolve(delta_t)
+            t = t + delta_t
+
+    def add_object(self, new_objects: Object):
+        #TODO can we specify a list with these type hints?
+
+        self.objects.extend(new_objects)
+        #TODO just that?
