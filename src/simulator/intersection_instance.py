@@ -1,8 +1,11 @@
+from simulator.object import Object
+
+
 class IntersectionInstance:
-    """Contains the result of an intersection evaluation. Meant to be instantiated in 
-       World.intersect() and used by Sensor.
+    """performs intersection between two objects and stores the result. 
+       A primary result is a shape.
     """
-    def __init__(self):
+    def __init__(self, object1: Object, object2: Object):
         pass
 
-    #decision: two object ids or whatever for now.
+    
