@@ -1,19 +1,48 @@
+#from xmlrpc.client import boolean
+#from sqlalchemy import false
+
+#from intersection_instance import IntersectionInstance
+from shape import Shape
+from position import Position
+
+ObjectId = int # type aliasing, since we might change the composition of ObjectId in future
+
 class Object:
-    ObjectId = int # type aliasing, since we might change the composition of ObjectId in future
-    
-    def __init__(self, id: ObjectId, shape: Shape, position: Position):
+    def __init__(self, id: ObjectId, shape: Shape, position: Position, owner_object):
+        #TODO can't type hint owner_object because it doesn't know Object yet :D
         self.id = id
         self.shape = shape
+        #shape could be None
         self.position = position
+        self.owner_object = owner_object
+        self.dependent_objects = []
     
-    def evolve(self, delta_t: int) -> dict[ObjectId, Object]:
-        pass
+    def evolve(self, delta_t: int, intersection_result):# -> dict[ObjectId, Object]:
+        #TODO can't type hint  intersection_result because it'd need the module which 
+        # would cause circular import as intersection_instance needs object as well.
+        #TODO same for return value
+        
+        #TODO saeed: could this be the default evolve method?
+        collected_offspring_objects = []
+
+        for object in self.dependent_objects:
+            offspring_objects = object.evolve(delta_t, intersection_result)
+            collected_offspring_objects.extend(offspring_objects)
+        
+        self.dependent_objects.extend(collected_offspring_objects)
+        return collected_offspring_objects
     
     def visualize(self):
         pass
     
     def bounding_box(self):
         pass
+
+    def get_required_delta_t(self) -> float:
+        """returns the delta_t that this object requires to operate right.
+           returns 0 if the objects declares no requirement.
+        """
+        return 0
         
-        
-    
+    def time_to_die(self) -> bool:
+        return False
