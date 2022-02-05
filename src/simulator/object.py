@@ -1,7 +1,8 @@
 #from xmlrpc.client import boolean
 #from sqlalchemy import false
 
-#from intersection_instance import IntersectionInstance
+# postponed evaluation of annotations. With python 3.11, we won't need this
+from __future__ import annotations
 from shape import Shape
 from position import Position
 
@@ -17,11 +18,8 @@ class Object:
         self.owner_object = owner_object
         self.dependent_objects = []
     
-    def evolve(self, delta_t: int, intersection_result):# -> dict[ObjectId, Object]:
-        #TODO can't type hint  intersection_result because it'd need the module which 
-        # would cause circular import as intersection_instance needs object as well.
-        #TODO same for return value
-        
+    def evolve(self, delta_t: int, intersection_result ) -> dict[ObjectId, Object]:
+        #TODO type of intersection rejsult
         #TODO saeed: could this be the default evolve method?
         collected_offspring_objects = []
 
