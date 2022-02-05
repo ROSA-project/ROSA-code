@@ -1,5 +1,5 @@
 from object import Object
-from shape import Shape, VoidShape
+from shape import Shape
 
 
 class IntersectionInstance:
@@ -11,10 +11,12 @@ class IntersectionInstance:
         self.object2 = object2
         self.result = self.intersect()
 
-    def intersect(self) -> Shape:
+    def intersect(self) -> dict:
         """ performs the intersection algorithm on objects: self.object1 and object2
+            return value is a dictionary for now as it's not clear what information we need
+            None if no intersection
         """
         #TODO to be implemented, this is a placeholder
-        return VoidShape()
+        return None
 
     
