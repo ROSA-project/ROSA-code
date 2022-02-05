@@ -3,7 +3,7 @@ Robot Simulation Architecture
 
 ## Requirements
 - python 3.9 or higher
-- pip 3 or higher
+- pip3
 
 ## Setup
 run:  
