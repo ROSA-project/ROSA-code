@@ -1,25 +1,22 @@
-#from xmlrpc.client import boolean
-#from sqlalchemy import false
-
 # postponed evaluation of annotations. With python 3.11, we won't need this
 from __future__ import annotations
 from shape import Shape
 from position import Position
+from intersection_instance import IntersectionInstance
 
 ObjectId = int # type aliasing, since we might change the composition of ObjectId in future
 
 class Object:
-    def __init__(self, id: ObjectId, shape: Shape, position: Position, owner_object):
+    def __init__(self, oid: ObjectId, shape: Shape, position: Position, owner_object):
         #TODO can't type hint owner_object because it doesn't know Object yet :D
-        self.id = id
+        self.id = oid
         self.shape = shape
         #shape could be None
         self.position = position
         self.owner_object = owner_object
         self.dependent_objects = []
     
-    def evolve(self, delta_t: int, intersection_result ) -> dict[ObjectId, Object]:
-        #TODO type of intersection rejsult
+    def evolve(self, delta_t: int, intersection_results: list[IntersectionInstance]) -> dict[ObjectId, Object]:
         #TODO saeed: could this be the default evolve method?
         collected_offspring_objects = []
 
@@ -29,6 +26,9 @@ class Object:
         
         self.dependent_objects.extend(collected_offspring_objects)
         return collected_offspring_objects
+
+    def set_intersections(self, intersections: list[IntersectionInstance]) -> None:
+        pass
     
     def visualize(self):
         pass
@@ -44,3 +44,6 @@ class Object:
         
     def time_to_die(self) -> bool:
         return False
+
+    def is_evolvable(self) -> bool:
+        return not self.owner_object
