@@ -3,9 +3,9 @@ from __future__ import annotations
 from shape import Shape
 from position import Position
 from intersection_instance import IntersectionInstance
-from object import Object
 
 ObjectId = int # type aliasing, since we might change the composition of ObjectId in future
+
 
 class Object:
     def __init__(self, oid: ObjectId, shape: Shape, position: Position, owner_object: Object):

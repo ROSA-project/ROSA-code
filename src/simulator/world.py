@@ -25,7 +25,6 @@ class World:
 
         #TODO hardcoded parameters here, to be taken care of properly
         self.__duration_sec = 10
-            
                 
     def evolve(self, delta_t: float) -> None:
         """Transitions the objects into next state.        
