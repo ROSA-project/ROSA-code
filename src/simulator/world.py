@@ -18,10 +18,10 @@ class World:
     
     """
     
-    def __init__(self, world_map: Map):        
-        self.__creation_ts: float = time.time() # current timestamp
+    def __init__(self, map_filename: str):
+        self.objects: dict[ObjectId, Object] = Map.parse_map(map_filename)
+        self.__creation_ts: float = time.time()  # current timestamp
         self.__num_evolutions: int = 0
-        self.objects: dict[ObjectId, Object] = {}
 
         #TODO hardcoded parameters here, to be taken care of properly
         self.__duration_sec = 10
