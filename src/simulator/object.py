@@ -4,8 +4,7 @@ from shape import Shape
 from position import Position
 from intersection_instance import IntersectionInstance
 
-ObjectId = int # type aliasing, since we might change the composition of ObjectId in future
-
+ObjectId = int  # type aliasing, since we might change ObjectId composition
 
 class Object:
     def __init__(self, oid: ObjectId, shape: Shape, position: Position, owner_object: Object):
