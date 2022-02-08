@@ -6,6 +6,7 @@ from intersection_instance import IntersectionInstance
 
 ObjectId = int  # type aliasing, since we might change ObjectId composition
 
+
 class Object:
     def __init__(self, oid: ObjectId, shape: Shape, position: Position, owner_object: Object):
         self.oid = oid
@@ -28,8 +29,8 @@ class Object:
             These new objects will be added to the list of dependent objects.
         """
 
-        #TODO: evolve should access to the list of intersections in this iteration.
-        #TODO: evolve should actually change the state. We currently do not change
+        # TODO: evolve should access to the list of intersections in this iteration.
+        # TODO: evolve should actually change the state. We currently do not change
         # Position or Speed
         offspring_objects: dict[ObjectId, Object] = {}
         for oid in self.dependent_objects:
@@ -43,15 +44,15 @@ class Object:
     def set_intersections(self, intersections: list[IntersectionInstance]) -> None:
         """Registers this round's intersections to be later used by evolve().
         """
-        #TODO: should it be simply stored in a member variable?
+        # TODO: should it be simply stored in a member variable?
         pass
     
     def visualize(self):
-        #TODO: define return type
+        # TODO: define return type
         pass
     
     def bounding_box(self):
-        #TODO: define return type
+        # TODO: define return type
         pass
 
     def get_required_delta_t(self) -> float:

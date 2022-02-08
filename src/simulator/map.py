@@ -7,5 +7,5 @@ class Map:
     @staticmethod
     def parse_map(filename: str) -> dict[ObjectId, Object]:
         objects = {}
-        #TODO parsing should happen here
+        # TODO parsing should happen here
         return objects

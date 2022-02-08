@@ -12,7 +12,7 @@ class IntersectionInstance:
             return value is a dictionary for now as it's not clear what information we need
             None if no intersection
         """
-        #TODO to be implemented, this is a placeholder
+        # TODO to be implemented, this is a placeholder
         return None
 
     
