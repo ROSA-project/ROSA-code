@@ -37,8 +37,6 @@ class Object:
             offsprings = self.dependent_objects[oid].evolve(delta_t)
             offspring_objects.update(offsprings)
 
-        # add the new offsprings to the list of dependents
-        self.dependent_objects.update(offspring_objects)
         return offspring_objects
 
     def set_intersections(self, intersections: list[IntersectionInstance]) -> None:
