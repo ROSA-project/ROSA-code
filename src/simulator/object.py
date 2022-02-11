@@ -8,7 +8,8 @@ ObjectId = int  # type aliasing, since we might change ObjectId composition
 
 
 class Object:
-    def __init__(self, oid: ObjectId, shape: Shape, position: Position, owner_object: Object):
+    def __init__(self, oid: ObjectId, shape: Shape, position: Position,
+                 owner_object: Object):
         self.oid = oid
         self.shape = shape
         self.position = position
