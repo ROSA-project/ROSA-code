@@ -78,7 +78,12 @@ class World:
         return intersection_result
 
     def register_intersections(self, intersection_result: InInType) -> None:
-        for oid in self.objects:
+        """For each object with intersections, registers the list of its intersections
+
+        Args:
+            A dictionary where a list of IntersectionInstance objects is stored per object
+        """
+        for oid in intersection_result:
             self.objects[oid].set_intersections(intersection_result[oid])
     
     def run(self) -> None:
