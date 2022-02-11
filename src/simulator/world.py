@@ -4,8 +4,11 @@ from intersection_instance import IntersectionInstance
 from map import Map
 from object import Object, ObjectId
 
+from collections import defaultdict
+from typing import DefaultDict
+
 # type aliasing
-InInType = dict[ObjectId, list[IntersectionInstance]]
+InInType = DefaultDict[ObjectId, list[IntersectionInstance]]
 
 
 class World:
@@ -42,11 +45,10 @@ class World:
 
         self.delete_expired_objects()
 
-    def delete_expired_objects(self):
-        """Removes objects which are supposed to die in this iteration
+    def delete_expired_objects(self) -> None:
+        """Removes objects which are supposed to die in this iteration.
         """
-        # We cannot erase from dictionary in a loop, so we do it in two steps:
-        # first add to-be-removed keys to a list, then delete them
+        # Cannot erase from dictionary in a loop, so do it in two steps
         delete_keys: list[ObjectId] = []
         for ob in self.objects:
             if ob.time_to_die():
@@ -56,19 +58,19 @@ class World:
             del self.objects[ob]
 
     def intersect(self) -> InInType:
-        intersection_result: InInType = {}
-        # TODO some objects could have no intersection (so empty list). optimization?
-        # TODO decide on structure
+        """Returns the intersection of every pair of objects.
 
-        # TODO: is there a better way to get oids?
-        oids: list[ObjectId] = list(self.objects.keys())
+        Returns:
+            A dictionary, where a list of IntersectionInstance objects is stored per
+            ObjectId
+        """
+        intersection_result: InInType = defaultdict(list)  # final result
+        oids: list[ObjectId] = list(self.objects.keys())  # TODO: better way to get oids?
         for i in range(len(oids)):
             oid_1 = oids[i]
-            intersection_result[oid_1] = []
             for j in range(i+1, len(oids)):
                 oid_2 = oids[j]
-                instance = IntersectionInstance(self.objects[oid_1],
-                                                self.objects[oid_2])
+                instance = IntersectionInstance(self.objects[oid_1], self.objects[oid_2])
                 # instance has to be added for both objects
                 intersection_result[oid_1].append(instance)
                 intersection_result[oid_2].append(instance)
