@@ -93,22 +93,23 @@ class World:
         """
         for oid in intersection_result:
             self.objects[oid].set_intersections(intersection_result[oid])
-    
+
+    def pick_delta_t(self) -> float:
+        """Returns a delta_t for the current cycle
+        """
+        # TODO: For now, we will only  run the world for one round
+        delta_t_list = [self.__duration_sec + 1]
+        for obj in self.objects:
+            delta_t_list.append(obj.get_required_delta_t())
+        return float(min(set(delta_t_list) - {0}))
+
     def run(self) -> None:
         """World's main cycle.
 
         In each iteration, intersections of objects are computed and registered, and then
         each object is evolved.
         """
-        # TODO: For now, we will only  run the world for one round
-        delta_t_list = [self.__duration_sec+1]
-        
-        for obj in self.objects:
-            delta_t_list.append(obj.get_required_delta_t())
-        delta_t = min(set(delta_t_list)-{0})
-
-        # TODO delta_t based on movement of objects, decided by the world, goes here
-        
+        delta_t = self.pick_delta_t()
         t = 0
         while t < self.__duration_sec:
             intersection_result = self.intersect()
