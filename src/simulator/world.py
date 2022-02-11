@@ -30,6 +30,9 @@ class World:
                 
     def evolve(self, delta_t: float) -> None:
         """Transitions the objects into next state.
+
+        Args:
+            delta_t: Time difference between now and next state in seconds.
         """
         for oid in self.objects:
             if self.objects[oid].is_evolvable():
@@ -37,12 +40,20 @@ class World:
                 self.add_object(offspring_objects)
                 # TODO these newly added objects don't get an evolve() in this round?
 
-        # time_to_die() of objects has to be checked after the evolve loop, because
-        # collecting the info from the hierarchy of dependent objects is messy.
+        self.delete_expired_objects()
+
+    def delete_expired_objects(self):
+        """Removes objects which are supposed to die in this iteration
+        """
+        # We cannot erase from dictionary in a loop, so we do it in two steps:
+        # first add to-be-removed keys to a list, then delete them
+        delete_keys: list[ObjectId] = []
         for ob in self.objects:
             if ob.time_to_die():
-                self.objects.remove(ob)
-        # TODO saeed: no idea if this is okay in python :D
+                delete_keys.append(ob)
+
+        for ob in delete_keys:
+            del self.objects[ob]
 
     def intersect(self) -> InInType:
         intersection_result: InInType = {}
