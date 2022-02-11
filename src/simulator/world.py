@@ -45,6 +45,14 @@ class World:
 
         self.delete_expired_objects()
 
+    def add_object(self, new_objects: dict[ObjectId, Object]) -> None:
+        """Appends new objects to the list of world objects.
+
+        Args:
+            new_objects: Will be added to self.objects
+        """
+        self.objects.update(new_objects)
+
     def delete_expired_objects(self) -> None:
         """Removes objects which are supposed to die in this iteration.
         """
@@ -87,6 +95,11 @@ class World:
             self.objects[oid].set_intersections(intersection_result[oid])
     
     def run(self) -> None:
+        """World's main cycle.
+
+        In each iteration, intersections of objects are computed and registered, and then
+        each object is evolved.
+        """
         # TODO: For now, we will only  run the world for one round
         delta_t_list = [self.__duration_sec+1]
         
@@ -103,8 +116,3 @@ class World:
             self.evolve(delta_t)
             t = t + delta_t
             self.__num_evolutions += 1
-
-    def add_object(self, new_objects: dict[ObjectId, Object]) -> None:
-        """Appends new objects to the list of world objects.
-        """
-        self.objects.update(new_objects)
