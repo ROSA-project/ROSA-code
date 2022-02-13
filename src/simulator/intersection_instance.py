@@ -8,9 +8,11 @@ class IntersectionInstance:
         self.result = self.intersect()
 
     def intersect(self) -> dict:
-        """ performs the intersection algorithm on objects: self.object1 and object2
-            return value is a dictionary for now as it's not clear what information we need
-            None if no intersection
+        """ performs the intersection algorithm on its two objects, and returns what?!
+
+        Returns:
+            not clear for now, as it's not clear what information we need.
+            Returns None if no intersection.
         """
         # TODO to be implemented, this is a placeholder
         return None
