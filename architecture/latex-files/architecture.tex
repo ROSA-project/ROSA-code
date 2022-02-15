@@ -45,7 +45,11 @@
 	\input{nodes/rootClasses/Shape}
 };
 
-\node[rootClass ] (Position) [right=of Shape] {
+\node[rootClass ] (Motion) [above=of Shape] {
+	\input{nodes/rootClasses/Motion}
+};
+
+\node[rootClass ] (Position) [above=of Motion] {
 	\input{nodes/rootClasses/Position}
 };
 
