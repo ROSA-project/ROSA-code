@@ -3,6 +3,12 @@ class Shape:
         pass
     
     def bounding_box(self):
-        """Returns the x-y plane bounding box for the shape
-        """
+        
         pass
+
+    def Cube (side):
+        side.self = side
+
+    def Cylinder (radius,height):
+        radius.self = radius
+        height.self = height
