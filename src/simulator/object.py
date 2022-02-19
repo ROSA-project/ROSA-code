@@ -50,7 +50,7 @@ class Object:
         # TODO: define return type
         pass
     
-    def bounding_box(self):
+    def bounding_box(self) -> box:
         # TODO: define return type
         pass
 
