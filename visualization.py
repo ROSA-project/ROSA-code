@@ -19,9 +19,9 @@ def x_arrow(x,phi) -> list:
     arrow_length = 0.2
     x_data.append(x)
     x_data.append(x + arrow_length*np.cos(np.deg2rad(phi)))
-    x_data.append(x + arrow_length*np.cos(np.deg2rad(phi)) -0.1*arrow_length*np.cos(np.deg2rad(phi-37)))
-    x_data.append(x + arrow_length*np.cos(np.deg2rad(phi)))
     x_data.append(x + arrow_length*np.cos(np.deg2rad(phi)) -0.1*arrow_length*np.cos(np.deg2rad(phi+37)))
+    x_data.append(x + arrow_length*np.cos(np.deg2rad(phi)))
+    x_data.append(x + arrow_length*np.cos(np.deg2rad(phi)) -0.1*arrow_length*np.cos(np.deg2rad(phi-37)))
     return x_data
 
 def y_arrow(y,phi) -> list:
@@ -39,9 +39,9 @@ def y_arrow(y,phi) -> list:
     arrow_length = 0.2
     y_data.append(y)
     y_data.append(y + arrow_length*np.sin(np.deg2rad(phi)))
-    y_data.append(y + arrow_length*np.sin(np.deg2rad(phi)) - 0.1*arrow_length*np.sin(np.deg2rad(phi-37)))
+    y_data.append(y + arrow_length*np.sin(np.deg2rad(phi)) - 0.1*arrow_length*np.sin(np.deg2rad(phi+37)))
     y_data.append(y + arrow_length*np.sin(np.deg2rad(phi)))
-    y_data.append(y + arrow_length*np.sin(np.deg2rad(phi)) -0.1*arrow_length*np.sin(np.deg2rad(phi+37)))
+    y_data.append(y + arrow_length*np.sin(np.deg2rad(phi)) -0.1*arrow_length*np.sin(np.deg2rad(phi-37)))
     return y_data
 
 # Define the figure , axis and graph element for animation
@@ -57,7 +57,7 @@ def init():
 # Read an Excel file that contains information about
 # time, position of the beginning point of the arrow and the angle 
 # and put it in a variable
-data = pd.read_excel("Book1.xlsx")
+data = pd.read_excel("Data_of_arrow.xlsx")
 
 def animate(i):
     """ animate the data of Excel File
