@@ -28,8 +28,8 @@ class Visualizer:
         self.axes = plt.axes(xlim = (-side , side) , ylim = (-side , side))
         # define a graphic 
         self.line2d, = self.axes.plot([],[]) 
-        # read the Excel file by pandas madule
-        self.data   = pd.read_excel(file)
+        # read the CSV file by pandas madule
+        self.data   = pd.read_csv(file)
 
         self.arrow_length = arrow_length  
         # The angle between large length of arrow and small length of its head
