@@ -40,7 +40,7 @@ class Visualizer:
 
 
 
-    def arrow_points(self,x : float,y : float,phi : float) -> list:
+    def __arrow_points(self,x : float,y : float,phi : float) -> list:
         """  
         Calculate the points(x ,y in Cartesian) of an arrow and insert it into a list
         
@@ -66,7 +66,7 @@ class Visualizer:
         return x_data , y_data
 
 
-    def animate(self,i : int):
+    def __animate(self,i : int):
         """ animate the data of Excel File
 
         Args:
@@ -75,8 +75,8 @@ class Visualizer:
         returns:
             Updated figure's object
         """
-        x_data = self.arrow_points(self.data["x"][i],self.data["y"][i],self.data["phi"][i])[0]
-        y_data = self.arrow_points(self.data["x"][i],self.data["y"][i],self.data["phi"][i])[1]
+        x_data = self.__arrow_points(self.data["x"][i],self.data["y"][i],self.data["phi"][i])[0]
+        y_data = self.__arrow_points(self.data["x"][i],self.data["y"][i],self.data["phi"][i])[1]
         self.line2d.set_data(x_data, y_data)
         return self.line2d,
 
@@ -93,7 +93,7 @@ class Visualizer:
 
         """
         animated = animation.FuncAnimation(self.figure, # input a figure for animation
-                                         self.animate,  # input method to update figure for each frame
+                                         self.__animate,  # input method to update figure for each frame
                                          np.arange(0,len(self.data["time"])), # Enter a list for the previous method for each frame
                                          interval=(self.data["time"][1] - self.data["time"][0])*1000 # the frame (by mili-sec)
                                          # Nothic:(self.data["time"][1]-self.data["time"][0]) Actually is delta-t (The difference between the two times)
