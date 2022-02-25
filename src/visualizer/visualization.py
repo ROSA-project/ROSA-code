@@ -3,92 +3,100 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import pandas as pd
-import os
-os.system("cls")
+
 
 
 class Visualizer:   
 
-    # Define the figure , axes and graph element for animation
-    __figure = plt.figure()
-    __axes = plt.axes(xlim =(-2.5,2.5),ylim = (-2.5,2.5))
-    __line2D, = __axes.plot([],[])
+    # Define the figure , axes and ... for animation
+
+    def __init__(self,side : float,file : str , arrow_length : float ,arrow_head_angle : float ,arrow_head_proprtion : float):
+        """ 
+        after creating a object of this class,construct figure , axes , graphic element  and read a file
+                
+        Args:
+            side : Half the length of an axis
+            file : Name and format of Excel file contains data
+            arrow_length :
+            arrow_head_angle : The angle between large length of arrow and small length of its head
+            arrow_head_propotion: # The propotin between large length of the arrow and small length of its head
+
+        """
+        # define a figure
+        self.figure = plt.figure() 
+        # define an axes for x and y in cartecian
+        self.axes = plt.axes(xlim = (-side , side) , ylim = (-side , side))
+        # define a graphic 
+        self.line2d, = self.axes.plot([],[]) 
+        # read the Excel file by pandas madule
+        self.data   = pd.read_excel(file)
+
+        self.arrow_length = arrow_length  
+        # The angle between large length of arrow and small length of its head
+        self.arrow_head_angle = arrow_head_angle 
+        # The propotin between large length of the arrow and small length of its head
+        self.arrow_head_proportion = arrow_head_proprtion
 
 
-    # Read an Excel file that contains information about
-    # time, position of the beginning point of the arrow and the angle 
-    # and put it in a variable
-    __data = pd.read_excel("Data_of_arrow.xlsx")
 
 
-    def __private_x_arrow(self,x,phi) -> list:
+    def arrow_points(self,x : float,y : float,phi : float) -> list:
         """  
-        Calculate the horizontal points(x in Cartesian) of an arrow and insert it into a list
+        Calculate the points(x ,y in Cartesian) of an arrow and insert it into a list
         
         Args:
             x   : Horizontal point at the beginning of the arrow
-            phi : Angle between arrow and horizontal axis of Cartesian coordinates (By degree)
-    
-        returns:
-            List of five horizontal points of an arrow
-        """
-        x_data = [x]
-        arrow_length = 0.2
-        x_data.append(x + arrow_length*np.cos(np.deg2rad(phi)))
-        x_data.append(x + arrow_length*np.cos(np.deg2rad(phi)) -0.1*arrow_length*np.cos(np.deg2rad(phi+37)))
-        x_data.append(x + arrow_length*np.cos(np.deg2rad(phi)))
-        x_data.append(x + arrow_length*np.cos(np.deg2rad(phi)) -0.1*arrow_length*np.cos(np.deg2rad(phi-37)))
-        return x_data
-
-
-    def __private_y_arrow(self,y,phi) -> list:
-        """  
-        Calculate the Vertical points(y in Cartesian) of an arrow and insert it into a list
-        
-        Args:
             y   : Vertical point at the beginning of the arrow
             phi : Angle between arrow and horizontal axis of Cartesian coordinates (By degree)
     
         returns:
-            List of five Vertical points of an arrow
+            tuple of two List . first List is Horizontal points (x) , and secend is vertical points 
         """
+        x_data = [x]
+        x_data.append(x + self.arrow_length*np.cos(np.deg2rad(phi)))
+        x_data.append(x_data[1] - self.arrow_head_proportion*self.arrow_length*np.cos(np.deg2rad(phi+self.arrow_head_angle)))
+        x_data.append(x_data[1])
+        x_data.append(x_data[1] -self.arrow_head_proportion*self.arrow_length*np.cos(np.deg2rad(phi-self.arrow_head_angle)))
+
         y_data = [y]
-        arrow_length = 0.2
-        y_data.append(y + arrow_length*np.sin(np.deg2rad(phi)))
-        y_data.append(y + arrow_length*np.sin(np.deg2rad(phi)) - 0.1*arrow_length*np.sin(np.deg2rad(phi+37)))
-        y_data.append(y + arrow_length*np.sin(np.deg2rad(phi)))
-        y_data.append(y + arrow_length*np.sin(np.deg2rad(phi)) -0.1*arrow_length*np.sin(np.deg2rad(phi-37)))
-        return y_data
+        y_data.append(y + self.arrow_length*np.sin(np.deg2rad(phi)))
+        y_data.append(y_data[1] - self.arrow_head_proportion*self.arrow_length*np.sin(np.deg2rad(phi+self.arrow_head_angle)))
+        y_data.append(y_data[1])
+        y_data.append(y_data[1] - self.arrow_head_proportion*self.arrow_length*np.sin(np.deg2rad(phi-self.arrow_head_angle)))
+        return x_data , y_data
 
 
-    def __private_animate(self,frame):
+    def animate(self,i : int):
         """ animate the data of Excel File
 
         Args:
-            frame : Excel File rows index
+            i : Excel File rows index
  
         returns:
             Updated figure's object
         """
-        x_data = self.__private_x_arrow(self.__data["x"][frame],self.__data["phi"][frame])
-        y_data = self.__private_y_arrow(self.__data["y"][frame],self.__data["phi"][frame])
-        self.__line2D.set_data(x_data, y_data)
-        return self.__line2D,
+        x_data = self.arrow_points(self.data["x"][i],self.data["y"][i],self.data["phi"][i])[0]
+        y_data = self.arrow_points(self.data["x"][i],self.data["y"][i],self.data["phi"][i])[1]
+        self.line2d.set_data(x_data, y_data)
+        return self.line2d,
 
 
     def visualize(self):
         """ visualize the data and animate
 
         Args:
+
             nothing
 
         returns:
-            animation of data
+            nothing
 
         """
-        animated = animation.FuncAnimation(self.__figure,
-                                         self.__private_animate, np.arange(0,len(self.__data["time"])),
-                                         interval=(self.__data["time"][1] - self.__data["time"][0])*1000
-                                        ,repeat = False )
+        animated = animation.FuncAnimation(self.figure, # input a figure for animation
+                                         self.animate,  # input method to update figure for each frame
+                                         np.arange(0,len(self.data["time"])), # Enter a list for the previous method for each frame
+                                         interval=(self.data["time"][1] - self.data["time"][0])*1000 # the frame (by mili-sec)
+                                         # Nothic:(self.data["time"][1]-self.data["time"][0]) Actually is delta-t (The difference between the two times)
+                                        ,repeat = False ) # No repetition
         plt.grid(ls = "--")
         plt.show()
