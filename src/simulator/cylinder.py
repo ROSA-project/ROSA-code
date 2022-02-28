@@ -5,4 +5,3 @@ class Cylinder(Shape):
 
     def bounding_box(shape):
         pass
->>>>>>> Stashed changes
