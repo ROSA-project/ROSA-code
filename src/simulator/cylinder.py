@@ -1,8 +1,3 @@
-<<<<<<< Updated upstream
-class Cylinder (Shape) -> None
-        radius.self = radius
-        height.self = height
-=======
 class Cylinder(Shape):
     def __init__(self,radius,height):
         self.radius = radius
