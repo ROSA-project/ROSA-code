@@ -4,7 +4,7 @@ from cube import Cube
 from box import Box
 
 class Cylinder(Shape):
-    def __init__(self, radius, height):
+    def __init__(self, radius: float, height: float):
         self.radius = radius
         self.height = height
 

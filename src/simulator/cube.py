@@ -3,12 +3,12 @@ from shape import Shape
 from box import Box
 
 class Cube(Shape):
-    def __init__(self, length, height, width):
+    def __init__(self, length: float, height: float, width: float):
         self.length = length
         self.height = heitht
         self.width = width
     
-    def bounding_box(self, cube: Cube, position: Position):
+    def bounding_box(self, position: Position):
         
         length = cube.length
         height = cube.height
