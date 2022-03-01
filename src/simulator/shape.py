@@ -5,5 +5,6 @@ class Shape:
         pass
     
     def bounding_box(self, cube: Cube, position: Position)->Box:
+        """Returns Box as an Object
+        """
         pass
-    
