@@ -1,6 +1,5 @@
 from position import Position
 from shape import Shape
-from cube import Cube
 from box import Box
 
 class Cylinder(Shape):
