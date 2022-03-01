@@ -8,7 +8,7 @@ class Cylinder(Shape):
         self.radius = radius
         self.height = height
 
-    def bounding_box(self, cube: Cube, position: Position) ->Box:
+    def bounding_box(self, position: Position) ->Box:
         
         length = 2 * cylinder.radius
         height = cylinder.height
