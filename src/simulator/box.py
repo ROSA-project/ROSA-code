@@ -1,3 +1,4 @@
+from __future__ import annotations
 from cube import Cube
 from position import Position
 

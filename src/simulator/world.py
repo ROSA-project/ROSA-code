@@ -1,8 +1,11 @@
+from __future__ import annotations
+
 import time
 
 from intersection_instance import IntersectionInstance
 from map import Map
 from object import Object, ObjectId
+from box import Box
 
 from collections import defaultdict
 from typing import DefaultDict
@@ -24,7 +27,9 @@ class World:
     """
     
     def __init__(self, map_filename: str):
-        self.objects: dict[ObjectId, Object] = Map.parse_map(map_filename)
+        #self.objects: dict[ObjectId, Object] = Map.parse_map(map_filename)
+        self.objects: dict[ObjectId, Object] = {box_1: Box(2,3,1, 0,0,0,0,0), 
+                                                box_2: Box(5,1,3, 5,3,0,0,0)}
         self.__creation_ts: float = time.time()  # current timestamp
         self.__num_evolutions: int = 0
 

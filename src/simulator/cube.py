@@ -1,3 +1,4 @@
+from __future__ import annotations
 from position import Position
 from shape import Shape
 from box import Box
