@@ -1,7 +1,5 @@
-from object import Object, ObjectId
-from shape import Shape
-from position import Position
-# from intersection_instance import IntersectionInstance #for the next version
+from __future__ import annotations
+from object import Object
 
 
 class Sensor(Object):
@@ -10,5 +8,4 @@ class Sensor(Object):
         super().__init__(oid, shape, position, owner_object)
 
     def sense(self):
-        pass
-
+        pass  # this method is going to be overridden in the children classes of BumperSensor
