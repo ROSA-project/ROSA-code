@@ -1,16 +1,12 @@
-from object import Object, ObjectId
-from shape import Shape
-from position import Position
+from __future__ import annotations
 from sensor import Sensor
 
 
 class BumperSensor(Sensor):
-    """In version 0: senses a hit after a random amount of time
+    """In version 0: senses a hit after a random amount of time (e.g., of 10 iteration)
 
     Args:
-        reader: Read the input boolean
-        action: Sense a trigger in input and do an action
-        #TODO you can define any action as a method!
+        No Arguments included!
 
     Returns:
         Return a boolean value as a hit: Trigger.
@@ -18,18 +14,18 @@ class BumperSensor(Sensor):
     Note: In the next version we should consider the Intersection Instance
     from the world as a trigger input.
     """
-    def __init__(self, reader, action, oid: ObjectId, shape: Shape, position: Position, owner_object: Object):
+
+    def __init__(self, oid: ObjectId, shape: Shape, position: Position, owner_object: Object):
         super().__init__(oid, shape, position, owner_object)
-        self.reader = reader
-        self.action = action
-        self.last_value = reader()  # initialise value
+
+    dummy_counter = 0  # A counter for sensing a random hit
 
     def sense(self) -> bool:
-        new_value = self.reader()
-        if new_value and not self.last_value:
-            self.action()
-        self.last_value = new_value
-        return self.last_value
 
+        BumperSensor.dummy_counter += 1
 
-
+        if BumperSensor.dummy_counter == 10:
+            BumperSensor.dummy_counter = 0
+            return True
+        else:
+            return False
