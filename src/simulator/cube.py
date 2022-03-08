@@ -1,8 +1,5 @@
-from __future__ import annotations
-from position import Position
 from shape import Shape
-from box import Box
-
+from position import Position
 class Cube(Shape):
     def __init__(self, length: float, height: float, width: float):
         self.length = length
@@ -30,4 +27,4 @@ class Cube(Shape):
         bb_cube = Cube(length, height, width)
         bb_position = Position(x, y, z, phi, theta)
 
-        return Box(bb_cube, bb_position)
+        return bb_cube, bb_position

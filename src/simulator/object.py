@@ -51,7 +51,7 @@ class Object:
         pass
     
 
-    def bounding_box(shape) -> Box:
+    def bounding_box(self) -> Box:
         pass
 
     def get_required_delta_t(self) -> float:
