@@ -1,22 +1,23 @@
 from __future__ import annotations
 from position import Position
 from shape import Shape
-from box import Box
+from cube import Cube
 
 class Cylinder(Shape):
     def __init__(self, radius: float, height: float):
         self.radius = radius
         self.height = height
 
-    def bounding_box(position: Position) ->Box:
-        """Returns Box
-           Args: position
+    def bounding_box(self,position: Position):
+        """Returns a tuple of Cube and Poistion
+           # TODO this must be a Box. removed due to circular import issue
+           Args: position, coming from the calling Object
         """
 
         #dimension calculations
-        length = 2 * cylinder.radius
-        height = cylinder.height
-        width = 2 * cylinder.radius
+        length = 2 * self.radius
+        height = self.height
+        width = 2 * self.radius
         
         #position calculations
         x = position.x
@@ -29,4 +30,4 @@ class Cylinder(Shape):
         bb_cube = Cube(length, height, width)        
         bb_position = Position(x, y, z, phi, theta)
 
-        return Box(bb_cube, bb_position)
+        return bb_cube, bb_position

@@ -29,15 +29,9 @@ class World:
     """
     
 
-    def __init__(self,box):
-        #self.objects: dict[ObjectId, Object] = Map.parse_map(map_filename)
-        cube_0 = Cube(2,3,1)
-        cube_1 = Cube(5,1,3)
-        position_0 = Position(0,0,0,0,0)
-        position_1 = Position(5,3,0,0,0)
-
-        self.objects: dict[ObjectId, Object] = {0: Box(cube_0,position_0),
-                                                1: Box(cube_1,position_1)}
+    def __init__(self,map_filename):
+        self.objects: dict[ObjectId, Object] = Map.parse_map(map_filename)
+        
         self.__creation_ts: float = time.time()  # current timestamp
         self.__num_evolutions: int = 0
 
