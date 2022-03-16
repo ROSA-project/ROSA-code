@@ -29,4 +29,6 @@ class Cube(Shape):
         bb_cube = Cube(length, height, width)
         bb_position = Position(x, y, z, phi, theta)
 
+        # TODO to be replaced with a Box, this is a temp solution for circular 
+        # import issue
         return bb_cube, bb_position

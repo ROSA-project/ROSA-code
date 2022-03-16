@@ -14,12 +14,11 @@ class Map:
         # TODO parsing should happen here
 
         #temporary hardcoding
-        cube_0 = Cube(2,3,1)
-        cube_1 = Cube(5,1,3)
-        position_0 = Position(0,0,0,0,0)
-        position_1 = Position(5,3,0,0,0)
-
-        object = {0: Box(cube_0,position_0),
-                    1: Box(cube_1,position_1)}
+        
+        box0=Box(0, Cube(2,3,1),Position(0,0,0,0,0),None)
+        box1=Box(1, Cube(5,1,3),Position(5,3,0,0,0),None)
+        box2=Box(2, Cube(1,1,1),Position(2,2,0,0,0),box1)
+        
+        objects = {0: box0, 1: box1, 2: box2}
 
         return objects

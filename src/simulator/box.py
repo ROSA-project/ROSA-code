@@ -1,9 +1,14 @@
 from __future__ import annotations
 from cube import Cube
 from position import Position
-from object import Object
+from object import Object, ObjectId
+from shape import Shape
 
 class Box(Object):
-    def __init__(self, cube: Cube, position: Position):
-        self.cube = cube
-        self.position = position
+    def __init__(self, oid: ObjectId, shape: Shape, position: Position,
+                 owner_object: Object):
+        
+        Object.__init__(self,oid,shape,position,owner_object)
+        
+        if not isinstance(self.shape, Cube):
+            raise Exception("A Box object must have Cube shape")
