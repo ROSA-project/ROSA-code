@@ -1,8 +1,13 @@
+from __future__ import annotations
+
 import time
 
 from intersection_instance import IntersectionInstance
 from map import Map
 from object import Object, ObjectId
+from box import Box
+from cube import Cube
+from position import Position
 
 from collections import defaultdict
 from typing import DefaultDict
@@ -23,8 +28,10 @@ class World:
         __duration_sec: determines how many seconds the world instance will exist for
     """
     
-    def __init__(self, map_filename: str):
+
+    def __init__(self,map_filename: str):
         self.objects: dict[ObjectId, Object] = Map.parse_map(map_filename)
+        
         self.__creation_ts: float = time.time()  # current timestamp
         self.__num_evolutions: int = 0
 
@@ -58,12 +65,12 @@ class World:
         """
         # Cannot erase from dictionary in a loop, so do it in two steps
         delete_keys: list[ObjectId] = []
-        for ob in self.objects:
-            if ob.time_to_die():
-                delete_keys.append(ob)
+        for oid in self.objects:
+            if self.objects[oid].time_to_die():
+                delete_keys.append(oid)
 
-        for ob in delete_keys:
-            del self.objects[ob]
+        for oid in delete_keys:
+            del self.objects[oid]
 
     def intersect(self) -> InInType:
         """Returns the intersection of every pair of objects.
@@ -99,8 +106,8 @@ class World:
         """
         # TODO: For now, we will only  run the world for one round
         delta_t_list = [self.__duration_sec + 1]
-        for obj in self.objects:
-            delta_t_list.append(obj.get_required_delta_t())
+        for oid in self.objects:
+            delta_t_list.append(self.objects[oid].get_required_delta_t())
         return float(min(set(delta_t_list) - {0}))
 
     def run(self) -> None:

@@ -50,8 +50,8 @@ class Object:
         # TODO: define return type
         pass
     
-    def bounding_box(self):
-        # TODO: define return type
+
+    def bounding_box(self) -> Box:
         pass
 
     def get_required_delta_t(self) -> float:
