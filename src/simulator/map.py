@@ -3,6 +3,7 @@ from object import Object, ObjectId
 from cube import Cube
 from position import Position
 from box import Box
+from vacuum_cleaner import VacuumCleanerV0
 
 class Map:
     """Handles reading/parsing/loading of the map.
@@ -15,10 +16,11 @@ class Map:
 
         #temporary hardcoding
         
-        box0=Box(0, Cube(2,3,1),Position(0,0,0,0,0),None)
-        box1=Box(1, Cube(5,1,3),Position(5,3,0,0,0),None)
-        box2=Box(2, Cube(1,1,1),Position(2,2,0,0,0),box1)
+        #box0=Box(0, Cube(2,3,1),Position(0,0,0,0,0),None)
+        #box1=Box(1, Cube(5,1,3),Position(5,3,0,0,0),None)
+        #box2=Box(2, Cube(1,1,1),Position(2,2,0,0,0),box1)
         
-        objects = {0: box0, 1: box1, 2: box2}
+        #objects = {0: box0, 1: box1, 2: box2}
+        objects={0: VacuumCleanerV0(0,Position(0,0,0,0,0),None,{"diameter":0.2,"height":0.1})}
 
         return objects
