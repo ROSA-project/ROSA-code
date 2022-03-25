@@ -12,6 +12,7 @@ from position import Position
 from collections import defaultdict
 from typing import DefaultDict
 
+import json
 # type aliasing
 InInType = DefaultDict[ObjectId, list[IntersectionInstance]]
 
@@ -26,15 +27,17 @@ class World:
         __creation_ts: timestamp of world creation
         __num_evolutions: how many evolutions have the world had so far
         __duration_sec: determines how many seconds the world instance will exist for
+        jsonfile = a dictionary for tack information and convert to json file
+        filename = the name of file for information
     """
     
 
-    def __init__(self,map_filename: str):
+    def __init__(self,map_filename: str,file_name : str):
         self.objects: dict[ObjectId, Object] = Map.parse_map(map_filename)
-        
+        self.jsonfile = dict()
         self.__creation_ts: float = time.time()  # current timestamp
         self.__num_evolutions: int = 0
-
+        self.filename = file_name
         # TODO hardcoded parameters here, to be taken care of properly
         self.__duration_sec = 10
                 
@@ -117,10 +120,59 @@ class World:
         each object is evolved.
         """
         delta_t = self.pick_delta_t()
+        delta_frame = 0.025
         t = 0
-        while t < self.__duration_sec:
-            intersection_result = self.intersect()
-            self.register_intersections(intersection_result)
-            self.evolve(delta_t)
-            t = t + delta_t
-            self.__num_evolutions += 1
+        f = 0
+        if delta_t >= delta_frame:
+            while t < self.__duration_sec:
+                intersection_result = self.intersect()
+                self.register_intersections(intersection_result)
+                while t >= f :
+                    self.jsonfile.update({f :self.visualize()})
+                    f += delta_frame
+                self.evolve(delta_t)
+                t = t + delta_t
+                self.__num_evolutions += 1
+
+        if delta_t < delta_frame:
+            while t < self.__duration_sec:
+                intersection_result = self.intersect()
+                self.register_intersections(intersection_result)
+                while f <= t:
+                    self.jsonfile.update({f :self.visualize()})
+                    f += delta_frame 
+                self.evolve(delta_t)
+                t += delta_t
+                self.__num_evolutions += 1
+        self.jsonfile.update({"shape" : self.get_shape()})
+        
+        with open( self.filename ,"w") as jfile:
+            json.dump(self.jsonfile,jfile)
+
+    def get_shape(self):
+        """set ID of object and Dimensions  
+        
+        Args:
+            None
+        
+        return:
+            dictionary ID of object(key) and Dimensions(value)
+        """
+        inf = dict()
+        for ob in self.objects:
+            inf.update({ob : [self.objects[ob].shape.length,self.objects[ob].shape.height,self.objects[ob].shape.width]})
+        return inf
+
+    def visualize(self):
+        """ set position of the objects with moment(time) 
+        
+        Args:
+            None
+        
+        return:
+            dictionary of moment(key) and position (value) 
+        """
+        inf = dict()
+        for ob in self.objects :
+            inf.update({ob : self.objects[ob].visualize()})
+        return inf
