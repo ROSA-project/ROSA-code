@@ -27,17 +27,17 @@ class World:
         __creation_ts: timestamp of world creation
         __num_evolutions: how many evolutions have the world had so far
         __duration_sec: determines how many seconds the world instance will exist for
-        jsonfile = a dictionary for tack information and convert to json file
-        filename = the name of file for information
+        __visualization_data = a dictionary for take information and convert to json file
+        __visualization_output_filename = the name of file for information
     """
     
 
     def __init__(self,map_filename: str,file_name : str):
         self.objects: dict[ObjectId, Object] = Map.parse_map(map_filename)
-        self.jsonfile = dict()
+        self.__visualization_data = dict()
         self.__creation_ts: float = time.time()  # current timestamp
         self.__num_evolutions: int = 0
-        self.filename = file_name
+        self.__visualization_output_filename = file_name
         # TODO hardcoded parameters here, to be taken care of properly
         self.__duration_sec = 10
                 
@@ -120,50 +120,41 @@ class World:
         each object is evolved.
         """
         delta_t = self.pick_delta_t()
-        delta_frame = 0.025
+        frame_interval = 0.025
         t = 0
         f = 0
-        if delta_t >= delta_frame:
-            while t < self.__duration_sec:
-                intersection_result = self.intersect()
-                self.register_intersections(intersection_result)
-                while t >= f :
-                    self.jsonfile.update({f :self.visualize()})
-                    f += delta_frame
-                self.evolve(delta_t)
-                t = t + delta_t
-                self.__num_evolutions += 1
+        while t < self.__duration_sec:
+            intersection_result = self.intersect()
+            self.register_intersections(intersection_result)
+            while t >= f :
+                self.__visualization_data.update({float(f) :self.visualize()})
+                f += frame_interval
+            self.evolve(delta_t)
+            t = t + delta_t
+            self.__num_evolutions += 1
+        self.__type_shape()
+        self.__close_visualization()
 
-        if delta_t < delta_frame:
-            while t < self.__duration_sec:
-                intersection_result = self.intersect()
-                self.register_intersections(intersection_result)
-                while f <= t:
-                    self.jsonfile.update({f :self.visualize()})
-                    f += delta_frame 
-                self.evolve(delta_t)
-                t += delta_t
-                self.__num_evolutions += 1
-        self.jsonfile.update({"shape" : self.get_shape()})
-        
-        with open( self.filename ,"w") as jfile:
-            json.dump(self.jsonfile,jfile)
 
-    def get_shape(self):
-        """set ID of object and Dimensions  
+    def __type_shape(self) -> None:
+        """set ID of object and Dimensions & update in File's information  
         
         Args:
             None
         
         return:
-            dictionary ID of object(key) and Dimensions(value)
+            None
         """
-        inf = dict()
+        inf = {"Shape" :{}}
         for ob in self.objects:
-            inf.update({ob : [self.objects[ob].shape.length,self.objects[ob].shape.height,self.objects[ob].shape.width]})
-        return inf
-
-    def visualize(self):
+            Shape = self.objects[ob].shape.type
+            if Shape == "Cylinder":
+                inf["Shape"].update({ob :{"Shape" : Shape , "dimension" : self.objects[ob].shape.radius}})
+            if Shape == "Cube":
+                inf["Shape"].update({ob :{"Shape" : Shape , "dimension" : [self.objects[ob].shape.length ,self.objects[ob].shape.height]}})
+        self.__visualization_data.update(inf)
+    
+    def visualize(self) -> dict:
         """ set position of the objects with moment(time) 
         
         Args:
@@ -176,3 +167,18 @@ class World:
         for ob in self.objects :
             inf.update({ob : self.objects[ob].visualize()})
         return inf
+
+    def __close_visualization(self) -> None:
+        """ Transfers the completed information in the dictionary to the created file
+        
+        Args:
+            None
+
+        return:
+            None
+        """
+        try:
+            with open("src\\Files\\"+self.__visualization_output_filename ,"w") as json_file:
+                json.dump(self.__visualization_data,json_file ,indent=2)
+        except:
+            print("Eror! can't open or create File. please check the path or File Name.",end = " ")
