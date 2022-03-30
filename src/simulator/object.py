@@ -45,7 +45,7 @@ class Object:
         """
         # TODO: should it be simply stored in a member variable?
         pass
-    def visualize(self):
+    def visualize(self) -> list:
         """
         return the right position of object
         """
