@@ -7,7 +7,6 @@ from shape import Shape
 class Box(Object):
     def __init__(self, oid: ObjectId, shape: Shape, position: Position,
                  owner_object: Object):
-        self.type = "Box"
         
         Object.__init__(self,oid,shape,position,owner_object)
         

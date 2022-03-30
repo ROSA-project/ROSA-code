@@ -132,11 +132,11 @@ class World:
             self.evolve(delta_t)
             t = t + delta_t
             self.__num_evolutions += 1
-        self.__type_shape()
+        self.__dump_shapes_visualization()
         self.__close_visualization()
 
 
-    def __type_shape(self) -> None:
+    def __dump_shapes_visualization(self) -> None:
         """set ID of object and Dimensions & update in File's information  
         
         Args:
@@ -181,4 +181,4 @@ class World:
             with open("src\\Files\\"+self.__visualization_output_filename ,"w") as json_file:
                 json.dump(self.__visualization_data,json_file ,indent=2)
         except:
-            print("Eror! can't open or create File. please check the path or File Name.",end = " ")
+            print("Error! can't open or create File. please check the path or File Name.",end = " ")
