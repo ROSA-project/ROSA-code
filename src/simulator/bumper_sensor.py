@@ -5,9 +5,9 @@ class BumperSensor(Sensor):
     elapsed_time = 0
     def sense(self,delta_t) -> bool:
         # a dummy implementation for v0
-        
+
         self.elapsed_time += delta_t
-        if self.elapsed_time >= 1: #in seconds
+        if self.elapsed_time >= 3: #in seconds
             self.elapsed_time = 0
             return True
         else:

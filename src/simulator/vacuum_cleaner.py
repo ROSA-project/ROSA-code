@@ -1,4 +1,5 @@
 from math import dist
+from turtle import position
 from object import ObjectId, Object
 from robot import Robot
 from position import Position
@@ -28,7 +29,7 @@ class VacuumCleanerV0(Robot):
 
         self.forward_speed: float = 0.1 #unit m/s
         self.reverse_speed: float = 0.1
-        self.turning_speed: float = 5 #unit deg/s
+        self.turning_speed: float = 10 #unit deg/s
 
         self.turn_on_hit_angle: float = 20 #degrees
         self.reverse_on_hit_duration: float = 1 #seconds
@@ -39,6 +40,8 @@ class VacuumCleanerV0(Robot):
         # -1 meaning keep the state unless a hit happnes
         self.state_duration = -1
         self.elapsed_time_on_state=0
+
+        self.total_elapsed_time=0
     
     def evolve(self, delta_t: float) -> dict[ObjectId, Object]:
         if self.sensor.sense(delta_t):
@@ -68,13 +71,13 @@ class VacuumCleanerV0(Robot):
             if self.state == "forward":
                 distance = self.forward_speed * delta_t
                 #that is when oriented toward left we get decreasing x
-                self.position.x += distance * np.cos(self.position.phi)
+                self.position.x += distance * np.cos(np.pi/180*self.position.phi)
                 #that is when oriented toward buttom we get decreasing y
-                self.position.y += distance * np.sin(self.position.phi)
+                self.position.y += distance * np.sin(np.pi/180*self.position.phi)
             elif self.state == "turn left":
                 # left meaning increasing phi
                 rotation = self.turning_speed * delta_t #in degrees
-                self.position.phi += rotation * np.pi/180
+                self.position.phi += rotation 
             elif self.state == "reverse":
                 if self.elapsed_time_on_state == 0:
                     #reversing not began yet, reverse the direction
@@ -82,13 +85,16 @@ class VacuumCleanerV0(Robot):
 
                 distance = self.reverse_speed * delta_t
                 #that is when oriented toward left we get decreasing x
-                self.position.x += distance * np.cos(self.position.phi)
+                self.position.x += distance * np.cos(np.pi/180*self.position.phi)
                 #that is when oriented toward buttom we get decreasing y
-                self.position.y += distance * np.sin(self.position.phi)
+                self.position.y += distance * np.sin(np.pi/180*self.position.phi)
             else:
                 raise Exception("unknown state: " + self.state)
-        print("x=" + str(self.position.x) + " ," + "y=" + str(self.position.y) + " ," + \
-            "phi=" + str(self.position.phi))
+        #print("x=" + str(self.position.x) + " ," + "y=" + str(self.position.y) + " ," + \
+        #    "phi=" + str(self.position.phi))
+        
+        self.total_elapsed_time += delta_t
+        print(str(self.total_elapsed_time) + "," + str(self.position.x) + "," + str(self.position.y) + "," + str(self.position.phi))
         return dict()
 
     def get_required_delta_t(self) -> float:
