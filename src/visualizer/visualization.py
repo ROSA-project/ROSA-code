@@ -3,7 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import json
-from simulator.object import ObjectId
+import sys
+sys.path.append("src\simulator")
+
+from object import ObjectId
 
 
 class Visualizer:   
@@ -67,35 +70,35 @@ class Visualizer:
         y_data.append(y_data[1] - self.__arrow_head_proportion*self.__arrow_length*np.sin(np.deg2rad(phi-self.__arrow_head_angle)))
         return x_data , y_data
     
-    def __Cube(self,moment : int,id :objectId) -> tuple:
-        """Function for visualizing object shapes(Cube)
+    def __cube(self,moment : int,oid :ObjectId) -> tuple:
+        """Function for visualizing object shapes(cube)
         Args:
             moment : for Moment inside the file
-            id : ID of object
+            oid : ID of object
         return:
-            lists of x and y (in cartesian) for objects (Shapes of Cube)
+            lists of x and y (in cartesian) for objects (Shapes of cube)
         """
-        inf = self.data["Shape"][str(objectId)]["dimension"]
+        inf = self.data["Shape"][str(oid)]["dimension"]
         r = np.sqrt((inf[0] **2 + inf[1]**2))
         teta = np.arctan(inf[1]/inf[0])
         x_data,y_data =[] , []
         for i in [teta,np.pi-teta,np.pi+teta,-teta , teta]:
-            x_data.append(self.data[str(moment)][str(id)][0]+r*np.cos(np.deg2rad(self.data[str(moment)][str(id)][2])+ i))
-            y_data.append(self.data[str(moment)][str(id)][1]+r*np.sin(np.deg2rad(self.data[str(moment)][str(id)][2])+ i))
+            x_data.append(self.data[str(moment)][str(oid)][0]+r*np.cos(np.deg2rad(self.data[str(moment)][str(oid)][2])+ i))
+            y_data.append(self.data[str(moment)][str(oid)][1]+r*np.sin(np.deg2rad(self.data[str(moment)][str(oid)][2])+ i))
         return x_data,y_data
 
-    def __Cylinder(self,moment : int,id :objectId):
-        """Function for visualizing object shapes(Cube)
+    def __cylinder(self,moment : int,oid :ObjectId):
+        """Function for visualizing object shapes(cylinder)
         Args:
             moment : for Moment inside the file
-            id : ID of object
+            oid : ID of object
         return:
-            lists of x and y (in cartesian) for objects (Shapes of Cube)
+            lists of x and y (in cartesian) for objects (Shapes of cylinder)
         """
         step = 0.06
         l = np.arange(0,2*np.pi+step/4,step)
-        x_data = self.data["shape"][str(id)]["dimension"]*(np.cos(l) - self.data[str(moment)][str(id)[0]]) 
-        y_data = self.data["shape"][str(id)]["dimension"]*(np.sin(l) - self.data[str(moment)][str(id)[1]])
+        x_data = self.data["shape"][str(oid)]["dimension"]*(np.cos(l) - self.data[str(moment)][str(oid)[0]]) 
+        y_data = self.data["shape"][str(oid)]["dimension"]*(np.sin(l) - self.data[str(moment)][str(oid)[1]])
         return x_data,y_data
 
     def __animate(self,i : int):
@@ -105,12 +108,12 @@ class Visualizer:
         x_data,y_data = [],[]
         for j in self.data["Shape"]:       
             if self.data["Shape"][j]["Shape"] == "Cube":
-                data = self.__Cube(round(i*frame_interval,step_round) ,int(j))
+                data = self.__cube(round(i*frame_interval,step_round) ,int(j))
                 x_data.append(data[0])
                 y_data.append(data[1])
                 
             if self.data["Shape"][j]["Shape"] == "Cylinder":
-                data = self.__Cylinder(i ,int(j))
+                data = self.__cylinder(i ,int(j))
                 x_data.append(data[0])
                 y_data.append(data[1])     
         i = 0

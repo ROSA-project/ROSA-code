@@ -32,12 +32,12 @@ class World:
     """
     
 
-    def __init__(self,map_filename: str,file_name : str):
+    def __init__(self,map_filename: str,visualization_file_name : str):
         self.objects: dict[ObjectId, Object] = Map.parse_map(map_filename)
         self.__visualization_data = dict()
         self.__creation_ts: float = time.time()  # current timestamp
         self.__num_evolutions: int = 0
-        self.__visualization_output_filename = file_name
+        self.__visualization_output_filename = visualization_file_name 
         # TODO hardcoded parameters here, to be taken care of properly
         self.__duration_sec = 10
                 
