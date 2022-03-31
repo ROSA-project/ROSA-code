@@ -92,11 +92,19 @@ class Visualizer:
             nothing
 
         """
+        
         animated = animation.FuncAnimation(self.figure, # input a figure for animation
                                          self.__animate,  # input method to update figure for each frame
                                          np.arange(0,len(self.data["time"])), # Enter a list for the previous method for each frame
-                                         interval=(self.data["time"][1] - self.data["time"][0])*1000 # the frame (by mili-sec)
+                                         interval=1/60*1000 # the frame (by mili-sec)
                                          # Nothic:(self.data["time"][1]-self.data["time"][0]) Actually is delta-t (The difference between the two times)
                                         ,repeat = False ) # No repetition
-        plt.grid(ls = "--")
-        plt.show()
+        #plt.grid(ls = "--")
+        #plt.show()
+        writervideo = animation.PillowWriter(fps=60)
+        animated.save('v0_robot.gif', writer=writervideo)
+        
+
+
+myVis=Visualizer(0.6,"Data_of_arrow.csv",0.05,30,0.2)
+myVis.visualize()
