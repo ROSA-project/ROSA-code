@@ -147,11 +147,11 @@ class World:
         """
         inf = {"Shape" :{}}
         for ob in self.objects:
-            Shape = self.objects[ob].shape.type
+            shape_string = self.objects[ob].shape.type
             if Shape == "Cylinder":
-                inf["Shape"].update({ob :{"Shape" : Shape , "dimension" : self.objects[ob].shape.radius}})
+                inf["Shape"].update({ob :{"Shape" : shape_string , "dimension" : self.objects[ob].shape.radius}})
             if Shape == "Cube":
-                inf["Shape"].update({ob :{"Shape" : Shape , "dimension" : [self.objects[ob].shape.length ,self.objects[ob].shape.height]}})
+                inf["Shape"].update({ob :{"Shape" : shape_string , "dimension" : [self.objects[ob].shape.length ,self.objects[ob].shape.height]}})
         self.__visualization_data.update(inf)
     
     def visualize(self) -> dict:

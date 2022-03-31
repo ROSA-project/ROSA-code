@@ -67,11 +67,11 @@ class Visualizer:
         y_data.append(y_data[1] - self.__arrow_head_proportion*self.__arrow_length*np.sin(np.deg2rad(phi-self.__arrow_head_angle)))
         return x_data , y_data
     
-    def __Cube(self,moment : int,objectId) -> tuple:
+    def __Cube(self,moment : int,id :objectId) -> tuple:
         """Function for visualizing object shapes(Cube)
         Args:
             moment : for Moment inside the file
-            ID : ID of object
+            id : ID of object
         return:
             lists of x and y (in cartesian) for objects (Shapes of Cube)
         """
@@ -80,22 +80,22 @@ class Visualizer:
         teta = np.arctan(inf[1]/inf[0])
         x_data,y_data =[] , []
         for i in [teta,np.pi-teta,np.pi+teta,-teta , teta]:
-            x_data.append(self.data[str(moment)][str(objectId)][0]+r*np.cos(np.deg2rad(self.data[str(moment)][str(objectId)][2])+ i))
-            y_data.append(self.data[str(moment)][str(objectId)][1]+r*np.sin(np.deg2rad(self.data[str(moment)][str(objectId)][2])+ i))
+            x_data.append(self.data[str(moment)][str(id)][0]+r*np.cos(np.deg2rad(self.data[str(moment)][str(id)][2])+ i))
+            y_data.append(self.data[str(moment)][str(id)][1]+r*np.sin(np.deg2rad(self.data[str(moment)][str(id)][2])+ i))
         return x_data,y_data
 
-    def __Cylinder(self,moment : int,objectId):
+    def __Cylinder(self,moment : int,id :objectId):
         """Function for visualizing object shapes(Cube)
         Args:
             moment : for Moment inside the file
-            ID : ID of object
+            id : ID of object
         return:
             lists of x and y (in cartesian) for objects (Shapes of Cube)
         """
         step = 0.06
         l = np.arange(0,2*np.pi+step/4,step)
-        x_data = self.data["shape"][str(objectId)]["dimension"]*(np.cos(l) - self.data[str(moment)][str(objectId)[0]]) 
-        y_data = self.data["shape"][str(objectId)]["dimension"]*(np.sin(l) - self.data[str(moment)][str(objectId)[1]])
+        x_data = self.data["shape"][str(id)]["dimension"]*(np.cos(l) - self.data[str(moment)][str(id)[0]]) 
+        y_data = self.data["shape"][str(id)]["dimension"]*(np.sin(l) - self.data[str(moment)][str(id)[1]])
         return x_data,y_data
 
     def __animate(self,i : int):
@@ -105,12 +105,14 @@ class Visualizer:
         x_data,y_data = [],[]
         for j in self.data["Shape"]:       
             if self.data["Shape"][j]["Shape"] == "Cube":
-                x_data.append(self.__Cube(round(i*frame_interval,step_round) ,int(j))[0])
-                y_data.append(self.__Cube(round(i*frame_interval,step_round) ,int(j))[1])
+                data = self.__Cube(round(i*frame_interval,step_round) ,int(j))
+                x_data.append(data[0])
+                y_data.append(data[1])
                 
             if self.data["Shape"][j]["Shape"] == "Cylinder":
-                x_data.append(self.__Cylinder(i ,int(j))[0])
-                y_data.append(self.__Cylinder(i ,int(j))[1])     
+                data = self.__Cylinder(i ,int(j))
+                x_data.append(data[0])
+                y_data.append(data[1])     
         i = 0
         for self.line in self.lines2d:
             self.line.set_data(x_data[i],y_data[i])
