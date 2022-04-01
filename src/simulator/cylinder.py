@@ -7,6 +7,7 @@ class Cylinder(Shape):
     def __init__(self, radius: float, height: float):
         self.radius = radius
         self.height = height
+        self.type = "Cylinder"
 
     def bounding_box(self,position: Position):
         """Returns a tuple of Cube and Poistion

@@ -12,6 +12,7 @@ from position import Position
 from collections import defaultdict
 from typing import DefaultDict
 
+import json
 # type aliasing
 InInType = DefaultDict[ObjectId, list[IntersectionInstance]]
 
@@ -26,15 +27,17 @@ class World:
         __creation_ts: timestamp of world creation
         __num_evolutions: how many evolutions have the world had so far
         __duration_sec: determines how many seconds the world instance will exist for
+        __visualization_data = a dictionary for take information and convert to json file
+        __visualization_output_filename = the name of file for information
     """
     
 
-    def __init__(self,map_filename: str):
+    def __init__(self,map_filename: str,visualization_file_name : str):
         self.objects: dict[ObjectId, Object] = Map.parse_map(map_filename)
-        
+        self.__visualization_data = dict()
         self.__creation_ts: float = time.time()  # current timestamp
         self.__num_evolutions: int = 0
-
+        self.__visualization_output_filename = visualization_file_name 
         # TODO hardcoded parameters here, to be taken care of properly
         self.__duration_sec = 10
                 
@@ -117,10 +120,66 @@ class World:
         each object is evolved.
         """
         delta_t = self.pick_delta_t()
+        frame_interval = 0.025
         t = 0
+        f = 0
         while t < self.__duration_sec:
             intersection_result = self.intersect()
             self.register_intersections(intersection_result)
+            while t >= f :
+                step_round = 3
+                self.__visualization_data.update({round(float(f),step_round) :self.visualize()})
+                f += frame_interval
             self.evolve(delta_t)
             t = t + delta_t
             self.__num_evolutions += 1
+        self.__dump_shapes_visualization()
+        self.__close_visualization()
+
+
+    def __dump_shapes_visualization(self) -> None:
+        """set ID of object and Dimensions & update in File's information  
+        
+        Args:
+            None
+        
+        return:
+            None
+        """
+        inf = {"Shape" :{}}
+        for ob in self.objects:
+            shape_string = self.objects[ob].shape.type
+            if shape_string == "Cylinder":
+                inf["Shape"].update({ob :{"Shape" : shape_string , "dimension" : self.objects[ob].shape.radius}})
+            if shape_string == "Cube":
+                inf["Shape"].update({ob :{"Shape" : shape_string , "dimension" : [self.objects[ob].shape.length ,self.objects[ob].shape.height]}})
+        self.__visualization_data.update(inf)
+    
+    def visualize(self) -> dict:
+        """ set position of the objects with moment(time) 
+        
+        Args:
+            None
+        
+        return:
+            dictionary of moment(key) and position (value) 
+        """
+        inf = dict()
+        for ob in self.objects :
+            inf.update({ob : self.objects[ob].visualize()})
+        return inf
+
+    def __close_visualization(self) -> None:
+        """ Transfers the completed information in the dictionary to the created file
+        
+        Args:
+            None
+
+        return:
+            None
+        """
+        try:
+            with open("src\\Files\\"+self.__visualization_output_filename ,"w") as json_file:
+                json.dump(self.__visualization_data,json_file ,indent=2)
+        except:
+            print("Error! can't open or create File. please check the path or File Name.",end = " ")

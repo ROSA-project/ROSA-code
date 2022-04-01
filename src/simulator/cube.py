@@ -6,6 +6,7 @@ class Cube(Shape):
         self.length = length
         self.height = height
         self.width = width
+        self.type = "Cube"
     
     def bounding_box(self,position: Position):
         """Returns a tuple of Cube and Poistion
