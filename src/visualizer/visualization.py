@@ -28,15 +28,16 @@ class Visualizer:
         self.axes = plt.axes(xlim = (-side , side) , ylim = (-side , side))
         self.line = self.axes.plot([],[])
         self.lines2d = []
+        self.data = dict()
         try:
             with open("src\Files\\"+file , "r") as f :
                 self.data = json.load(f)
-            for i in range(len(self.data["Shape"])):
-                obj = self.axes.plot([],[])[0]
-                self.lines2d.append(obj)
         except:
-            print("Error! can't open or read File. please check the path or File Name.",end = " ")        
-
+            print("Error! can't open or read File. please check the path or File Name.",end = " ")
+            sys.exit()        
+        for i in range(len(self.data["Shape"])):
+            obj = self.axes.plot([],[])[0]
+            self.lines2d.append(obj)
         
         #TODO : It is currently set, it will be set by the user later 
         self.___arrow_length = 0.5 
