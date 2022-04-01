@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import json
 import sys
-sys.path.append("src\simulator")
+sys.path.append(r"src\simulator")
 
 from object import ObjectId
 
@@ -29,14 +29,14 @@ class Visualizer:
         self.line = self.axes.plot([],[])
         self.lines2d = []
         try:
-            with open(file , "r") as f:
+            with open("src\Files\\"+file , "r") as f :
                 self.data = json.load(f)
+            for i in range(len(self.data["Shape"])):
+                obj = self.axes.plot([],[])[0]
+                self.lines2d.append(obj)
         except:
-            print("Eror! can't Open or Read File. please check the path or File Name.",end = " ")
-        
-        for i in range(len(self.data["Shape"])):
-            obj = self.axes.plot([],[])[0]
-            self.lines2d.append(obj)
+            print("Error! can't open or read File. please check the path or File Name.",end = " ")        
+
         
         #TODO : It is currently set, it will be set by the user later 
         self.___arrow_length = 0.5 

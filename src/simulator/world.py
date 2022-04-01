@@ -127,7 +127,8 @@ class World:
             intersection_result = self.intersect()
             self.register_intersections(intersection_result)
             while t >= f :
-                self.__visualization_data.update({float(f) :self.visualize()})
+                step_round = 3
+                self.__visualization_data.update({round(float(f),step_round) :self.visualize()})
                 f += frame_interval
             self.evolve(delta_t)
             t = t + delta_t
@@ -148,9 +149,9 @@ class World:
         inf = {"Shape" :{}}
         for ob in self.objects:
             shape_string = self.objects[ob].shape.type
-            if Shape == "Cylinder":
+            if shape_string == "Cylinder":
                 inf["Shape"].update({ob :{"Shape" : shape_string , "dimension" : self.objects[ob].shape.radius}})
-            if Shape == "Cube":
+            if shape_string == "Cube":
                 inf["Shape"].update({ob :{"Shape" : shape_string , "dimension" : [self.objects[ob].shape.length ,self.objects[ob].shape.height]}})
         self.__visualization_data.update(inf)
     
