@@ -179,7 +179,7 @@ class World:
             None
         """
         try:
-            with open("src\\Files\\"+self.__visualization_output_filename ,"w") as json_file:
+            with open(self.__visualization_output_filename ,"w") as json_file:
                 json.dump(self.__visualization_data,json_file ,indent=2)
         except:
             print("Error! can't open or create File. please check the path or File Name.",end = " ")

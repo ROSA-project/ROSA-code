@@ -30,7 +30,7 @@ class Visualizer:
         self.lines2d = []
         self.data = dict()
         try:
-            with open("src\Files\\"+file , "r") as f :
+            with open(file , "r") as f :
                 self.data = json.load(f)
         except:
             print("Error! can't open or read File. please check the path or File Name.",end = " ")
