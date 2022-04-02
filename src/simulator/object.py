@@ -45,11 +45,12 @@ class Object:
         """
         # TODO: should it be simply stored in a member variable?
         pass
-    
-    def visualize(self):
-        # TODO: define return type
-        pass
-    
+    def visualize(self) -> list:
+        """
+        return the right position of object
+        """
+        position = [self.position.x, self.position.y ,self.position.phi]
+        return position
 
     def bounding_box(self) -> Box:
         pass

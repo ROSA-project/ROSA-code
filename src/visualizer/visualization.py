@@ -2,45 +2,57 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-import pandas as pd
+import json
+import sys
+sys.path.append(r"src\simulator")
 
+from object import ObjectId
 
 
 class Visualizer:   
 
     # Define the figure , axes and ... for animation
 
-    def __init__(self,side : float,file : str , arrow_length : float ,arrow_head_angle : float ,arrow_head_proprtion : float):
+    def __init__(self,side : float,file : str):
         """ 
         after creating a object of this class,construct figure , axes , graphic element  and read a file
                 
         Args:
             side : Half the length of an axis
-            file : Name and format of Excel file contains data
-            arrow_length :
-            arrow_head_angle : The angle between large length of arrow and small length of its head
-            arrow_head_propotion: # The propotin between large length of the arrow and small length of its head
+            file : Name and format of json file contains data
 
         """
         # define a figure
         self.figure = plt.figure() 
         # define an axes for x and y in cartecian
         self.axes = plt.axes(xlim = (-side , side) , ylim = (-side , side))
-        # define a graphic 
-        self.line2d, = self.axes.plot([],[]) 
-        # read the CSV file by pandas madule
-        self.data   = pd.read_csv(file)
+        self.line = self.axes.plot([],[])
+        self.lines2d = []
+        self.data = dict()
+        try:
+            with open(file , "r") as f :
+                self.data = json.load(f)
+        except:
+            print("Error! can't open or read File. please check the path or File Name.",end = " ")
+            sys.exit()     
 
-        self.arrow_length = arrow_length  
+        self.plot_arrows=True
+        if self.plot_arrows:
+            shapes_num_factor=2
+        else:
+            shapes_num_factor=1
+
+        for i in range(len(self.data["Shape"])*shapes_num_factor):
+            obj = self.axes.plot([],[])[0]
+            self.lines2d.append(obj)
+        
+        #TODO : It is currently set, it will be set by the user later 
         # The angle between large length of arrow and small length of its head
-        self.arrow_head_angle = arrow_head_angle 
+        self.__arrow_head_angle = 37
         # The propotin between large length of the arrow and small length of its head
-        self.arrow_head_proportion = arrow_head_proprtion
-
-
-
-
-    def __arrow_points(self,x : float,y : float,phi : float) -> list:
+        self.__arrow_head_proportion = 0.2
+    
+    def __arrow_points(self, moment : int,oid :ObjectId, arrow_length: float) -> tuple:
         """  
         Calculate the points(x ,y in Cartesian) of an arrow and insert it into a list
         
@@ -52,33 +64,83 @@ class Visualizer:
         returns:
             tuple of two List . first List is Horizontal points (x) , and secend is vertical points 
         """
+        x=self.data[str(moment)][oid][0]
+        y=self.data[str(moment)][oid][1]
+        phi=self.data[str(moment)][oid][2]
+
         x_data = [x]
-        x_data.append(x + self.arrow_length*np.cos(np.deg2rad(phi)))
-        x_data.append(x_data[1] - self.arrow_head_proportion*self.arrow_length*np.cos(np.deg2rad(phi+self.arrow_head_angle)))
+        x_data.append(x + arrow_length*np.cos(np.deg2rad(phi)))
+        x_data.append(x_data[1] - self.__arrow_head_proportion*arrow_length*np.cos(np.deg2rad(phi+self.__arrow_head_angle)))
         x_data.append(x_data[1])
-        x_data.append(x_data[1] -self.arrow_head_proportion*self.arrow_length*np.cos(np.deg2rad(phi-self.arrow_head_angle)))
+        x_data.append(x_data[1] -self.__arrow_head_proportion*arrow_length*np.cos(np.deg2rad(phi-self.__arrow_head_angle)))
 
         y_data = [y]
-        y_data.append(y + self.arrow_length*np.sin(np.deg2rad(phi)))
-        y_data.append(y_data[1] - self.arrow_head_proportion*self.arrow_length*np.sin(np.deg2rad(phi+self.arrow_head_angle)))
+        y_data.append(y + arrow_length*np.sin(np.deg2rad(phi)))
+        y_data.append(y_data[1] - self.__arrow_head_proportion*arrow_length*np.sin(np.deg2rad(phi+self.__arrow_head_angle)))
         y_data.append(y_data[1])
-        y_data.append(y_data[1] - self.arrow_head_proportion*self.arrow_length*np.sin(np.deg2rad(phi-self.arrow_head_angle)))
+        y_data.append(y_data[1] - self.__arrow_head_proportion*arrow_length*np.sin(np.deg2rad(phi-self.__arrow_head_angle)))
         return x_data , y_data
-
-
-    def __animate(self,i : int):
-        """ animate the data of Excel File
-
+    
+    def __cube(self, moment : int,oid :ObjectId) -> tuple:
+        """Function for visualizing object shapes(cube)
         Args:
-            i : Excel File rows index
- 
-        returns:
-            Updated figure's object
+            moment : for Moment inside the file
+            oid : ID of object
+        return:
+            lists of x and y (in cartesian) for objects (Shapes of cube)
         """
-        x_data = self.__arrow_points(self.data["x"][i],self.data["y"][i],self.data["phi"][i])[0]
-        y_data = self.__arrow_points(self.data["x"][i],self.data["y"][i],self.data["phi"][i])[1]
-        self.line2d.set_data(x_data, y_data)
-        return self.line2d,
+        inf = self.data["Shape"][oid]["dimension"]
+        r = np.sqrt((inf[0]**2 + inf[1]**2))
+        teta = np.arctan(inf[1]/inf[0])
+        x_data,y_data =[] , []
+        for i in [teta,np.pi-teta,np.pi+teta,-teta , teta]:
+            x_data.append(self.data[str(moment)][oid][0]+r*np.cos(np.deg2rad(self.data[str(moment)][oid][2])+ i))
+            y_data.append(self.data[str(moment)][oid][1]+r*np.sin(np.deg2rad(self.data[str(moment)][oid][2])+ i))
+        return x_data,y_data
+
+    def __cylinder(self,moment : int,oid :ObjectId):
+        """Function for visualizing object shapes(cylinder)
+        Args:
+            moment : for Moment inside the file
+            oid : ID of object
+        return:
+            lists of x and y (in cartesian) for objects (Shapes of cylinder)
+        """
+        step = 0.06
+        l = np.arange(0,2*np.pi+step/4,step)
+        radius=self.data["Shape"][oid]["dimension"][0]
+        x_data = radius*np.cos(l) + self.data[str(moment)][oid][0]
+        y_data = radius*np.sin(l) + self.data[str(moment)][oid][1]
+        return x_data,y_data
+
+    def __animate(self,time_index : int):
+        
+        frame_interval = 0.025
+        step_round = 3
+        time_instance = ("{:."+str(step_round)+"f}").format(time_index*frame_interval)
+        x_data,y_data = [],[]
+        for oid in self.data["Shape"]:       
+            if self.data["Shape"][oid]["Shape"] == "Cube":
+                data = self.__cube(time_instance ,oid)
+                x_data.append(data[0])
+                y_data.append(data[1])
+                arrow_length=self.data["Shape"][oid]["dimension"][0]
+                
+            if self.data["Shape"][oid]["Shape"] == "Cylinder":
+                data = self.__cylinder(time_instance ,oid)
+                x_data.append(data[0])
+                y_data.append(data[1])     
+                arrow_length=self.data["Shape"][oid]["dimension"][0]
+
+            data=self.__arrow_points(time_instance ,oid, arrow_length)
+            x_data.append(data[0])
+            y_data.append(data[1])     
+        
+        i = 0
+        for self.line in self.lines2d:
+            self.line.set_data(x_data[i],y_data[i])
+            i += 1
+        return self.lines2d
 
 
     def visualize(self):
@@ -92,19 +154,18 @@ class Visualizer:
             nothing
 
         """
-        
+        frame_interval = 0.025
         animated = animation.FuncAnimation(self.figure, # input a figure for animation
                                          self.__animate,  # input method to update figure for each frame
-                                         np.arange(0,len(self.data["time"])), # Enter a list for the previous method for each frame
-                                         interval=1/60*1000 # the frame (by mili-sec)
-                                         # Nothic:(self.data["time"][1]-self.data["time"][0]) Actually is delta-t (The difference between the two times)
+                                         np.arange(len(self.data)-1),# Enter a list for the previous method for each frame
+                                         interval=frame_interval*1000 # the frame (by mili-sec)
+                                         # Nothic: blit=True means only re-draw the parts that have changed.
+                                         ,blit = True
                                         ,repeat = False ) # No repetition
-        #plt.grid(ls = "--")
-        #plt.show()
-        writervideo = animation.PillowWriter(fps=60)
+        plt.grid(ls = "--")
+        plt.show()
+        # TODO saeed: works on my macbook but needs a closer look, 
+        # it seems to be platform dependent.
+        writervideo = animation.PillowWriter(fps=1/frame_interval)
         animated.save('v0_robot.gif', writer=writervideo)
         
-
-
-myVis=Visualizer(0.6,"Data_of_arrow.csv",0.05,30,0.2)
-myVis.visualize()

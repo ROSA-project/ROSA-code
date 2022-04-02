@@ -23,15 +23,14 @@ class VacuumCleanerV0(Robot):
         
         # TODO saeed: where does the oid of sensor comes from? fetched from Map? how do we have
         #  acess to Map here?
-        tmp_oid = 0
 
         self.sensor: Sensor = BumperSensor(oid,self.shape,position,self)
 
-        self.forward_speed: float = 0.1 #unit m/s
-        self.reverse_speed: float = 0.1
-        self.turning_speed: float = 10 #unit deg/s
+        self.forward_speed: float = 1 #unit m/s
+        self.reverse_speed: float = 0.2
+        self.turning_speed: float = 25 #unit deg/s
 
-        self.turn_on_hit_angle: float = 20 #degrees
+        self.turn_on_hit_angle: float = 50 #degrees
         self.reverse_on_hit_duration: float = 1 #seconds
         
         #possible states: forward, reverse, turn left
@@ -94,7 +93,6 @@ class VacuumCleanerV0(Robot):
         #    "phi=" + str(self.position.phi))
         
         self.total_elapsed_time += delta_t
-        print(str(self.total_elapsed_time) + "," + str(self.position.x) + "," + str(self.position.y) + "," + str(self.position.phi))
         return dict()
 
     def get_required_delta_t(self) -> float:
