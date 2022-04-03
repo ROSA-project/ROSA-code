@@ -39,7 +39,7 @@ class World:
         self.__num_evolutions: int = 0
         self.__visualization_output_filename = visualization_file_name 
         # TODO hardcoded parameters here, to be taken care of properly
-        self.__duration_sec = 10
+        self.__duration_sec = 20
                 
     def evolve(self, delta_t: float) -> None:
         """Transitions the objects into next state.
@@ -128,7 +128,8 @@ class World:
             self.register_intersections(intersection_result)
             while t >= f :
                 step_round = 3
-                self.__visualization_data.update({round(float(f),step_round) :self.visualize()})
+                self.__visualization_data.update(\
+                    {("{:."+str(step_round)+"f}").format(f) :self.visualize()})
                 f += frame_interval
             self.evolve(delta_t)
             t = t + delta_t
@@ -150,7 +151,7 @@ class World:
         for ob in self.objects:
             shape_string = self.objects[ob].shape.type
             if shape_string == "Cylinder":
-                inf["Shape"].update({ob :{"Shape" : shape_string , "dimension" : self.objects[ob].shape.radius}})
+                inf["Shape"].update({ob :{"Shape" : shape_string , "dimension" : [self.objects[ob].shape.radius]}})
             if shape_string == "Cube":
                 inf["Shape"].update({ob :{"Shape" : shape_string , "dimension" : [self.objects[ob].shape.length ,self.objects[ob].shape.height]}})
         self.__visualization_data.update(inf)
@@ -179,7 +180,7 @@ class World:
             None
         """
         try:
-            with open("src\\Files\\"+self.__visualization_output_filename ,"w") as json_file:
+            with open(self.__visualization_output_filename ,"w") as json_file:
                 json.dump(self.__visualization_data,json_file ,indent=2)
         except:
             print("Error! can't open or create File. please check the path or File Name.",end = " ")
