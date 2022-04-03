@@ -5,6 +5,7 @@ from position import Position
 from box import Box
 from vacuum_cleaner import VacuumCleanerV0
 
+
 class Map:
     """Handles reading/parsing/loading of the map.
     """

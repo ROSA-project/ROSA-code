@@ -1,6 +1,7 @@
 from telnetlib import SE
 from sensor import Sensor
 
+
 class BumperSensor(Sensor):
     elapsed_time = 0
     def sense(self,delta_t) -> bool:

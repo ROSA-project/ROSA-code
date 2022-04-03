@@ -8,6 +8,7 @@ from sensor import Sensor
 from bumper_sensor import BumperSensor
 import numpy as np
 
+
 class VacuumCleanerV0(Robot):
     def __init__(self, oid: ObjectId, position: Position, owner_object:Object, \
         parameters: dict[str,]):

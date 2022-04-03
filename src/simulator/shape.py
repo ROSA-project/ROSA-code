@@ -1,6 +1,7 @@
 from __future__ import annotations
 from position import Position
 
+
 class Shape:
     def __init__(self):
         pass

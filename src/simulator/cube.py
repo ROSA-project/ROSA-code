@@ -1,6 +1,7 @@
 from shape import Shape
 from position import Position
 
+
 class Cube(Shape):
     def __init__(self, length: float, height: float, width: float):
         self.length = length
