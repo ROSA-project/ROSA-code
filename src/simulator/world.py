@@ -27,19 +27,24 @@ class World:
         __creation_ts: timestamp of world creation
         __num_evolutions: how many evolutions have the world had so far
         __duration_sec: determines how many seconds the world instance will exist for
-        __visualization_data = a dictionary for take information and convert to json file
-        __visualization_output_filename = the name of file for information
+        __vis_data: a dictionary containing
+        __vis_output_filename: the name of file for information
+        __current_time_msec: simulator's current time in millisecond
+        __vis_frame_interval_msec: the time in msec between each two visualization frames
+        __next_frame_time_msec: the time in which the next frame will be taken
     """
-    
 
-    def __init__(self,map_filename: str,visualization_file_name : str):
+    def __init__(self, map_filename: str, vis_filename: str):
         self.objects: dict[ObjectId, Object] = Map.parse_map(map_filename)
-        self.__visualization_data = dict()
+        self.__vis_data = dict()
         self.__creation_ts: float = time.time()  # current timestamp
         self.__num_evolutions: int = 0
-        self.__visualization_output_filename = visualization_file_name 
+        self.__current_time_ms: int = 0
+        self.__vis_output_filename: str = vis_filename
         # TODO hardcoded parameters here, to be taken care of properly
-        self.__duration_sec = 20
+        self.__duration_sec: int = 20
+        self.__vis_frame_interval_ms = 0.025
+        self.__next_frame_time_msec = 0
                 
     def evolve(self, delta_t: float) -> None:
         """Transitions the objects into next state.
@@ -120,67 +125,47 @@ class World:
         each object is evolved.
         """
         delta_t = self.pick_delta_t()
-        frame_interval = 0.025
-        t = 0
-        f = 0
-        while t < self.__duration_sec:
+        while self.__current_time_ms < self.__duration_sec:
             intersection_result = self.intersect()
             self.register_intersections(intersection_result)
-            while t >= f :
-                step_round = 3
-                self.__visualization_data.update(\
-                    {("{:."+str(step_round)+"f}").format(f) :self.visualize()})
-                f += frame_interval
+            self.update_visualization_json()
             self.evolve(delta_t)
-            t = t + delta_t
+            self.__current_time_ms = self.__current_time_ms + delta_t
             self.__num_evolutions += 1
-        self.__dump_shapes_visualization()
-        self.__close_visualization()
 
+        self.dump_all_shapes_info()
+        self.dump_vis_data_to_file()
 
-    def __dump_shapes_visualization(self) -> None:
-        """set ID of object and Dimensions & update in File's information  
-        
-        Args:
-            None
-        
-        return:
-            None
-        """
-        inf = {"Shape" :{}}
-        for ob in self.objects:
-            shape_string = self.objects[ob].shape.type
-            if shape_string == "Cylinder":
-                inf["Shape"].update({ob :{"Shape" : shape_string , "dimension" : [self.objects[ob].shape.radius]}})
-            if shape_string == "Cube":
-                inf["Shape"].update({ob :{"Shape" : shape_string , "dimension" : [self.objects[ob].shape.length ,self.objects[ob].shape.height]}})
-        self.__visualization_data.update(inf)
-    
-    def visualize(self) -> dict:
-        """ set position of the objects with moment(time) 
-        
-        Args:
-            None
-        
-        return:
-            dictionary of moment(key) and position (value) 
-        """
-        inf = dict()
-        for ob in self.objects :
-            inf.update({ob : self.objects[ob].visualize()})
-        return inf
+    def update_visualization_json(self):
+        step_round = 3
+        while self.__current_time_ms >= self.__next_frame_time_msec:
+            key = ("{:." + str(step_round) + "f}").format(self.__next_frame_time_msec)
+            self.__vis_data[key] = self.visualize()
+            self.__next_frame_time_msec += self.__vis_frame_interval_ms
 
-    def __close_visualization(self) -> None:
-        """ Transfers the completed information in the dictionary to the created file
-        
-        Args:
-            None
+    def dump_all_shapes_info(self):
+        # dump visualization info for shapes to the output json file
+        shapes_info_dict = {"shapes": {}}
+        for oid in self.objects:
+            shapes_info_dict["shapes"][oid] = self.objects[oid].dump_shape_info()
 
-        return:
-            None
-        """
+        self.__vis_data.update(shapes_info_dict)
+
+    def dump_vis_data_to_file(self):
         try:
-            with open(self.__visualization_output_filename ,"w") as json_file:
-                json.dump(self.__visualization_data,json_file ,indent=2)
-        except:
-            print("Error! can't open or create File. please check the path or File Name.",end = " ")
+            with open(self.__vis_output_filename, "w") as json_file:
+                json.dump(self.__vis_data, json_file, indent=2)
+        except (OSError, IOError) as e:
+            print("Error in writing to file ", self.__vis_output_filename)
+            raise e
+
+    def visualize(self) -> dict:
+        """Sets position of the objects with moment (time)
+        
+        Returns:
+            Dictionary with ObjectID as key, and object's visualization info as value.
+        """
+        objects_info = dict()
+        for oid in self.objects:
+            objects_info[oid] = self.objects[oid].visualize()
+        return objects_info

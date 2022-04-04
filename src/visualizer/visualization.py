@@ -1,104 +1,109 @@
-#import Libraries for Visualization
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import json
 import sys
 sys.path.append(r"src\simulator")
-
 from object import ObjectId
 
 
-class Visualizer:   
+class Visualizer:
+    # TODO for Mehdi: please write something more proper.
+    # Currently: Define the figure , axes and ... for animation
 
-    # Define the figure , axes and ... for animation
-
-    def __init__(self,side : float,file : str):
-        """ 
-        after creating a object of this class,construct figure , axes , graphic element  and read a file
+    def __init__(self, side: float, json_filename: str):
+        """after creating a object of this class,construct figure , axes , graphic element  and read a file
                 
         Args:
-            side : Half the length of an axis
-            file : Name and format of json file contains data
-
+            side: Half the length of an axis
+            json_filename: Name and format of the json file containing visualization data
         """
         # define a figure
         self.figure = plt.figure() 
-        # define an axes for x and y in cartecian
-        self.axes = plt.axes(xlim = (-side , side) , ylim = (-side , side))
-        self.line = self.axes.plot([],[])
+        # define axes for x and y in cartecian
+        self.axes = plt.axes(xlim=(-side, side), ylim=(-side, side))
+        self.line = self.axes.plot([], [])
         self.lines2d = []
         self.data = dict()
+        self.plot_arrows = True
+
         try:
-            with open(file , "r") as f :
+            with open(json_filename, "r") as f:
                 self.data = json.load(f)
-        except:
-            print("Error! can't open or read File. please check the path or File Name.",end = " ")
-            sys.exit()     
+        except (OSError, IOError) as e:
+            print("Error in opening file ", self.__vis_output_filename)
+            raise e
 
-        self.plot_arrows=True
         if self.plot_arrows:
-            shapes_num_factor=2
+            shapes_num_factor = 2
         else:
-            shapes_num_factor=1
+            shapes_num_factor = 1
 
-        for i in range(len(self.data["Shape"])*shapes_num_factor):
-            obj = self.axes.plot([],[])[0]
+        for i in range(len(self.data["shapes"]) * shapes_num_factor):
+            obj = self.axes.plot([], [])[0]
             self.lines2d.append(obj)
         
-        #TODO : It is currently set, it will be set by the user later 
+        # TODO: It is currently hardcoded, it will be set by the user later
         # The angle between large length of arrow and small length of its head
         self.__arrow_head_angle = 37
         # The propotin between large length of the arrow and small length of its head
         self.__arrow_head_proportion = 0.2
-    
-    def __arrow_points(self, moment : int,oid :ObjectId, arrow_length: float) -> tuple:
-        """  
-        Calculate the points(x ,y in Cartesian) of an arrow and insert it into a list
+
+    # TODO for Mehdi: The function documentation doesn't seem to describe the right
+    #  parameters
+    def __arrow_points(self, moment: int, oid: ObjectId, arrow_length: float) -> tuple:
+        """Calculates the points(x,y in Cartesian) of an arrow and inserts it into a list
         
         Args:
-            x   : Horizontal point at the beginning of the arrow
-            y   : Vertical point at the beginning of the arrow
-            phi : Angle between arrow and horizontal axis of Cartesian coordinates (By degree)
+            x: Horizontal point at the beginning of the arrow
+            y: Vertical point at the beginning of the arrow
+            phi: Angle between arrow and horizontal axis of Cartesian coordinates (By degree)
     
-        returns:
-            tuple of two List . first List is Horizontal points (x) , and secend is vertical points 
+        Returns:
+            A tuple of type (list, list). The first list contains horizontal points (x),
+            and the secend list has vertical points
         """
-        x=self.data[str(moment)][oid][0]
-        y=self.data[str(moment)][oid][1]
-        phi=self.data[str(moment)][oid][2]
+        x = self.data[str(moment)][oid][0]
+        y = self.data[str(moment)][oid][1]
+        phi = self.data[str(moment)][oid][2]
 
         x_data = [x]
         x_data.append(x + arrow_length*np.cos(np.deg2rad(phi)))
-        x_data.append(x_data[1] - self.__arrow_head_proportion*arrow_length*np.cos(np.deg2rad(phi+self.__arrow_head_angle)))
+        x_data.append(x_data[1] - self.__arrow_head_proportion*arrow_length*np.cos(
+            np.deg2rad(phi+self.__arrow_head_angle)))
         x_data.append(x_data[1])
-        x_data.append(x_data[1] -self.__arrow_head_proportion*arrow_length*np.cos(np.deg2rad(phi-self.__arrow_head_angle)))
+        x_data.append(x_data[1] - self.__arrow_head_proportion*arrow_length*np.cos(
+            np.deg2rad(phi-self.__arrow_head_angle)))
 
         y_data = [y]
         y_data.append(y + arrow_length*np.sin(np.deg2rad(phi)))
-        y_data.append(y_data[1] - self.__arrow_head_proportion*arrow_length*np.sin(np.deg2rad(phi+self.__arrow_head_angle)))
+        y_data.append(y_data[1] - self.__arrow_head_proportion*arrow_length*np.sin(
+            np.deg2rad(phi+self.__arrow_head_angle)))
         y_data.append(y_data[1])
-        y_data.append(y_data[1] - self.__arrow_head_proportion*arrow_length*np.sin(np.deg2rad(phi-self.__arrow_head_angle)))
-        return x_data , y_data
+        y_data.append(y_data[1] - self.__arrow_head_proportion*arrow_length*np.sin(
+            np.deg2rad(phi-self.__arrow_head_angle)))
+        return x_data, y_data
     
-    def __cube(self, moment : int,oid :ObjectId) -> tuple:
+    def __cube(self, time: int, oid: ObjectId) -> tuple:
         """Function for visualizing object shapes(cube)
         Args:
-            moment : for Moment inside the file
-            oid : ID of object
+            time : time in the input visualization file
+            oid : Object's id
         return:
             lists of x and y (in cartesian) for objects (Shapes of cube)
         """
         inf = self.data["Shape"][oid]["dimension"]
         r = np.sqrt((inf[0]**2 + inf[1]**2))
         teta = np.arctan(inf[1]/inf[0])
-        x_data,y_data =[] , []
-        for i in [teta,np.pi-teta,np.pi+teta,-teta , teta]:
-            x_data.append(self.data[str(moment)][oid][0]+r*np.cos(np.deg2rad(self.data[str(moment)][oid][2])+ i))
-            y_data.append(self.data[str(moment)][oid][1]+r*np.sin(np.deg2rad(self.data[str(moment)][oid][2])+ i))
-        return x_data,y_data
+        x_data, y_data =[], []
+        for i in [teta, np.pi-teta, np.pi+teta, -teta , teta]:
+            x_data.append(self.data[str(time)][oid][0] +
+                          r * np.cos(np.deg2rad(self.data[str(time)][oid][2]) + i))
+            y_data.append(self.data[str(time)][oid][1] +
+                          r * np.sin(np.deg2rad(self.data[str(time)][oid][2]) + i))
+        return x_data, y_data
 
-    def __cylinder(self,moment : int,oid :ObjectId):
+    def __cylinder(self ,moment: int, oid: ObjectId):
         """Function for visualizing object shapes(cylinder)
         Args:
             moment : for Moment inside the file
@@ -145,14 +150,6 @@ class Visualizer:
 
     def visualize(self):
         """ visualize the data and animate
-
-        Args:
-
-            nothing
-
-        returns:
-            nothing
-
         """
         frame_interval = 0.025
         animated = animation.FuncAnimation(self.figure, # input a figure for animation

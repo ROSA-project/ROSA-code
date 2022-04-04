@@ -1,5 +1,8 @@
+from __future__ import annotations
 from shape import Shape
 from position import Position
+# from box import Box
+import box
 
 
 class Cube(Shape):
@@ -8,29 +11,12 @@ class Cube(Shape):
         self.height = height
         self.width = width
         self.type = "Cube"
-    
-    def bounding_box(self,position: Position):
-        """Returns a tuple of Cube and Poistion
-           # TODO this must be a Box. removed due to circular import issue
-           Args: position, coming from the calling Object
+
+    def dump_info(self) -> dict:
+        """Returns the shape info required for visualization
+
+        Returns:
+            A dictionary with two keys: "type" is the shape's name, and "dimension" is a
+            list of dimension numbers.
         """
-        
-        #dimension calculations                
-        length = self.length
-        height = self.height
-        width = self.width
-        
-        #position calculations
-        x = position.x
-        y = position.y
-        z = position.z
-        phi = position.phi
-        theta = position.theta
-
-        #assign return Arguments
-        bb_cube = Cube(length, height, width)
-        bb_position = Position(x, y, z, phi, theta)
-
-        # TODO to be replaced with a Box, this is a temp solution for circular 
-        # import issue
-        return bb_cube, bb_position
+        return {"type": __class__.__name__, "dimension": [self.length, self.height]}

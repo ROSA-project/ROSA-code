@@ -16,8 +16,10 @@ class Map:
         # TODO parsing should happen here
 
         #temporary hardcoding
-        
+
         box0=Box(0, Cube(2,3,1),Position(0,0,0,0,0),None)
+
+        # box0=Box(0, Cube(2,3,1),Position(0,0,0,0,0),None)
         #box1=Box(1, Cube(5,1,3),Position(5,3,0,0,0),None)
         #box2=Box(2, Cube(1,1,1),Position(2,2,0,0,0),box1)
         
