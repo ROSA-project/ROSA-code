@@ -10,7 +10,30 @@ class Cube(Shape):
         self.length = length
         self.height = height
         self.width = width
-        self.type = "Cube"
+
+    def bounding_box(self) -> Box:
+        """Returns smallest enclosing upright Box
+        """
+
+        # TODO: The following calculation is only for an upright cube
+        # dimension calculations
+        length = self.shape.length
+        height = self.shape.height
+        width = self.shape.width
+
+        # position calculations
+        x = self.position.x
+        y = self.position.y
+        z = self.position.z
+        phi = self.position.phi
+        theta = self.position.theta
+
+        # assign return Arguments
+        bb_cube = Cube(length, height, width)
+        bb_position = Position(x, y, z, phi, theta)
+
+        # return Box(1, bb_cube, bb_position)
+        pass
 
     def dump_info(self) -> dict:
         """Returns the shape info required for visualization
