@@ -3,33 +3,46 @@ from position import Position
 from shape import Shape
 from cube import Cube
 
+
 class Cylinder(Shape):
     def __init__(self, radius: float, height: float):
+        Shape.__init__(self)
         self.radius = radius
         self.height = height
-        self.type = "Cylinder"
 
-    def bounding_box(self,position: Position):
-        """Returns a tuple of Cube and Poistion
-           # TODO this must be a Box. removed due to circular import issue
-           Args: position, coming from the calling Object
+    def bounding_box(self) -> Box:
+        """Returns smallest enclosing upright Box
         """
 
-        #dimension calculations
-        length = 2 * self.radius
-        height = self.height
-        width = 2 * self.radius
-        
-        #position calculations
-        x = position.x
-        y = position.y
-        z = position.z
-        phi = position.phi
-        theta = position.theta
+        # TODO: The following calculation is only for an upright cube
+        # dimension calculations
+        length = self.shape.length
+        height = self.shape.height
+        width = self.shape.width
 
-        #assign return Arguments
-        bb_cube = Cube(length, height, width)        
+        # position calculations
+        x = self.position.x
+        y = self.position.y
+        z = self.position.z
+        phi = self.position.phi
+        theta = self.position.theta
+
+        # assign return Arguments
+        bb_cube = Cube(length, height, width)
         bb_position = Position(x, y, z, phi, theta)
-        # TODO to be replaced with a Box, this is a temp solution for circular 
-        # import issue
-        return bb_cube, bb_position
+
+        # return Box(1, bb_cube, bb_position)
+        pass
+
+    def dump_info(self) -> dict:
+        """Returns the shape info required for visualization
+
+        Returns:
+            A dictionary with two keys: "type" is the shape's name, and "dimension" is a
+            list of dimension numbers.
+        """
+
+        return {"type": __class__.__name__, "dimension": [self.radius]}
+
+
+
