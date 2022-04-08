@@ -92,7 +92,7 @@ class Visualizer:
         return:
             lists of x and y (in cartesian) for objects (Shapes of cube)
         """
-        inf = self.data["Shape"][oid]["dimension"]
+        inf = self.data["shapes"][oid]["dimension"]
         r = np.sqrt((inf[0]**2 + inf[1]**2))
         teta = np.arctan(inf[1]/inf[0])
         x_data, y_data =[], []
@@ -103,7 +103,7 @@ class Visualizer:
                           r * np.sin(np.deg2rad(self.data[str(time)][oid][2]) + i))
         return x_data, y_data
 
-    def __cylinder(self ,moment: int, oid: ObjectId):
+    def __cylinder(self, moment: int, oid: ObjectId):
         """Function for visualizing object shapes(cylinder)
         Args:
             moment : for Moment inside the file
@@ -112,57 +112,55 @@ class Visualizer:
             lists of x and y (in cartesian) for objects (Shapes of cylinder)
         """
         step = 0.06
-        l = np.arange(0,2*np.pi+step/4,step)
-        radius=self.data["Shape"][oid]["dimension"][0]
+        l = np.arange(0, 2*np.pi+step/4, step)
+        radius = self.data["shapes"][oid]["dimension"][0]
         x_data = radius*np.cos(l) + self.data[str(moment)][oid][0]
         y_data = radius*np.sin(l) + self.data[str(moment)][oid][1]
-        return x_data,y_data
+        return x_data, y_data
 
-    def __animate(self,time_index : int):
+    def __animate(self, time_index: int):
         
         frame_interval = 0.025
         step_round = 3
         time_instance = ("{:."+str(step_round)+"f}").format(time_index*frame_interval)
-        x_data,y_data = [],[]
-        for oid in self.data["Shape"]:       
-            if self.data["Shape"][oid]["Shape"] == "Cube":
-                data = self.__cube(time_instance ,oid)
+        x_data, y_data = [], []
+        for oid in self.data["shapes"]:
+            s = self.data["shapes"][oid]
+            if s["type"] == "Cube":
+                data = self.__cube(time_instance, oid)
                 x_data.append(data[0])
                 y_data.append(data[1])
-                arrow_length=self.data["Shape"][oid]["dimension"][0]
-                
-            if self.data["Shape"][oid]["Shape"] == "Cylinder":
-                data = self.__cylinder(time_instance ,oid)
+                arrow_length = s["dimension"][0]
+            elif s["type"] == "Cylinder":
+                data = self.__cylinder(time_instance, oid)
                 x_data.append(data[0])
                 y_data.append(data[1])     
-                arrow_length=self.data["Shape"][oid]["dimension"][0]
+                arrow_length = s["dimension"][0]
 
-            data=self.__arrow_points(time_instance ,oid, arrow_length)
+            data = self.__arrow_points(time_instance, oid, arrow_length)
             x_data.append(data[0])
             y_data.append(data[1])     
         
         i = 0
         for self.line in self.lines2d:
-            self.line.set_data(x_data[i],y_data[i])
+            self.line.set_data(x_data[i], y_data[i])
             i += 1
         return self.lines2d
-
 
     def visualize(self):
         """ visualize the data and animate
         """
         frame_interval = 0.025
-        animated = animation.FuncAnimation(self.figure, # input a figure for animation
+        animated = animation.FuncAnimation(self.figure,  # input a figure for animation
                                          self.__animate,  # input method to update figure for each frame
-                                         np.arange(len(self.data)-1),# Enter a list for the previous method for each frame
-                                         interval=frame_interval*1000 # the frame (by mili-sec)
+                                         np.arange(len(self.data)-1),  # Enter a list for the previous method for each frame
+                                         interval=frame_interval*1000  # the frame (by mili-sec)
                                          # Nothic: blit=True means only re-draw the parts that have changed.
                                          ,blit = True
                                         ,repeat = False ) # No repetition
-        plt.grid(ls = "--")
+        plt.grid(ls="--")
         plt.show()
         # TODO saeed: works on my macbook but needs a closer look, 
         # it seems to be platform dependent.
         writervideo = animation.PillowWriter(fps=1/frame_interval)
         animated.save('v0_robot.gif', writer=writervideo)
-        
