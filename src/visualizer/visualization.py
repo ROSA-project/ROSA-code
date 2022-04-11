@@ -93,7 +93,7 @@ class Visualizer:
             lists of x and y (in cartesian) for objects (Shapes of cube)
         """
         inf = self.data["shapes"][oid]["dimension"]
-        r = np.sqrt((inf[0]**2 + inf[1]**2))
+        r = np.sqrt((inf[0]**2 + inf[1]**2)/4)
         teta = np.arctan(inf[1]/inf[0])
         x_data, y_data =[], []
         for i in [teta, np.pi-teta, np.pi+teta, -teta , teta]:
