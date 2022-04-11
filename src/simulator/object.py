@@ -2,7 +2,7 @@
 from __future__ import annotations
 from shape import Shape
 from position import Position
-from intersection_instance import IntersectionInstance
+import intersection_instance as in_in
 
 ObjectId = int  # type aliasing, since we might change ObjectId composition
 
@@ -13,8 +13,11 @@ class Object:
         self.oid = oid
         self.shape = shape
         self.position = position
+        self.__previous_position = position
         self.owner_object = owner_object
         self.dependent_objects: dict[ObjectId, Object] = {}
+        self.__latest_intersections: list[in_in.IntersectionInstance] = []
+        self._infinitesimal_intersection_occured: bool = False
 
     def add_dependent_object(self, obj: Object):
         self.dependent_objects[obj.oid] = obj
@@ -40,11 +43,35 @@ class Object:
 
         return offspring_objects
 
-    def set_intersections(self, intersections: list[IntersectionInstance]) -> None:
-        """Registers this round's intersections to be later used by evolve().
+    def set_intersections(self, intersections: list[in_in.IntersectionInstance]) -> None:
         """
-        # TODO: should it be simply stored in a member variable?
-        pass
+        Registers this round's intersections
+        if any infinitesimal intersection, calls handle_infinitesimal_intersection
+        to decide on the consequences in the current evolution cycle
+        note that the consequences on behavior of the robot will be handled in the 
+        next evolution cycle
+        """
+        self.__latest_intersections = intersections.copy()
+        self.__infinitesimal_intersection_occured = False
+        for in_in in self.__latest_intersections:
+            if in_in.is_infinitesimal():
+                self.__infinitesimal_intersection_occured = True
+                
+        if self.__infinitesimal_intersection_occured:
+            self.infinitesimal_intersection_immediate()
+    
+    def infinitesimal_intersection_immediate(self):
+        """
+        by default, we revert the position without reverting the rest of the state
+        """
+        self.revert_position()
+
+    def update_position(self,new_position):
+        self.__previous_position = self.position.copy()
+        self.position = new_position.copy()
+
+    def revert_position(self):
+        self.position = self.__previous_position.copy()
 
     def visualize(self) -> list:
         """

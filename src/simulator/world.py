@@ -89,6 +89,7 @@ class World:
         """
         intersection_result: InInType = defaultdict(list)  # final result
         oids: list[ObjectId] = list(self.objects.keys())  # TODO: better way to get oids?
+        non_infinitesimal_intersection_exists = False
         for i in range(len(oids)):
             oid_1 = oids[i]
             for j in range(i+1, len(oids)):
@@ -97,8 +98,14 @@ class World:
                 # instance has to be added for both objects
                 intersection_result[oid_1].append(instance)
                 intersection_result[oid_2].append(instance)
+                if instance.does_intersect():
+                    if not instance.is_infinitesimal():
+                        non_infinitesimal_intersection_exists = True
+                    # TODO with the current architecture we could immediately break
+                    # and return or throw an exception here. But that would be 
+                    # optimization. decide later.
 
-        return intersection_result
+        return intersection_result, non_infinitesimal_intersection_exists
 
     def register_intersections(self, intersection_result: InInType) -> None:
         """For each object with intersections, registers the list of its intersections
@@ -124,12 +131,21 @@ class World:
         In each iteration, intersections of objects are computed and registered, and then
         each object is evolved.
         """
-        delta_t = self.pick_delta_t()
+        non_infinitesimal_intersection_exists: bool = False
         while self.__current_time_ms < self.__duration_sec:
-            intersection_result = self.intersect()
-            self.register_intersections(intersection_result)
-            self.update_visualization_json()
+            delta_t = self.pick_delta_t()
             self.evolve(delta_t)
+            intersection_result , non_infinitesimal_intersection_exists\
+                    = self.intersect()
+            assert(not non_infinitesimal_intersection_exists)
+            
+            #passes intersection result to the objects
+            #where the info will be used by object to handle possible intersection
+            #consequences. (differentiate this from object evolution)
+            self.register_intersections(intersection_result)
+
+            self.update_visualization_json()
+            
             self.__current_time_ms = self.__current_time_ms + delta_t
             self.__num_evolutions += 1
 
