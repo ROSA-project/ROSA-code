@@ -42,4 +42,4 @@ class Cube(Shape):
             A dictionary with two keys: "type" is the shape's name, and "dimension" is a
             list of dimension numbers.
         """
-        return {"type": __class__.__name__, "dimension": [self.length, self.height]}
+        return {"type": __class__.__name__, "dimension": [self.length, self.width]}
