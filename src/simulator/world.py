@@ -35,7 +35,7 @@ class World:
     """
 
     def __init__(self, map_filename: str, vis_filename: str):
-        self.objects: dict[ObjectId, Object] = Map.parse_map(map_filename)
+        self.objects: dict[ObjectId, Object] = Map.parse_map(sample_room.json)
         self.__vis_data = dict()
         self.__creation_ts: float = time.time()  # current timestamp
         self.__num_evolutions: int = 0

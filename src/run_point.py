@@ -5,8 +5,8 @@ from world import World
 from visualization import Visualizer
 
 
-world = World(" ","test.json")
+world = World(" ","sample_room.json")
 world.run()
 side = 12
-visualization = Visualizer(side, "test.json")
+visualization = Visualizer(side, "sample_room.json")
 visualization.visualize()
