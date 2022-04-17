@@ -9,4 +9,4 @@ __pycache__/
 .idea/
 
 # json dumps possibly from visualization
-*.json
+# *.json

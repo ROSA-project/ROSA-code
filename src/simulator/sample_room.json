@@ -1,0 +1,153 @@
+{
+    "0": {
+        "name": "room",
+        "class": "CompoundPhysicalObject",
+        "shape": {
+            "class": "ShapeLess"
+        },
+        "position": [0,0,0,0,0],
+        "subobjects": {
+            "00":{
+                "name": "wall0",
+                "class": "CompoundPhysicalObject",
+                "shape": {
+                    "class": "Cube",
+                    "argument": {
+                        "lenght": 300,
+                        "height": 350,
+                        "width": 5
+                    }
+                },
+                "position": [0,0,0,0,0]
+            },
+            "01":{
+                "name": "wall1",
+                "class": "CompoundPhysicalObject",
+                "shape": {
+                    "class": "Cube",
+                    "argument": {
+                        "lenght": 5,
+                        "height": 350,
+                        "width": 400
+                    }
+                },
+                "position": [0,0,0,90,0]
+            },
+            "02":{
+                "name": "wall2",
+                "class": "CompoundPhysicalObject",
+                "shape": {
+                    "class": "Cube",
+                    "argument": {
+                        "lenght": 300,
+                        "height": 350,
+                        "width": 5
+                    }
+                },
+                "position": [0,395,0,0,0]
+            },
+            "03":{
+                "name": "wall3",
+                "class": "CompoundPhysicalObject",
+                "shape": {
+                    "class": "Cube",
+                    "argument": {
+                        "lenght": 5,
+                        "height": 350,
+                        "width": 400
+                    }
+                },
+                "position": [295,0,0,90,0]
+            }
+        }
+    },
+
+    "1": {
+        "name": "lidar_vacuum_cleaner",
+        "class": "VacuumCleaner",
+        "shape": {
+            "class": "ShapeLess"
+        },
+        "position": [100,100,0,0,0],
+        "parameteres": {
+            "range": 5,
+            "angular_speed": 3.14,
+            "sampling_frequency": 10,
+            "turning_angular_speed": 0.5,
+            "max_forward_speed": 0.1
+        }
+
+    },
+
+    "2": {
+        "name": "4leg_table",
+        "class": "CompoundPhysicalObject",
+        "shape": {
+            "class": "ShapeLess"
+        },
+        "position": [200,200,0,0,0],
+        "subobjects": {
+            "20":{
+                "name": "leg0",
+                "class": "CompoundPhysicalObject",
+                "shape": {
+                    "class": "Cylinder",
+                    "argument": {
+                        "radius": 2,
+                        "height": 80
+                    }
+                },
+                "position": [200,200,0,0,0]
+            },
+            "21":{
+                "name": "leg1",
+                "class": "CompoundPhysicalObject",
+                "shape": {
+                    "class": "Cylinder",
+                    "argument": {
+                        "radius": 2,
+                        "height": 80
+                    }
+                },
+                "position": [200,246,0,0,0]
+            },
+            "22":{
+                "name": "leg2",
+                "class": "CompoundPhysicalObject",
+                "shape": {
+                    "class": "Cylinder",
+                    "argument": {
+                        "radius": 2,
+                        "height": 80
+                    }
+                },
+                "position": [266,246,0,0,0]
+            },
+            "23":{
+                "name": "leg3",
+                "class": "CompoundPhysicalObject",
+                "shape": {
+                    "class": "Cylinder",
+                    "argument": {
+                        "radius": 2,
+                        "height": 80
+                    }
+                },
+                "position": [266,200,0,0,0]
+            },
+            "24":{
+                "name": "surface",
+                "class": "CompoundPhysicalObject",
+                "shape": {
+                    "class": "Cube",
+                    "argument": {
+                        "lenght": 70,
+                        "height": 5,
+                        "width": 50
+                    }
+                },
+                "position": [200,200,80,0,0]
+            }
+        }
+    }
+}
