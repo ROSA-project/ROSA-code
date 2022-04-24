@@ -2,11 +2,9 @@ from __future__ import annotations
 from object import Object, ObjectId
 from position import Position
 from box import Box
-import json
 from cube import Cube
-from box import Box
 from cylinder import Cylinder
-#from vacuum_cleaner import VacuumCleanerV0
+import json
 
 
 class Map:
