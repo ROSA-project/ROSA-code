@@ -47,7 +47,7 @@ class Visualizer:
         # The angle between large length of arrow and small length of its head
         self.__arrow_head_angle = 37
         # The propotin between large length of the arrow and small length of its head
-        self.__arrow_head_proportion = 0.2
+        self.__arrow_head_proportion = 0.1
 
     # TODO for Mehdi: The function documentation doesn't seem to describe the right
     #  parameters
@@ -130,7 +130,7 @@ class Visualizer:
                 data = self.__cube(time_instance, oid)
                 x_data.append(data[0])
                 y_data.append(data[1])
-                arrow_length = s["dimension"][0]
+                arrow_length = s["dimension"][0]/2
             elif s["type"] == "Cylinder":
                 data = self.__cylinder(time_instance, oid)
                 x_data.append(data[0])
@@ -141,10 +141,14 @@ class Visualizer:
             x_data.append(data[0])
             y_data.append(data[1])     
         
+        for i in range(int(len(self.lines2d)/2)):
+            self.lines2d[2*i+1].set_color(f"{self.lines2d[2*i].get_color()}")
+
         i = 0
         for self.line in self.lines2d:
             self.line.set_data(x_data[i], y_data[i])
             i += 1
+
         return self.lines2d
 
     def visualize(self):
