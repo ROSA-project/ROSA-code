@@ -3,6 +3,7 @@ import shape
 import position
 import numpy as np
 import copy
+import logger
 
 
 class RigidPhysicalObject(Object):
@@ -23,7 +24,7 @@ class RigidPhysicalObject(Object):
     def evolve(self, delta_t: float):
         if self._infinitesimal_intersection_occured:
             #this is a bump which affects object's movement in this cycle
-            print("RigidPhysicalObject infinitestimal intersection, redirecting to update_state_upon_bump")
+            logger.Logger.add_line("RigidPhysicalObject infinitestimal intersection, redirecting to update_state_upon_bump")
             new_position = self.new_position_upon_bump()
         else:
             new_position = copy.copy(self.position)

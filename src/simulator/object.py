@@ -4,6 +4,7 @@ from shape import Shape
 from position import Position
 import intersection_instance as in_in
 import copy
+import logger
 
 ObjectId = int  # type aliasing, since we might change ObjectId composition
 
@@ -66,7 +67,7 @@ class Object:
         """
         by default, we revert the position without reverting the rest of the state
         """
-        print("infinitestimal intersection detected, reverting position (default Object behavior)")
+        logger.Logger.add_line("infinitestimal intersection detected, reverting position (default Object behavior)")
         self.revert_position()
 
     def update_position(self,new_position):

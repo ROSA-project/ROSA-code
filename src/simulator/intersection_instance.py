@@ -1,6 +1,8 @@
+import logger
 import object
 import numpy as np
 
+# TODO move
 epsilon_criterion = 0.1
 non_zero_criterion = 0.0001
 
@@ -94,36 +96,38 @@ class IntersectionInstance:
             p1-p2 and i1-i2.
         """
         if p1[0] == p2[0]:
-            phi_rad = np.pi
+            phi_rad = np.pi/2
         else:
-            m = (p2[1] - p1[1]) / (p2[0]-p1[0]) #slope
-            phi_rad = np.arctan(m)
+            #m = (p2[1] - p1[1]) / (p2[0]-p1[0]) #slope
+            # TODO arc
+            phi_rad = np.arctan2((p2[1] - p1[1]),(p2[0]-p1[0]))
         
-        r_matrix=self.rotation_matrix_2d(phi_rad)
+        r_matrix=self.rotation_matrix_2d(-phi_rad)
+
+        logger.Logger.add_line("line-circle intersection:")
+        logger.Logger.add_line("input line = " + str(p1) + " , " + str(p2))
+        logger.Logger.add_line("input circle center = " + str(circle_center) + " and radius = " + str(circle_radius))
 
         p1 = r_matrix.dot(p1)
         p2 = r_matrix.dot(p2)
         circle_center = r_matrix.dot(circle_center)
-
-        #print("line-circle intersection:")
-        #print("input line = " + str(p1) + " , " + str(p2))
-        #print("input circle center = " + str(circle_center) + " and radius = " + str(circle_radius))
-        #print("rotated line =" + str(p1) + " , " + str(p2))
-        #print("rotated circle center " + str(circle_center))
+       
+        logger.Logger.add_line("rotated line =" + str(p1) + " , " + str(p2))
+        logger.Logger.add_line("rotated circle center " + str(circle_center))
 
         if p1[1] < circle_center[1] - circle_radius or \
                 p1[1] > circle_center[1] + circle_radius:
             #vertically seperated
-            #print("vertically seperated")
+            #logger.Logger.add_line("vertically seperated")
             intersect_points_distance = -1
         elif np.linalg.norm(self.horizontal_line_segment_intersection(p1,p2,
                 [circle_center[0]-circle_radius, circle_center[1]],
                 [circle_center[0]+circle_radius, circle_center[1]])) == 0:
             #horizontally separated
-            #print("horizontally seperated")
+            #logger.Logger.add_line("horizontally seperated")
             intersect_points_distance = -1
         else:
-            #print("need to calculate the intersection")
+            #logger.Logger.add_line("need to calculate the intersection")
             m = 0 
             h = p1[1] - m * p1[0]
             a = 1 + m**2
@@ -134,7 +138,7 @@ class IntersectionInstance:
             if delta < 0 :
                 #no solution
                 intersect_points_distance = -1
-                print("delta < 0")
+                logger.Logger.add_line("delta < 0")
             else:
                 #two distinct or equal solutions
                 #x1 < x2
@@ -145,7 +149,7 @@ class IntersectionInstance:
                 x_intersect_points=self.horizontal_line_segment_intersection(\
                     [x1,y1],[x2,y2],p1,p2)
                 # undo the rotation
-                r_inv_matrix=self.rotation_matrix_2d(-phi_rad)
+                r_inv_matrix=self.rotation_matrix_2d(phi_rad)
                 tmp =  r_inv_matrix.dot(\
                     [np.mean(x_intersect_points),p1[1]])
                 # TODO adding zero as the z
@@ -154,8 +158,9 @@ class IntersectionInstance:
                 self._intersection_point = np.array([tmp[0],tmp[1],0])
                 
                 intersect_points_distance = abs(x_intersect_points[0]-x_intersect_points[1])
+                
        
-        print("oid's" + str(self.object1.oid) + " , " + \
+        logger.Logger.add_line("oid's " + str(self.object1.oid) + " , " + \
             str(self.object2.oid) + ": intersection points distance = " \
                 +str(intersect_points_distance))
         return intersect_points_distance
@@ -163,8 +168,6 @@ class IntersectionInstance:
     def rectangle_lines(self, center: list[float], x_axis_side: float, \
                             y_axis_side: float, phi_rad: float):
         # TODO assuming that cube position is at its center
-        x=center[0]
-        y=center[1]
         points=[]
         points.append([-x_axis_side/2, -y_axis_side/2])
         points.append([+x_axis_side/2, -y_axis_side/2])
@@ -179,10 +182,14 @@ class IntersectionInstance:
         lines.append([points[1],points[2]])
         lines.append([points[2],points[3]])
         lines.append([points[3],points[0]])
+        logger.Logger.add_line("For the rectangle with center at " + str(center) + ", x_side = " + \
+            str(x_axis_side) + ", y_axis = " + str(y_axis_side) + ", the points are:")
+        logger.Logger.add_line(str(lines))
         return lines
 
     def rotation_matrix_2d(self,phi: float):
         """
+        phi in radians
         [ cos(phi)  -sin(phi)
           sin(phi)   cos(phi)]
         """

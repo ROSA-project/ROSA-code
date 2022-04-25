@@ -1,18 +1,17 @@
 from __future__ import annotations
 
 import time
-
 from intersection_instance import IntersectionInstance
 from map import Map
 from object import Object, ObjectId
 from box import Box
 from cube import Cube
 from position import Position
-
 from collections import defaultdict
 from typing import DefaultDict
-
 import json
+import logger
+
 # type aliasing
 InInType = DefaultDict[ObjectId, list[IntersectionInstance]]
 
@@ -132,9 +131,14 @@ class World:
         each object is evolved.
         """
         non_infinitesimal_intersection_exists: bool = False
+        current_percentage = 0
         while self.__current_time_ms < self.__duration_sec:
             delta_t = self.pick_delta_t()
-            print("at t = " + str(self.__current_time_ms) + ", picked delta_t = " + str(delta_t))
+            if int(self.__current_time_ms / self.__duration_sec*100) > current_percentage:
+                current_percentage = int(self.__current_time_ms / self.__duration_sec*100)
+                print(str(current_percentage) + "% processed")
+            logger.Logger.add_line("at t = " + str(self.__current_time_ms) + \
+                ", picked delta_t = " + str(delta_t))
             self.evolve(delta_t)
             intersection_result , non_infinitesimal_intersection_exists\
                     = self.intersect()

@@ -25,7 +25,15 @@ class Map:
         objects[3] = Box(3, Cube(4,3,0.2),Position(-2,2,0,90,90),None)
         #objects[4] = VacuumCleanerV0(4,Position(4,4,0,90,0),None,{"diameter":1,"height":0.1})
         objects[4] = ball.RigidPointBall(4,cylinder.Cylinder(0.2,1),\
-            Position(0,2,0,0,90),0,0.5,None)
+            Position(0.5,2,0,30,90),0,1,None)
+
+        # objects[0] = Box(0, Cube(4,3,0.2),Position(0,0,0,0,90),None)
+        # objects[1] = Box(1, Cube(4,3,0.2),Position(2,2,0,80,90),None)
+        # objects[2] = Box(2, Cube(4,3,0.2),Position(0,4,0,20,90),None)
+        # objects[3] = Box(3, Cube(4,3,0.2),Position(-2,2,0,100,90),None)
+        # #objects[4] = VacuumCleanerV0(4,Position(4,4,0,90,0),None,{"diameter":1,"height":0.1})
+        # objects[4] = ball.RigidPointBall(4,cylinder.Cylinder(0.2,1),\
+        #     Position(0.5,2,0,45,90),0,1,None)
 
         # box0=Box(0, Cube(2,3,1),Position(0,0,0,0,0),None)
         #box1=Box(1, Cube(5,1,3),Position(5,3,0,0,0),None)
