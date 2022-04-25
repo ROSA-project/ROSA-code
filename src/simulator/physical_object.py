@@ -18,15 +18,15 @@ class RigidPhysicalObject(Object):
         Object.__init__(self,oid, shape, position, owner_object)
         self.acceleration: float = acceleration
         self.velocity: float = velocity
-        print(self._infinitesimal_intersection_occured)
 
     def evolve(self, delta_t: float):
         if self._infinitesimal_intersection_occured:
             #this is a bump which affects object's movement in this cycle
+            print("RigidPhysicalObject infinitestimal intersection, redirecting to update_state_upon_bump")
             self.update_state_upon_bump()
         r = self.velocity * delta_t
-        self.position.x += r * np.cos(self.position.phi)
-        self.position.y += r * np.sin(self.position.phi)
+        self.position.x += r * np.cos(self.position.phi * np.pi/180)
+        self.position.y += r * np.sin(self.position.phi * np.pi/180)
         return {}
     
     def update_state_upon_bump(self):

@@ -12,11 +12,12 @@ class Object:
                  owner_object: Object):
         self.oid = oid
         self.shape = shape
+        # TODO we should do this deepcopy for all? a nicer way?
         self.position = position
         self.__previous_position = position
         self.owner_object = owner_object
         self.dependent_objects: dict[ObjectId, Object] = {}
-        self.__latest_intersections: list[in_in.IntersectionInstance] = []
+        self._latest_intersections: list[in_in.IntersectionInstance] = []
         self._infinitesimal_intersection_occured: bool = False
 
     def add_dependent_object(self, obj: Object):
@@ -51,27 +52,36 @@ class Object:
         note that the consequences on behavior of the robot will be handled in the 
         next evolution cycle
         """
-        self.__latest_intersections = intersections.copy()
-        self.__infinitesimal_intersection_occured = False
-        for in_in in self.__latest_intersections:
-            if in_in.is_infinitesimal():
-                self.__infinitesimal_intersection_occured = True
+        self._latest_intersections = intersections.copy()
+        self._infinitesimal_intersection_occured = False
+        for in_in in self._latest_intersections:
+            if in_in.does_intersect() and in_in.is_infinitesimal():
+                self._infinitesimal_intersection_occured = True
                 
-        if self.__infinitesimal_intersection_occured:
+        if self._infinitesimal_intersection_occured:
             self.infinitesimal_intersection_immediate()
     
     def infinitesimal_intersection_immediate(self):
         """
         by default, we revert the position without reverting the rest of the state
         """
+        print("infinitestimal intersection detected, reverting position (default Object behavior)")
         self.revert_position()
 
     def update_position(self,new_position):
+        """
+        all changes to the position must go through this function
+        This is to ensure we keep the state. 
+        # TODO how to enforce this?
+        """
         self.__previous_position = self.position.copy()
         self.position = new_position.copy()
 
     def revert_position(self):
-        self.position = self.__previous_position.copy()
+        # TODO leaves the position and previous position the same.
+        # better to somehow invalidate previous position? (same should happen in
+        # constructor where these two are again the same)
+        self.position = self.__previous_position
 
     def visualize(self) -> list:
         """
