@@ -134,10 +134,15 @@ class World:
         non_infinitesimal_intersection_exists: bool = False
         while self.__current_time_ms < self.__duration_sec:
             delta_t = self.pick_delta_t()
+            print("at t = " + str(self.__current_time_ms) + ", picked delta_t = " + str(delta_t))
             self.evolve(delta_t)
             intersection_result , non_infinitesimal_intersection_exists\
                     = self.intersect()
-            assert(not non_infinitesimal_intersection_exists)
+            # TODO I don't want to assert so I can see the output :D assert kills the wrapper
+            #assert(not non_infinitesimal_intersection_exists)
+            if non_infinitesimal_intersection_exists:
+                print("non-infinitesimal_intersection happened! exiting simulation loop")
+                break
             
             #passes intersection result to the objects
             #where the info will be used by object to handle possible intersection
