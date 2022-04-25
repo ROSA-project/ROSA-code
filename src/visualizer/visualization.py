@@ -26,6 +26,7 @@ class Visualizer:
         self.lines2d = []
         self.data = dict()
         self.plot_arrows = True
+        self.__vis_output_filename = json_filename
 
         try:
             with open(json_filename, "r") as f:
