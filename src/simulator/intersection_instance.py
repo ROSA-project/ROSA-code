@@ -155,7 +155,9 @@ class IntersectionInstance:
                 
                 intersect_points_distance = abs(x_intersect_points[0]-x_intersect_points[1])
        
-        print("final intersection points diatnce = " +str(intersect_points_distance))
+        print("oid's" + str(self.object1.oid) + " , " + \
+            str(self.object2.oid) + ": intersection points distance = " \
+                +str(intersect_points_distance))
         return intersect_points_distance
 
     def rectangle_lines(self, center: list[float], x_axis_side: float, \
