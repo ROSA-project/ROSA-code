@@ -3,6 +3,7 @@ from __future__ import annotations
 from shape import Shape
 from position import Position
 import intersection_instance as in_in
+import copy
 
 ObjectId = int  # type aliasing, since we might change ObjectId composition
 
@@ -52,7 +53,7 @@ class Object:
         note that the consequences on behavior of the robot will be handled in the 
         next evolution cycle
         """
-        self._latest_intersections = intersections.copy()
+        self._latest_intersections = copy.copy(intersections)
         self._infinitesimal_intersection_occured = False
         for in_in in self._latest_intersections:
             if in_in.does_intersect() and in_in.is_infinitesimal():
@@ -74,14 +75,14 @@ class Object:
         This is to ensure we keep the state. 
         # TODO how to enforce this?
         """
-        self.__previous_position = self.position.copy()
-        self.position = new_position.copy()
+        self.__previous_position = copy.copy(self.position)
+        self.position = copy.copy(new_position)
 
     def revert_position(self):
         # TODO leaves the position and previous position the same.
         # better to somehow invalidate previous position? (same should happen in
         # constructor where these two are again the same)
-        self.position = self.__previous_position
+        self.position = copy.copy(self.__previous_position)
 
     def visualize(self) -> list:
         """

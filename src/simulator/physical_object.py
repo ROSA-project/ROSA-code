@@ -2,6 +2,7 @@ from object import Object, ObjectId
 import shape
 import position
 import numpy as np
+import copy
 
 
 class RigidPhysicalObject(Object):
@@ -23,13 +24,19 @@ class RigidPhysicalObject(Object):
         if self._infinitesimal_intersection_occured:
             #this is a bump which affects object's movement in this cycle
             print("RigidPhysicalObject infinitestimal intersection, redirecting to update_state_upon_bump")
-            self.update_state_upon_bump()
+            new_position = self.new_position_upon_bump()
+        else:
+            new_position = copy.copy(self.position)
+
         r = self.velocity * delta_t
-        self.position.x += r * np.cos(self.position.phi * np.pi/180)
-        self.position.y += r * np.sin(self.position.phi * np.pi/180)
-        return {}
+        new_position.x += r * np.cos(new_position.phi * np.pi/180)
+        new_position.y += r * np.sin(new_position.phi * np.pi/180)
+        self.update_position(new_position)
+        
+        offspring_objects = {}
+        return offspring_objects
     
-    def update_state_upon_bump(self):
+    def new_position_upon_bump(self):
         """
         calculates the new motion state
         """

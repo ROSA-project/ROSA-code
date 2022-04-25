@@ -1,6 +1,8 @@
 from cmath import pi
 import numpy as np
 import physical_object
+from simulator.position import Position
+import copy
 
 
 class RigidPointBall(physical_object.RigidPhysicalObject):
@@ -9,11 +11,14 @@ class RigidPointBall(physical_object.RigidPhysicalObject):
     following the light reflection model, ignoring mass and acceleration. 
     decrease the ball radius if you want it to look real.
     """
-    def update_state_upon_bump(self):
+    def new_position_upon_bump(self) -> Position:
         #recall that we're here because infinitesimal intersections had occured in the
         #previous cycle. 
         for in_in in self._latest_intersections:
             if in_in.does_intersect() and in_in.is_infinitesimal():
+                # TODO I'm taking the first bump, process and return! we can have
+                # multiple bumps at the same time resulting in a combined change.
+                
                 # TODO we won't have this method. just an oversimplification for now
                 #bump_point expected to be a numpy array with 3 elements x, y and z
                 bump_point = in_in.get_intersection_point()
@@ -46,8 +51,10 @@ class RigidPointBall(physical_object.RigidPhysicalObject):
                 # returning here, i.e. doing one intersection only as the point object
                 # cannot bump into two objects :D
                 tmp = self.cartesian_to_polar(*new_orientation_unit_vector)
-                self.position.phi = tmp[1]
-                self.position.theta = tmp[2]
+                new_position = copy.copy(self.position)
+                new_position.phi = tmp[1]
+                new_position.theta = tmp[2]
+                return new_position
                 
     def polar_to_cartesian(self,r,phi_degree,theta_degree):
         x= r * np.sin(theta_degree * np.pi/180) * \
