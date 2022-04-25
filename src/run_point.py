@@ -7,6 +7,6 @@ from visualization import Visualizer
 
 world = World(" ","test.json")
 world.run()
-side = 12
+side = 5
 visualization = Visualizer(side, "test.json")
 visualization.visualize()
