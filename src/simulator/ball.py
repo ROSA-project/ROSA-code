@@ -33,63 +33,85 @@ class RigidPointBall(physical_object.RigidPhysicalObject):
                     self.position.y,self.position.z])
                 logger.Logger.add_line("circle (ball) center = " + str(center_point))
                 
-                center_to_bump_unit_vector = (bump_point - center_point)/\
-                    np.linalg.norm(bump_point - center_point)
-                logger.Logger.add_line("center_to_bump_unit_vector = " + \
-                    str(center_to_bump_unit_vector))
-                
-                orientation_unit_vector = np.array(self.polar_to_cartesian(1,\
-                    self.position.phi,self.position.theta))
-                logger.Logger.add_line("orientation_unit_vector = " + \
-                    str(orientation_unit_vector))
-                
-                # TODO replace the epsilon 
-                if np.linalg.norm(orientation_unit_vector - center_to_bump_unit_vector) < non_zero_criterion:
-                    new_orientation_unit_vector = - center_to_bump_unit_vector
-                    logger.Logger.add_line("orientation_unit_vector ~= center_to_bump_unit_vector so " + \
-                        "new_orientation_unit_vector = " + str(new_orientation_unit_vector))
-                else:
-                    normal_vector = np.cross(orientation_unit_vector, \
-                        center_to_bump_unit_vector)
-                    logger.Logger.add_line("normal_vector = " + \
-                        str(normal_vector))    
-                
-                    mirror_unit_vector = np.cross(center_to_bump_unit_vector, normal_vector)
-                    mirror_unit_vector = mirror_unit_vector / np.linalg.norm(mirror_unit_vector)
-                    logger.Logger.add_line("mirror_unit_vector = " + \
-                        str(mirror_unit_vector))
-                
-                    mirror_vector = np.dot(mirror_unit_vector, orientation_unit_vector) * \
-                        mirror_unit_vector
-                    logger.Logger.add_line("mirror_vector = " + \
-                        str(mirror_vector))
-                
-                    delta_vector = mirror_vector - orientation_unit_vector
-                    logger.Logger.add_line("delta_vector = " + \
-                        str(delta_vector))
-                
-                    new_orientation_unit_vector = orientation_unit_vector + 2 * delta_vector
-                    logger.Logger.add_line("new_orientation_unit_vector = " + \
-                        str(new_orientation_unit_vector))
+                new_phi, new_theta = RigidPointBall.calculate_circle_bounce(\
+                    center_point, self.position.phi, self.position.theta, bump_point)
 
-                # a check only to know the math works fine, otherwise being a unit
-                # vector is not necessary
-                if abs(np.linalg.norm(new_orientation_unit_vector)- 1) > non_zero_criterion:
-                    raise Exception("new orientation vector norm is " + \
-                        str(np.linalg.norm(new_orientation_unit_vector)))
-                
-                # returning here, i.e. doing one intersection only as the point object
-                # cannot bump into two objects :D
-                tmp = self.cartesian_to_polar(*new_orientation_unit_vector)
                 new_position = copy.copy(self.position)
-                new_position.phi = tmp[1]
-                new_position.theta = tmp[2]
+                new_position.phi = new_phi
+                new_position.theta = new_theta
                 logger.Logger.add_line("phi and theta changed from " + str(self.position.phi) \
-                    + ", " + str(self.position.theta) + " to " + str(tmp[1]) + ", " + str(tmp[2]))
+                        + ", " + str(self.position.theta) + " to " + str(new_phi) + ", " + \
+                        str(new_theta))
                 logger.Logger.add_line("processing a bump finished.")    
                 return new_position
                 
-    def polar_to_cartesian(self,r,phi_degree,theta_degree):
+    def calculate_circle_bounce(circle_center, phi, theta, bump_point):
+        """
+        consider a circle that hits a surface. No matter the shape of the surface,
+        the circle hits it at a point on its perimeter. circle's direction of movement
+        and center and bump point is enough to calculate the direction of reflection (bounce)
+        Note that circle radius plays no role, as the bump point defines the new effective
+        radius.
+        inputs:
+            circle_center: a list of three numbers x y and z
+            bump_point: the same
+            phi, theta: degrees describing direction of circle's movement, according to
+                to standard spherical coordinate system.
+        outputs:
+            new phi and theta
+        """
+        center_to_bump_unit_vector = (bump_point - circle_center)/\
+                    np.linalg.norm(bump_point - circle_center)
+        logger.Logger.add_line("center_to_bump_unit_vector = " + \
+            str(center_to_bump_unit_vector))
+        
+        orientation_unit_vector = np.array(RigidPointBall.polar_to_cartesian(1, phi, theta))
+        logger.Logger.add_line("orientation_unit_vector = " + \
+            str(orientation_unit_vector))
+        
+        # TODO replace the epsilon 
+        if np.linalg.norm(orientation_unit_vector - center_to_bump_unit_vector) < non_zero_criterion:
+            new_orientation_unit_vector = - center_to_bump_unit_vector
+            logger.Logger.add_line("orientation_unit_vector ~= center_to_bump_unit_vector so " + \
+                "new_orientation_unit_vector = " + str(new_orientation_unit_vector))
+        else:
+            normal_vector = np.cross(orientation_unit_vector, \
+                center_to_bump_unit_vector)
+            logger.Logger.add_line("normal_vector = " + \
+                str(normal_vector))    
+        
+            mirror_unit_vector = np.cross(center_to_bump_unit_vector, normal_vector)
+            mirror_unit_vector = mirror_unit_vector / np.linalg.norm(mirror_unit_vector)
+            logger.Logger.add_line("mirror_unit_vector = " + \
+                str(mirror_unit_vector))
+        
+            mirror_vector = np.dot(mirror_unit_vector, orientation_unit_vector) * \
+                mirror_unit_vector
+            logger.Logger.add_line("mirror_vector = " + \
+                str(mirror_vector))
+        
+            delta_vector = mirror_vector - orientation_unit_vector
+            logger.Logger.add_line("delta_vector = " + \
+                str(delta_vector))
+        
+            new_orientation_unit_vector = orientation_unit_vector + 2 * delta_vector
+            logger.Logger.add_line("new_orientation_unit_vector = " + \
+                str(new_orientation_unit_vector))
+
+        # a check only to know the math works fine, otherwise being a unit
+        # vector is not necessary
+        if abs(np.linalg.norm(new_orientation_unit_vector)- 1) > non_zero_criterion:
+            raise Exception("new orientation vector norm is " + \
+                str(np.linalg.norm(new_orientation_unit_vector)))
+        
+        # returning here, i.e. doing one intersection only as the point object
+        # cannot bump into two objects :D
+        tmp = RigidPointBall.cartesian_to_polar(*new_orientation_unit_vector)
+        new_phi = tmp[1]
+        new_theta = tmp[2]
+        return new_phi, new_theta
+    
+    def polar_to_cartesian(r,phi_degree,theta_degree):
         x= r * np.sin(theta_degree * np.pi/180) * \
             np.cos(phi_degree * np.pi/180)
         y= r * np.sin(theta_degree * np.pi/180) * \
@@ -97,7 +119,7 @@ class RigidPointBall(physical_object.RigidPhysicalObject):
         z= r * np.cos(theta_degree * np.pi/180)
         return [x,y,z]
 
-    def cartesian_to_polar(self,x,y,z):
+    def cartesian_to_polar(x,y,z):
         r = np.sqrt(x*x + y*y + z*z)
         # TODO these arc functions need correct handling
         theta = np.arccos(z/r) * 180/ np.pi #to degrees
