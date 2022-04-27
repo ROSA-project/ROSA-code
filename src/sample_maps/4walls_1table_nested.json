@@ -1,6 +1,6 @@
 {
     "room": {
-        "class": "CompoundPhysicalObject",
+        "class": "CompoundPhysical",
         "position": [0,0,0,0,0],
         "subobjects": {
             "wall0":{
@@ -54,11 +54,11 @@
         }
     },
     "4legged_table": {
-        "class": "CompoundPhysicalObject",
+        "class": "CompoundPhysical",
         "position": [200,200,0,0,0],
         "subobjects": {
             "leg0":{
-                "class": "CompoundPhysicalObject",
+                "class": "Simple",
                 "shape": {
                     "class": "Cylinder",
                     "arguments": {
@@ -69,7 +69,7 @@
                 "position": [200,200,0,0,0]
             },
             "leg1":{
-                "class": "CompoundPhysicalObject",
+                "class": "Simple",
                 "shape": {
                     "class": "Cylinder",
                     "arguments": {
@@ -80,7 +80,7 @@
                 "position": [200,246,0,0,0]
             },
             "leg2":{
-                "class": "CompoundPhysicalObject",
+                "class": "Simple",
                 "shape": {
                     "class": "Cylinder",
                     "arguments": {
@@ -91,7 +91,7 @@
                 "position": [266,246,0,0,0]
             },
             "leg3":{
-                "class": "CompoundPhysicalObject",
+                "class": "Simple",
                 "shape": {
                     "class": "Cylinder",
                     "arguments": {

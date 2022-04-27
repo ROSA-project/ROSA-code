@@ -48,7 +48,7 @@
         "position": [295,0,0,90,0]
     },
     "leg0":{
-        "class": "CompoundPhysicalObject",
+        "class": "Simple",
         "shape": {
             "class": "Cylinder",
             "arguments": {
@@ -59,7 +59,7 @@
         "position": [200,200,0,0,0]
     },
     "leg1":{
-        "class": "CompoundPhysicalObject",
+        "class": "Simple",
         "shape": {
             "class": "Cylinder",
             "arguments": {
@@ -70,7 +70,7 @@
         "position": [200,246,0,0,0]
     },
     "leg2":{
-        "class": "CompoundPhysicalObject",
+        "class": "Simple",
         "shape": {
             "class": "Cylinder",
             "arguments": {
@@ -81,7 +81,7 @@
         "position": [266,246,0,0,0]
     },
     "leg3":{
-        "class": "CompoundPhysicalObject",
+        "class": "Simple",
         "shape": {
             "class": "Cylinder",
             "arguments": {

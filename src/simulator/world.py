@@ -148,7 +148,9 @@ class World:
         # dump visualization info for shapes to the output json file
         shapes_info_dict = {"shapes": {}}
         for oid in self.objects:
-            shapes_info_dict["shapes"][oid] = self.objects[oid].dump_shape_info()
+            if self.objects[oid].shape is not None:
+                # TODO: to be replaced with proper handling of compound objects (if cond)
+                shapes_info_dict["shapes"][oid] = self.objects[oid].dump_shape_info()
 
         self.__vis_data.update(shapes_info_dict)
 
@@ -168,5 +170,7 @@ class World:
         """
         objects_info = dict()
         for oid in self.objects:
-            objects_info[oid] = self.objects[oid].visualize()
+            if self.objects[oid].shape is not None:
+                # TODO: to be replaced with proper handling of compound objects (if cond)
+                objects_info[oid] = self.objects[oid].visualize()
         return objects_info
