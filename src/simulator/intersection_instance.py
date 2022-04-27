@@ -1,3 +1,4 @@
+from __future__ import annotations
 import logger
 import object
 import numpy as np
