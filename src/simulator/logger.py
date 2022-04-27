@@ -18,7 +18,9 @@ class Logger:
         if Logger.file_handle != None:
             Logger.file_handle.write(text)
         else:
-            raise Exception("Logger has not been initialized")
+            #raise Exception("Logger has not been initialized")
+            # simply skip
+            pass
     
     def add_line(line_text):
         Logger.add(line_text + "\n")
