@@ -69,11 +69,16 @@ class RigidPointBall(physical_object.RigidPhysicalObject):
         logger.Logger.add_line("orientation_unit_vector = " + \
             str(orientation_unit_vector))
         
-        # TODO replace the epsilon 
-        if np.linalg.norm(orientation_unit_vector - center_to_bump_unit_vector) < non_zero_criterion:
+        if np.linalg.norm(orientation_unit_vector - center_to_bump_unit_vector) <\
+                    non_zero_criterion:
+            # face-2-face bump
             new_orientation_unit_vector = - center_to_bump_unit_vector
             logger.Logger.add_line("orientation_unit_vector ~= center_to_bump_unit_vector so " + \
                 "new_orientation_unit_vector = " + str(new_orientation_unit_vector))
+        elif np.linalg.norm(orientation_unit_vector + center_to_bump_unit_vector) <\
+                    non_zero_criterion:
+            # bump from back
+            new_orientation_unit_vector = orientation_unit_vector
         else:
             normal_vector = np.cross(orientation_unit_vector, \
                 center_to_bump_unit_vector)
