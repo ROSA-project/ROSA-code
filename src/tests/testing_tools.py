@@ -1,7 +1,7 @@
 import numpy as np
 
 radians_accuracy_decimal_points = 10
-real_number_accuracy_decimal_points = 10
+real_number_accuracy_decimal_points = 8
 
 def angle_almost_equal(angle1: float, angle2: float):
     modulo_value = 360
