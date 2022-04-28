@@ -8,7 +8,7 @@ import tests.testing_tools as teto
 import intersection_instance as in_in
 
 
-class PointObjectBounce(unittest.TestCase):
+class RectangleCircleIntersection(unittest.TestCase):
     def test_rectangle_to_lines_decomposition(self):
         json_filename = "tests/rectangle_to_lines_decomposition.json"
         with open(json_filename, "r") as f:
