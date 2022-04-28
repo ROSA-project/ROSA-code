@@ -64,8 +64,8 @@ class IntersectionInstance:
         rectangle_phi_rad = cube_object.position.phi * np.pi/180
     
         #find the 4 lines of the cube(recatngle) and run line-circle intersections
-        lines = self.rectangle_lines(rectangle_center, rectangle_length, rectangle_width,\
-                                rectangle_phi_rad)
+        lines = IntersectionInstance.rectangle_lines(rectangle_center, \
+            rectangle_length, rectangle_width, rectangle_phi_rad)
         
         intersection_points_distance = []
         for line in lines:
@@ -103,7 +103,7 @@ class IntersectionInstance:
             # TODO arc
             phi_rad = np.arctan2((p2[1] - p1[1]),(p2[0]-p1[0]))
         
-        r_matrix=self.rotation_matrix_2d(-phi_rad)
+        r_matrix=IntersectionInstance.rotation_matrix_2d(-phi_rad)
 
         logger.Logger.add_line("line-circle intersection:")
         logger.Logger.add_line("input line = " + str(p1) + " , " + str(p2))
@@ -150,7 +150,7 @@ class IntersectionInstance:
                 x_intersect_points=self.horizontal_line_segment_intersection(\
                     [x1,y1],[x2,y2],p1,p2)
                 # undo the rotation
-                r_inv_matrix=self.rotation_matrix_2d(phi_rad)
+                r_inv_matrix=IntersectionInstance.rotation_matrix_2d(phi_rad)
                 tmp =  r_inv_matrix.dot(\
                     [np.mean(x_intersect_points),p1[1]])
                 # TODO adding zero as the z
@@ -166,8 +166,11 @@ class IntersectionInstance:
                 +str(intersect_points_distance))
         return intersect_points_distance
 
-    def rectangle_lines(self, center: list[float], x_axis_side: float, \
+    def rectangle_lines(center: list[float], x_axis_side: float, \
                             y_axis_side: float, phi_rad: float):
+        """
+            return values is a numpy array, a matrix of vectors each being a line
+        """
         # TODO assuming that cube position is at its center
         points=[]
         points.append([-x_axis_side/2, -y_axis_side/2])
@@ -175,7 +178,7 @@ class IntersectionInstance:
         points.append([+x_axis_side/2, +y_axis_side/2])
         points.append([-x_axis_side/2, +y_axis_side/2])
         #now rotate by phi
-        r_matrix=self.rotation_matrix_2d(phi_rad)
+        r_matrix=IntersectionInstance.rotation_matrix_2d(phi_rad)
         points = r_matrix.dot((np.array(points)).T).T
         points = points + np.array(center)
         lines = []
@@ -188,7 +191,7 @@ class IntersectionInstance:
         logger.Logger.add_line(str(lines))
         return lines
 
-    def rotation_matrix_2d(self,phi: float):
+    def rotation_matrix_2d(phi: float):
         """
         phi in radians
         [ cos(phi)  -sin(phi)
