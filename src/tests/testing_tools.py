@@ -17,5 +17,9 @@ def matrix_almost_equal(matrix1: list, matrix2: list):
     """
     np_matrix1=np.array(matrix1)
     np_matrix2=np.array(matrix2)
+
+    if np_matrix1.size == 0 and np_matrix2.size == 0:
+        return True
+        
     return np.round(np.amax(abs(np_matrix1-np_matrix2)),\
         real_number_accuracy_decimal_points) == 0

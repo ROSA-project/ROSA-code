@@ -171,8 +171,10 @@ class IntersectionInstance:
                     [x1,y1],[x2,y2],p1,p2)
                 if x_intersect_points == 0:
                     # meaning no intersection
-                    raise Exception("haven't taken care of this case yet :D")
-
+                    intersection_points = []
+                    intersect_points_distance = -1
+                    return [] , -1
+                    
                 # undo the rotation
                 # TODO hardcoding a zero for z
                 r_inv_matrix=IntersectionInstance.rotation_matrix_2d(phi_rad)

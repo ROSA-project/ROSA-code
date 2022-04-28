@@ -30,5 +30,29 @@
         "circle_radius": 1,
         "expected_intersection_points": [[0,0,0],[0,1,0]],
         "expected_intersection_points_distance": 1
+    },
+    "horizontal_line_1": {
+        "p1": [-0.98, 0.98],
+        "p2": [-0.95, 0.98],
+        "circle_center": [0, 0],
+        "circle_radius": 1,
+        "expected_intersection_points": [],
+        "expected_intersection_points_distance": -1
+    },
+    "horizontal_line_2": {
+        "p1": [2, 0],
+        "p2": [3, 0],
+        "circle_center": [0, 0],
+        "circle_radius": 1,
+        "expected_intersection_points": [],
+        "expected_intersection_points_distance": -1
+    },
+    "vertical_line_2": {
+        "p1": [0, 2],
+        "p2": [0, 3],
+        "circle_center": [0, 0],
+        "circle_radius": 1,
+        "expected_intersection_points": [],
+        "expected_intersection_points_distance": -1
     }
 }
