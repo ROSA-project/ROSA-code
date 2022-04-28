@@ -26,7 +26,9 @@ class RigidPointBall(physical_object.RigidPhysicalObject):
                 #bump_point expected to be a numpy array with 3 elements x, y and z
                 logger.Logger.add_line("processing a bump:")
                 
-                bump_point = in_in.get_intersection_point()
+                intersection_points = in_in.get_intersection_point()
+                # TODO temporary: average two intersection points to find the bump point.
+                bump_point = 1/2*(intersection_points[0][0]+intersection_points[0][1])
                 logger.Logger.add_line("given bump point = " + str(bump_point))
                 
                 center_point = np.array([self.position.x,\

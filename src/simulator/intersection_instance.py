@@ -16,6 +16,7 @@ class IntersectionInstance:
         self.object2 = object2
         self.__does_intersect = False
         self.__is_infinitestimal = False
+        self._intersection_points = []
         self.intersect()
 
     def intersect(self) -> dict:
@@ -68,9 +69,22 @@ class IntersectionInstance:
             rectangle_length, rectangle_width, rectangle_phi_rad)
         
         intersection_points_distance = []
+        intersection_points = []
         for line in lines:
-            intersection_points_distance.append(self.line_circle(line[0],line[1], \
-                circle_center, circle_radius))
+            new_intersection_points, new_intersection_distance = \
+                IntersectionInstance.line_circle(line[0],line[1], circle_center, circle_radius)
+            
+            logger.Logger.add_line("oid's " + str(self.object1.oid) + " , " + \
+            str(self.object2.oid) + ": intersection points distance = " \
+                +str(new_intersection_distance))
+
+            # if no intersection this will be -1
+            intersection_points_distance.append(new_intersection_distance)
+            
+            if len(new_intersection_points)>0:
+                intersection_points.append(new_intersection_points)
+        
+        self._intersection_points = intersection_points
         
         # TODO strictly larger than 0 must be documented. see calculation of the distance
         if max(intersection_points_distance) > non_zero_criterion:
@@ -81,7 +95,7 @@ class IntersectionInstance:
                 self.__is_infinitestimal = True
         
 
-    def line_circle(self, p1, p2, circle_center, circle_radius):
+    def line_circle(p1, p2, circle_center, circle_radius):
         """
         Calculates the intersection of a line segment and a circle.
         inputs:
@@ -93,9 +107,14 @@ class IntersectionInstance:
             consider the infinite line on which the line segment lies
             and consider points i1 and i2 at which the circle intersects with
             the infinite line.
-            the return value is the distance of the intersection of two line segments
-            p1-p2 and i1-i2.
+            the return value is a tupe of 
+                -the points showing the intersection of the
+            two line segments p1-p2 and i1-i2.
+                -the distance of the points.
         """
+        #indicating no intersection
+        intersection_points = []
+
         if p1[0] == p2[0]:
             phi_rad = np.pi/2
         else:
@@ -107,7 +126,8 @@ class IntersectionInstance:
 
         logger.Logger.add_line("line-circle intersection:")
         logger.Logger.add_line("input line = " + str(p1) + " , " + str(p2))
-        logger.Logger.add_line("input circle center = " + str(circle_center) + " and radius = " + str(circle_radius))
+        logger.Logger.add_line("input circle center = " + str(circle_center) + \
+            " and radius = " + str(circle_radius))
 
         p1 = r_matrix.dot(p1)
         p2 = r_matrix.dot(p2)
@@ -121,7 +141,7 @@ class IntersectionInstance:
             #vertically seperated
             #logger.Logger.add_line("vertically seperated")
             intersect_points_distance = -1
-        elif np.linalg.norm(self.horizontal_line_segment_intersection(p1,p2,
+        elif np.linalg.norm(IntersectionInstance.horizontal_line_segment_intersection(p1,p2,
                 [circle_center[0]-circle_radius, circle_center[1]],
                 [circle_center[0]+circle_radius, circle_center[1]])) == 0:
             #horizontally separated
@@ -147,24 +167,23 @@ class IntersectionInstance:
                 x2=(-b + np.sqrt(delta))/(2*a)
                 y1=m*x1+h
                 y2=m*x2+h
-                x_intersect_points=self.horizontal_line_segment_intersection(\
+                x_intersect_points = IntersectionInstance.horizontal_line_segment_intersection(\
                     [x1,y1],[x2,y2],p1,p2)
+                if x_intersect_points == 0:
+                    # meaning no intersection
+                    raise Exception("haven't taken care of this case yet :D")
+
                 # undo the rotation
+                # TODO hardcoding a zero for z
                 r_inv_matrix=IntersectionInstance.rotation_matrix_2d(phi_rad)
-                tmp =  r_inv_matrix.dot(\
-                    [np.mean(x_intersect_points),p1[1]])
-                # TODO adding zero as the z
-                # TODO turning this into numpy array because get_intersection_point
-                #  retunr value should be so
-                self._intersection_point = np.array([tmp[0],tmp[1],0])
+                tmp0 = r_inv_matrix.dot([x_intersect_points[0],p1[1]])
+                tmp1 = r_inv_matrix.dot([x_intersect_points[1],p1[1]])
+                intersection_points = np.array([[tmp0[0], tmp0[1], 0],\
+                                                [tmp1[0], tmp1[1], 0]])
                 
                 intersect_points_distance = abs(x_intersect_points[0]-x_intersect_points[1])
-                
-       
-        logger.Logger.add_line("oid's " + str(self.object1.oid) + " , " + \
-            str(self.object2.oid) + ": intersection points distance = " \
-                +str(intersect_points_distance))
-        return intersect_points_distance
+            
+        return intersection_points, intersect_points_distance
 
     def rectangle_lines(center: list[float], x_axis_side: float, \
                             y_axis_side: float, phi_rad: float):
@@ -200,7 +219,7 @@ class IntersectionInstance:
         r = np.array([[np.cos(phi), -np.sin(phi)],[np.sin(phi), np.cos(phi)]])
         return r
 
-    def horizontal_line_segment_intersection(self,a1,a2,b1,b2) -> float:
+    def horizontal_line_segment_intersection(a1,a2,b1,b2) -> float:
         """
         assuming that all these 4 points fall on one line, 
         the function returns the length of the intersection of line segments
@@ -219,7 +238,11 @@ class IntersectionInstance:
             b2x = b1[0]
         x1=max(a1x,b1x)
         x2=min(a2x,b2x)
-        return [x1,x2]
+        if x1>x2:
+            #means they do not intersect
+            return 0
+        else:
+            return [x1,x2]
 
     def cube_cube(self):        
         pass
@@ -231,4 +254,6 @@ class IntersectionInstance:
             raise Exception("don't call this function if you haven't checked does_intersect first :D")
 
     def get_intersection_point(self):
-        return self._intersection_point
+        if not self._intersection_points:
+            raise Exception("no intersection recorded., the method must not have been called")
+        return self._intersection_points
