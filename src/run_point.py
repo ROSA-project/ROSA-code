@@ -5,8 +5,10 @@ from world import World
 from visualization import Visualizer
 
 
-world = World(" ","test.json")
+map_file = "sample_maps/4walls_1table_nested.json"
+vis_filename = "output_vis.json"
+world = World(map_file, vis_filename)
 world.run()
 side = 12
-visualization = Visualizer(side, "test.json")
+visualization = Visualizer(side, vis_filename)
 visualization.visualize()

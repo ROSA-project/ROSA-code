@@ -35,7 +35,8 @@ class World:
     """
 
     def __init__(self, map_filename: str, vis_filename: str):
-        self.objects: dict[ObjectId, Object] = Map.parse_map(map_filename)
+        m = Map()
+        self.objects: dict[ObjectId, Object] = m.parse_map(map_filename)
         self.__vis_data = dict()
         self.__creation_ts: float = time.time()  # current timestamp
         self.__num_evolutions: int = 0
@@ -147,7 +148,9 @@ class World:
         # dump visualization info for shapes to the output json file
         shapes_info_dict = {"shapes": {}}
         for oid in self.objects:
-            shapes_info_dict["shapes"][oid] = self.objects[oid].dump_shape_info()
+            if self.objects[oid].shape is not None:
+                # TODO: to be replaced with proper handling of compound objects (if cond)
+                shapes_info_dict["shapes"][oid] = self.objects[oid].dump_shape_info()
 
         self.__vis_data.update(shapes_info_dict)
 
@@ -167,5 +170,7 @@ class World:
         """
         objects_info = dict()
         for oid in self.objects:
-            objects_info[oid] = self.objects[oid].visualize()
+            if self.objects[oid].shape is not None:
+                # TODO: to be replaced with proper handling of compound objects (if cond)
+                objects_info[oid] = self.objects[oid].visualize()
         return objects_info

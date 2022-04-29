@@ -1,0 +1,106 @@
+{
+    "wall0":{
+        "class": "Box",
+        "shape": {
+            "class": "Cube",
+            "arguments": {
+                "lenght": 300,
+                "height": 350,
+                "width": 5
+            }
+        },
+        "position": [0,0,0,0,0]
+    },
+    "wall1":{
+        "class": "Box",
+        "shape": {
+            "class": "Cube",
+            "arguments": {
+                "lenght": 5,
+                "height": 350,
+                "width": 400
+            }
+        },
+        "position": [0,0,0,90,0]
+    },
+    "wall2":{
+        "class": "Box",
+        "shape": {
+            "class": "Cube",
+            "arguments": {
+                "lenght": 300,
+                "height": 350,
+                "width": 5
+            }
+        },
+        "position": [0,395,0,0,0]
+    },
+    "wall3":{
+        "class": "Box",
+        "shape": {
+            "class": "Cube",
+            "arguments": {
+                "lenght": 5,
+                "height": 350,
+                "width": 400
+            }
+        },
+        "position": [295,0,0,90,0]
+    },
+    "leg0":{
+        "class": "Simple",
+        "shape": {
+            "class": "Cylinder",
+            "arguments": {
+                "radius": 2,
+                "height": 80
+            }
+        },
+        "position": [200,200,0,0,0]
+    },
+    "leg1":{
+        "class": "Simple",
+        "shape": {
+            "class": "Cylinder",
+            "arguments": {
+                "radius": 2,
+                "height": 80
+            }
+        },
+        "position": [200,246,0,0,0]
+    },
+    "leg2":{
+        "class": "Simple",
+        "shape": {
+            "class": "Cylinder",
+            "arguments": {
+                "radius": 2,
+                "height": 80
+            }
+        },
+        "position": [266,246,0,0,0]
+    },
+    "leg3":{
+        "class": "Simple",
+        "shape": {
+            "class": "Cylinder",
+            "arguments": {
+                "radius": 2,
+                "height": 80
+            }
+        },
+        "position": [266,200,0,0,0]
+    },
+    "surface":{
+        "class": "Box",
+        "shape": {
+            "class": "Cube",
+            "arguments": {
+                "lenght": 70,
+                "height": 5,
+                "width": 50
+            }
+        },
+        "position": [200,200,80,0,0]
+    }
+}
