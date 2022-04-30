@@ -152,7 +152,7 @@ class Visualizer:
 
         return self.lines2d
 
-    def visualize(self):
+    def visualize(self, write_to_file: bool):
         """ visualize the data and animate
         """
         frame_interval = 0.025
@@ -167,5 +167,6 @@ class Visualizer:
         plt.show()
         # TODO saeed: works on my macbook but needs a closer look, 
         # it seems to be platform dependent.
-        writervideo = animation.PillowWriter(fps=1/frame_interval)
-        animated.save('v0_robot.gif', writer=writervideo)
+        if write_to_file:
+            writervideo = animation.PillowWriter(fps=1/frame_interval)
+            animated.save('v0_robot.gif', writer=writervideo)

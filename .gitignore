@@ -7,6 +7,3 @@ __pycache__/
 
 # IDEA files
 .idea/
-
-# json dumps possibly from visualization
-# *.json

@@ -17,7 +17,7 @@ class RigidPhysicalObject(object.Object):
                  position: position.Position, acceleration: float, 
                  velocity: float, owner_object: object.Object):
         
-        object.Object.__init__(self,oid, shape, position, owner_object)
+        super().__init__(self,oid, shape, position, owner_object)
         self.acceleration: float = acceleration
         self.velocity: float = velocity
 

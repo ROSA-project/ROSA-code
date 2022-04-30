@@ -34,14 +34,15 @@ class World:
     """
 
     def __init__(self, map_filename: str, vis_filename: str):
-        self.objects: dict[ObjectId, Object] = Map.parse_map(map_filename)
+        m = Map()
+        self.objects: dict[ObjectId, Object] = m.parse_map(map_filename)
         self.__vis_data = dict()
         self.__creation_ts: float = time.time()  # current timestamp
         self.__num_evolutions: int = 0
         self.__current_time_ms: int = 0
         self.__vis_output_filename: str = vis_filename
         # TODO hardcoded parameters here, to be taken care of properly
-        self.__duration_sec: int = 20
+        self.__duration_sec: int = 10
         self.__vis_frame_interval_ms = 0.025
         self.__next_frame_time_msec = 0
                 
@@ -93,16 +94,20 @@ class World:
             oid_1 = oids[i]
             for j in range(i+1, len(oids)):
                 oid_2 = oids[j]
-                instance = IntersectionInstance(self.objects[oid_1], self.objects[oid_2])
-                # instance has to be added for both objects
-                intersection_result[oid_1].append(instance)
-                intersection_result[oid_2].append(instance)
-                if instance.does_intersect():
-                    if not instance.is_infinitesimal():
-                        non_infinitesimal_intersection_exists = True
-                    # TODO with the current architecture we could immediately break
-                    # and return or throw an exception here. But that would be 
-                    # optimization. decide later.
+                # TODO skipping shape-less objects, but shapelessness is not so well-defined
+                # let's return to this later
+                if not (self.objects[oid_1].shape == None \
+                    or self.objects[oid_2].shape == None):
+                    instance = IntersectionInstance(self.objects[oid_1], self.objects[oid_2])
+                    # instance has to be added for both objects
+                    intersection_result[oid_1].append(instance)
+                    intersection_result[oid_2].append(instance)
+                    if instance.does_intersect():
+                        if not instance.is_infinitesimal():
+                            non_infinitesimal_intersection_exists = True
+                        # TODO with the current architecture we could immediately break
+                        # and return or throw an exception here. But that would be 
+                        # optimization. decide later.
 
         return intersection_result, non_infinitesimal_intersection_exists
 
@@ -172,7 +177,9 @@ class World:
         # dump visualization info for shapes to the output json file
         shapes_info_dict = {"shapes": {}}
         for oid in self.objects:
-            shapes_info_dict["shapes"][oid] = self.objects[oid].dump_shape_info()
+            if self.objects[oid].shape is not None:
+                # TODO: to be replaced with proper handling of compound objects (if cond)
+                shapes_info_dict["shapes"][oid] = self.objects[oid].dump_shape_info()
 
         self.__vis_data.update(shapes_info_dict)
 
@@ -192,5 +199,7 @@ class World:
         """
         objects_info = dict()
         for oid in self.objects:
-            objects_info[oid] = self.objects[oid].visualize()
+            if self.objects[oid].shape is not None:
+                # TODO: to be replaced with proper handling of compound objects (if cond)
+                objects_info[oid] = self.objects[oid].visualize()
         return objects_info

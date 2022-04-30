@@ -35,9 +35,12 @@ class IntersectionInstance:
             self.cylinder_cube()
         elif shape_classes == ["Cube","Cube"]:
             self.cube_cube()
+        elif shape_classes == ["Cylinder","Cylinder"]:
+            self.cylinder_cylinder()
         else:
             raise Exception("Cannot intersect the given objectIDs " + \
-                str(self.object1.oid) + " and " + str(self.object2.oid))
+                str(self.object1.oid) + " and " + str(self.object2.oid) + \
+                    " with shapes " + shape_classes[0] + ", " + shape_classes[1])
     
     def does_intersect(self) -> bool:
         return self.__does_intersect
@@ -246,7 +249,12 @@ class IntersectionInstance:
         else:
             return [x1,x2]
 
-    def cube_cube(self):        
+    def cube_cube(self):
+        # TODO to be implemented        
+        pass
+
+    def cylinder_cylinder(self):
+        # TODO to be implemented        
         pass
 
     def is_infinitesimal(self) -> bool:
