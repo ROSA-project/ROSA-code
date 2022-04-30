@@ -80,7 +80,7 @@ class World:
         for oid in delete_keys:
             del self.objects[oid]
 
-    def intersect(self) -> InInType:
+    def intersect(self) -> tuple:
         """Returns the intersection of every pair of objects.
 
         Returns:
@@ -142,20 +142,19 @@ class World:
             if int(self.__current_time_ms / self.__duration_sec*100) > current_percentage:
                 current_percentage = int(self.__current_time_ms / self.__duration_sec*100)
                 print(str(current_percentage) + "% processed")
-            logger.Logger.add_line("at t = " + str(self.__current_time_ms) + \
-                ", picked delta_t = " + str(delta_t))
+            logger.Logger.add_line("at t = " + str(self.__current_time_ms) + ", "
+                                    "picked delta_t = " + str(delta_t))
             self.evolve(delta_t)
-            intersection_result , non_infinitesimal_intersection_exists\
-                    = self.intersect()
+            intersection_result, non_infinitesimal_intersection_exists = self.intersect()
             # TODO I don't want to assert so I can see the output :D assert kills the wrapper
             #assert(not non_infinitesimal_intersection_exists)
             if non_infinitesimal_intersection_exists:
                 print("non-infinitesimal_intersection happened! exiting simulation loop")
                 break
             
-            #passes intersection result to the objects
-            #where the info will be used by object to handle possible intersection
-            #consequences. (differentiate this from object evolution)
+            # passes intersection result to the objects
+            # where the info will be used by object to handle possible intersection
+            # consequences. (differentiate this from object evolution)
             self.register_intersections(intersection_result)
 
             self.update_visualization_json()
