@@ -34,12 +34,7 @@ class Visualizer:
             print("Error in opening file ", self.__vis_output_filename)
             raise e
 
-        if self.plot_arrows:
-            shapes_num_factor = 2
-        else:
-            shapes_num_factor = 1
-
-        for i in range(len(self.data["shapes"]) * shapes_num_factor):
+        for i in range(len(self.data["shapes"]) ):
             obj = self.axes.plot([], [])[0]
             self.lines2d.append(obj)
         
@@ -117,7 +112,44 @@ class Visualizer:
         x_data = radius*np.cos(l) + self.data[str(moment)][oid][0]
         y_data = radius*np.sin(l) + self.data[str(moment)][oid][1]
         return x_data, y_data
+    
+    def __avg_length(self,Owner : ObjectId) -> float:
+        # gives the average between dimensions as the length of arrow
+        # TODO : it is for now , we need to decide for this
+        sum_dimension , num = 0 , 0
+        owner = self.data["Owners"][Owner]
+        if owner is not None:
+            for oid in owner:
+                s = self.data["shapes"][oid]["type"] 
+                if s == "Cube":
+                    sum_dimension += sum(self.data["shapes"][oid]["dimension"][0:2])
+                    num += 1
+                elif s == "Cylinder":
+                        sum_dimension += self.data["shapes"][oid]["dimension"][0]
+                        num += 1
+        else:
+            s = self.data["shapes"][oid]["type"] 
+            if s == "Cube":
+                sum_dimension += sum(self.data["shapes"][oid]["dimension"][0:2])
+                num += 1
+            elif s == "Cylinder":
+                sum_dimension += self.data["shapes"][oid]["dimension"][0]
+                num += 1
+        avg_length = sum_dimension/float(3*num)
+        
+        return avg_length 
+    
+    def __set_color(self) -> None:
+        # set the color between owner object and its dependent objects
+        m , n = 0 , 0
+        for oid in self.data["Owners"]:
+            n += len(self.data["Owners"][oid]) + 1
+            for i in range(m,n):
+                self.lines2d[i].set_color(f"{self.lines2d[n-1].get_color()}")
+            m += n
+    
 
+    
     def __animate(self, time_index: int):
         
         frame_interval = 0.025
@@ -125,25 +157,24 @@ class Visualizer:
         time_instance = ("{:."+str(step_round)+"f}").format(time_index*frame_interval)
         x_data, y_data = [], []
         for oid in self.data["shapes"]:
-            s = self.data["shapes"][oid]
-            if s["type"] == "Cube":
-                data = self.__cube(time_instance, oid)
+            if oid in self.data["Owners"]:
+                arrow_length = self.__avg_length(oid)
+                data = self.__arrow_points(time_instance, oid, arrow_length)
                 x_data.append(data[0])
                 y_data.append(data[1])
-                arrow_length = s["dimension"][0]/2
-            elif s["type"] == "Cylinder":
-                data = self.__cylinder(time_instance, oid)
-                x_data.append(data[0])
-                y_data.append(data[1])     
-                arrow_length = s["dimension"][0]
+            else:
+                s = self.data["shapes"][oid]
+                if s["type"] == "Cube":
+                    data = self.__cube(time_instance, oid)
+                    x_data.append(data[0])
+                    y_data.append(data[1])
+                elif s["type"] == "Cylinder":
+                    data = self.__cylinder(time_instance, oid)
+                    x_data.append(data[0])
+                    y_data.append(data[1])     
 
-            data = self.__arrow_points(time_instance, oid, arrow_length)
-            x_data.append(data[0])
-            y_data.append(data[1])     
+        self.__set_color()
         
-        for i in range(int(len(self.lines2d)/2)):
-            self.lines2d[2*i+1].set_color(f"{self.lines2d[2*i].get_color()}")
-
         i = 0
         for self.line in self.lines2d:
             self.line.set_data(x_data[i], y_data[i])
@@ -157,7 +188,7 @@ class Visualizer:
         frame_interval = 0.025
         animated = animation.FuncAnimation(self.figure,  # input a figure for animation
                                          self.__animate,  # input method to update figure for each frame
-                                         np.arange(len(self.data)-1),  # Enter a list for the previous method for each frame
+                                         np.arange(len(self.data)-2),  # Enter a list for the previous method for each frame
                                          interval=frame_interval*1000  # the frame (by mili-sec)
                                          # Nothic: blit=True means only re-draw the parts that have changed.
                                          ,blit = True
