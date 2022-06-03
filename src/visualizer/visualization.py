@@ -117,24 +117,20 @@ class Visualizer:
         # gives the average between dimensions as the length of arrow
         # TODO : it is for now , we need to decide for this
         sum_dimension , num = 0 , 0
-        owner = self.data["Owners"][Owner]
-        if owner is not None:
-            for oid in owner:
-                s = self.data["shapes"][oid]["type"] 
-                if s == "Cube":
-                    sum_dimension += sum(self.data["shapes"][oid]["dimension"][0:2])
-                    num += 1
-                elif s == "Cylinder":
-                        sum_dimension += self.data["shapes"][oid]["dimension"][0]
-                        num += 1
+        owner = self.data["shapes"][Owner]
+        if owner is None:
+            for oid in self.data["owners"][Owner]:
+                sum_dimension = self.__avg_length(oid)
+                num += 1
+            return sum_dimension/float(0.5*num)
         else:
-            s = self.data["shapes"][oid]["type"] 
+            s = owner["type"] 
             if s == "Cube":
-                sum_dimension += sum(self.data["shapes"][oid]["dimension"][0:2])
+                sum_dimension += sum(self.data["shapes"][Owner]["dimension"][0:2])
                 num += 1
             elif s == "Cylinder":
-                sum_dimension += self.data["shapes"][oid]["dimension"][0]
-                num += 1
+                    sum_dimension += self.data["shapes"][Owner]["dimension"][0]
+                    num += 1
         avg_length = sum_dimension/float(3*num)
         
         return avg_length 
@@ -142,8 +138,8 @@ class Visualizer:
     def __set_color(self) -> None:
         # set the color between owner object and its dependent objects
         m , n = 0 , 0
-        for oid in self.data["Owners"]:
-            n += len(self.data["Owners"][oid]) + 1
+        for oid in self.data["owners"]:
+            n += len(self.data["owners"][oid]) + 1
             for i in range(m,n):
                 self.lines2d[i].set_color(f"{self.lines2d[n-1].get_color()}")
             m += n
@@ -157,7 +153,7 @@ class Visualizer:
         time_instance = ("{:."+str(step_round)+"f}").format(time_index*frame_interval)
         x_data, y_data = [], []
         for oid in self.data["shapes"]:
-            if oid in self.data["Owners"]:
+            if oid in self.data["owners"]:
                 arrow_length = self.__avg_length(oid)
                 data = self.__arrow_points(time_instance, oid, arrow_length)
                 x_data.append(data[0])

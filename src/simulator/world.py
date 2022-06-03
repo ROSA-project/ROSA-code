@@ -135,9 +135,9 @@ class World:
             self.__num_evolutions += 1
 
         self.dump_all_shapes_info()
-        self.dumb_all_owners_inf()
+        self.dump_all_owners_inf()
         self.dump_vis_data_to_file()
-        
+    
     def update_visualization_json(self):
         step_round = 3
         while self.__current_time_ms >= self.__next_frame_time_msec:
@@ -147,13 +147,12 @@ class World:
 
     def dump_all_shapes_info(self):
         # dump visualization info for shapes to the output json file
-        shapes_info_dict = {"shapes": {}}
+        shapes_info_dict = {"shapes" : {}}
         for oid in self.objects:
             if self.objects[oid].shape is not None:
-                # TODO: to be replaced with proper handling of compound objects (if cond)
                 shapes_info_dict["shapes"][oid] = self.objects[oid].dump_shape_info()
-            else:
-                shapes_info_dict["shapes"][oid] = None
+                continue
+            shapes_info_dict["shapes"][oid] = None
         self.__vis_data.update(shapes_info_dict)
 
     def dump_vis_data_to_file(self):
@@ -172,18 +171,18 @@ class World:
         """
         objects_info = dict()
         for oid in self.objects:
-                # TODO: to be replaced with proper handling of compound objects (if cond)
+            # TODO:In higher versions, this should be changed (if the visualize method is changed)
             objects_info[oid] = self.objects[oid].visualize()
         return objects_info
     
-    def dumb_all_owners_inf(self):
+    def dump_all_owners_inf(self):
         # dump visualization info for Owners between objects to the output json file
-        owners_info = {"Owners":{}}
+        owners_info = {"owners":{}}
         for Oid in self.objects:
             if self.objects[Oid].owner_object is None:
                 if len(self.objects[Oid].dependent_objects) == 0 :
-                    owners_info["Owners"][Oid] = None
+                    owners_info["owners"][Oid] = None
                 else:
-                    owners_info["Owners"][Oid] = list(map(str,list(self.objects[Oid].dependent_objects.keys())))
+                    owners_info["owners"][Oid] = list(map(str,list(self.objects[Oid].dependent_objects.keys())))
         
         self.__vis_data.update(owners_info)
