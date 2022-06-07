@@ -4,6 +4,7 @@ from position import Position
 from box import Box
 from cube import Cube
 from cylinder import Cylinder
+from ball import RigidPointBall
 import json
 
 
@@ -39,6 +40,11 @@ class Map:
         cname = obj_json["class"]
         if cname == "Box":
             return Box(new_id, name, shape, position, owner)
+        elif cname == "RigidPointBall":
+            # TODO hardcoding acceleration and velocity not to change 
+            # Erfan's code w/o discussion
+            # TODO also skipping name for now
+            return RigidPointBall(new_id, shape, position, 0, 2, owner)
         else:
             assert cname == "Simple" or cname == "CompoundPhysical",\
                 f"Unknown 'class' name for object: {cname}"

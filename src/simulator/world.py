@@ -1,18 +1,17 @@
 from __future__ import annotations
 
 import time
-
 from intersection_instance import IntersectionInstance
 from map import Map
 from object import Object, ObjectId
 from box import Box
 from cube import Cube
 from position import Position
-
 from collections import defaultdict
 from typing import DefaultDict
-
 import json
+import logger
+
 # type aliasing
 InInType = DefaultDict[ObjectId, list[IntersectionInstance]]
 
@@ -43,7 +42,7 @@ class World:
         self.__current_time_ms: int = 0
         self.__vis_output_filename: str = vis_filename
         # TODO hardcoded parameters here, to be taken care of properly
-        self.__duration_sec: int = 20
+        self.__duration_sec: int = 10
         self.__vis_frame_interval_ms = 0.025
         self.__next_frame_time_msec = 0
                 
@@ -81,7 +80,7 @@ class World:
         for oid in delete_keys:
             del self.objects[oid]
 
-    def intersect(self) -> InInType:
+    def intersect(self) -> tuple:
         """Returns the intersection of every pair of objects.
 
         Returns:
@@ -90,16 +89,27 @@ class World:
         """
         intersection_result: InInType = defaultdict(list)  # final result
         oids: list[ObjectId] = list(self.objects.keys())  # TODO: better way to get oids?
+        non_infinitesimal_intersection_exists = False
         for i in range(len(oids)):
             oid_1 = oids[i]
             for j in range(i+1, len(oids)):
                 oid_2 = oids[j]
-                instance = IntersectionInstance(self.objects[oid_1], self.objects[oid_2])
-                # instance has to be added for both objects
-                intersection_result[oid_1].append(instance)
-                intersection_result[oid_2].append(instance)
+                # TODO skipping shape-less objects, but shapelessness is not so well-defined
+                # let's return to this later
+                if not (self.objects[oid_1].shape == None \
+                    or self.objects[oid_2].shape == None):
+                    instance = IntersectionInstance(self.objects[oid_1], self.objects[oid_2])
+                    # instance has to be added for both objects
+                    intersection_result[oid_1].append(instance)
+                    intersection_result[oid_2].append(instance)
+                    if instance.does_intersect():
+                        if not instance.is_infinitesimal():
+                            non_infinitesimal_intersection_exists = True
+                        # TODO with the current architecture we could immediately break
+                        # and return or throw an exception here. But that would be 
+                        # optimization. decide later.
 
-        return intersection_result
+        return intersection_result, non_infinitesimal_intersection_exists
 
     def register_intersections(self, intersection_result: InInType) -> None:
         """For each object with intersections, registers the list of its intersections
@@ -125,12 +135,30 @@ class World:
         In each iteration, intersections of objects are computed and registered, and then
         each object is evolved.
         """
-        delta_t = self.pick_delta_t()
+        non_infinitesimal_intersection_exists: bool = False
+        current_percentage = 0
         while self.__current_time_ms < self.__duration_sec:
-            intersection_result = self.intersect()
-            self.register_intersections(intersection_result)
-            self.update_visualization_json()
+            delta_t = self.pick_delta_t()
+            if int(self.__current_time_ms / self.__duration_sec*100) > current_percentage:
+                current_percentage = int(self.__current_time_ms / self.__duration_sec*100)
+                print(str(current_percentage) + "% processed")
+            logger.Logger.add_line("at t = " + str(self.__current_time_ms) + ", "
+                                    "picked delta_t = " + str(delta_t))
             self.evolve(delta_t)
+            intersection_result, non_infinitesimal_intersection_exists = self.intersect()
+            # TODO I don't want to assert so I can see the output :D assert kills the wrapper
+            #assert(not non_infinitesimal_intersection_exists)
+            if non_infinitesimal_intersection_exists:
+                print("non-infinitesimal_intersection happened! exiting simulation loop")
+                break
+            
+            # passes intersection result to the objects
+            # where the info will be used by object to handle possible intersection
+            # consequences. (differentiate this from object evolution)
+            self.register_intersections(intersection_result)
+
+            self.update_visualization_json()
+            
             self.__current_time_ms = self.__current_time_ms + delta_t
             self.__num_evolutions += 1
 

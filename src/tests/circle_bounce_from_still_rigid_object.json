@@ -1,0 +1,74 @@
+{
+    "x_0": {
+        "circle_center": [0, 0, 0],
+        "phi": 0,
+        "theta": 90,
+        "bump_point": [1, 0, 0],
+        "expected_phi": 180,
+        "expected_theta": 90
+    },
+    "x_1": {
+        "circle_center": [0, 0, 0],
+        "phi": 180,
+        "theta": 90,
+        "bump_point": [-1, 0, 0],
+        "expected_phi": 0,
+        "expected_theta": 90
+    },
+    "x_2": {
+        "circle_center": [0, 0, 0],
+        "phi": 180,
+        "theta": 90,
+        "bump_point": [1, 0, 0],
+        "expected_phi": 180,
+        "expected_theta": 90
+    },
+    "x_4": {
+        "circle_center": [0, 0, 0],
+        "phi": 0,
+        "theta": 90,
+        "bump_point": [0, 1, 0],
+        "expected_phi": 0,
+        "expected_theta": 90
+    },
+    "x_5": {
+        "circle_center": [0, 0, 0],
+        "phi": 180,
+        "theta": 90,
+        "bump_point": [-1, 0, 0],
+        "expected_phi": 0,
+        "expected_theta": 90
+    },
+    "oblique_0": {
+        "circle_center": [0, 0, 0],
+        "phi": 45,
+        "theta": 90,
+        "bump_point": [1, 0, 0],
+        "expected_phi": 135,
+        "expected_theta": 90
+    },
+    "oblique_1": {
+        "circle_center": [0, 0, 0],
+        "phi": -45,
+        "theta": 90,
+        "bump_point": [1, 0, 0],
+        "expected_phi": -135,
+        "expected_theta": 90
+    },
+    "oblique_2": {
+        "circle_center": [0, 0, 0],
+        "phi": 89,
+        "theta": 90,
+        "bump_point": [1, 0, 0],
+        "expected_phi": 91,
+        "expected_theta": 90
+    },
+    "y_0": {
+        "circle_center": [0, 0, 0],
+        "phi": 90,
+        "theta": 90,
+        "bump_point": [0, 1, 0],
+        "expected_phi": -90,
+        "expected_theta": 90
+    }
+}
