@@ -50,7 +50,14 @@ class IntersectionInstance:
         """
         return self.__does_intersect
 
-    def cylinder_cube(self):
+    def cylinder_cube(self) -> None:
+        """
+        performs intersection and populates:
+            self._intersection_points
+            self.__is_infinitesimal
+        # TODO temporary interface, to be completed once complete intersection is 
+            implemented
+        """
         # TODO assuming objects with theta=0, i.e upright and intersecting 2D
 
         if (self.object1.shape.dump_info())["type"] == "Cylinder":
@@ -135,9 +142,7 @@ class IntersectionInstance:
         logger.Logger.add_line("line-circle intersection:")
         logger.Logger.add_line("input line = " + str(p1) + " , " + str(p2))
         logger.Logger.add_line("input circle center = " + str(circle_center) + " and "
-                                                                               "radius "
-                                                                               "= " +
-                               str(circle_radius))
+                                "radius = " + str(circle_radius))
 
         p1 = r_matrix.dot(p1)
         p2 = r_matrix.dot(p2)
@@ -252,6 +257,7 @@ class IntersectionInstance:
         if b2[0] < b1[0]:
             b1x = b2[0]
             b2x = b1[0]
+
         x1 = max(a1x, b1x)
         x2 = min(a2x, b2x)
         if x1 > x2:

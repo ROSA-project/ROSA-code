@@ -1,6 +1,6 @@
 import numpy as np
 import physical_object
-from position import Position
+import position
 import copy
 import logger
 
@@ -14,7 +14,7 @@ class RigidPointBall(physical_object.RigidPhysicalObject):
     not rotate
     """
 
-    def new_position_upon_bump(self) -> Position:
+    def new_position_upon_bump(self) -> position.Position:
         """
             handles the new direction of movement when a bump has happened.
             That is, we're here because infinitesimal intersections had occurred in the
@@ -31,11 +31,13 @@ class RigidPointBall(physical_object.RigidPhysicalObject):
                 # TODO I'm taking the first bump, process and return! we can have
                 # multiple bumps at the same time resulting in a combined change.
 
-                # TODO we won't have this method. just an oversimplification for now
-                # bump_point expected to be a numpy array with 3 elements x, y and z
+                
                 logger.Logger.add_line("processing a bump:")
 
+                # TODO we won't have this method. just an oversimplification for now
+                # bump_point expected to be a numpy array with 3 elements x, y and z
                 intersection_points = in_in.get_intersection_point()
+                
                 # TODO temporary: average two intersection points to find the bump point.
                 bump_point = 1 / 2 * (intersection_points[0][0] + intersection_points[0][1])
                 logger.Logger.add_line("given bump point = " + str(bump_point))

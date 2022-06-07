@@ -2,15 +2,19 @@ import unittest
 import numpy as np
 import sys
 import json
-sys.path.append("simulator")
-#sys.path.append(r"visualizer")
 
-import tests.testing_tools as teto
-import ball
+# meant to be run from root directory
+# yet we have assumed simulator being in the path all over our code
+sys.path.append("src/simulator")
+
+import src.tests.testing_tools as teto
+import src.simulator.ball as ball
+
+json_path_prefix = "src/tests/"
 
 class PointObjectBounce(unittest.TestCase):
     def test_circle_bounce_from_still_rigid_object(self):
-        json_filename = "tests/circle_bounce_from_still_rigid_object.json"
+        json_filename = json_path_prefix + "circle_bounce_from_still_rigid_object.json"
         with open(json_filename, "r") as f:
             testcases = json.load(f)
         

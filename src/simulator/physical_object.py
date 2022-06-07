@@ -16,12 +16,17 @@ class RigidPhysicalObject(object.Object):
     def __init__(self, oid: object.ObjectId, shape: shape.Shape,
                  position: position.Position, acceleration: float,
                  velocity: float, owner_object: object.Object):
-
+        
         super().__init__(self, oid, shape, position, owner_object)
         self.acceleration: float = acceleration
         self.velocity: float = velocity
 
     def evolve(self, delta_t: float):
+        """
+        overriding that of Object. A RigidPhysicalObject basically keeps moving
+        based on acceleration and velocity and changes state upon bumps. the
+        handling of the bump is implemented in children.
+        """
         if self._infinitesimal_intersection_occured:
             # this is a bump which affects object's movement in this cycle
             logger.Logger.add_line("RigidPhysicalObject infinitestimal intersection, "
@@ -38,8 +43,11 @@ class RigidPhysicalObject(object.Object):
         offspring_objects = {}
         return offspring_objects
 
-    def new_position_upon_bump(self):
+    def new_position_upon_bump(self) -> position.Position:
         """
-        calculates the new motion state
+        calculates the new motion state. 
+        TODO saeed: for v0 I'm just assuming a bump impacts the direction
+             this will change later with bump of moving objects and
+             introduction of momentum
         """
-        pass
+        raise Exception("must be implemented in children")

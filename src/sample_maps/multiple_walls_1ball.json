@@ -1,0 +1,127 @@
+{
+    "room": {
+        "class": "CompoundPhysical",
+        "position": [0,0,0,0,0],
+        "subobjects": {
+            "wall1":{
+                "class": "Box",
+                "shape": {
+                    "class": "Cube",
+                    "arguments": {
+                        "lenght": 8,
+                        "height": 3,
+                        "width": 0.2
+                    }
+                },
+                "position": [0,-4,0,0,90]
+            },
+            "wall2":{
+                "class": "Box",
+                "shape": {
+                    "class": "Cube",
+                    "arguments": {
+                        "lenght": 8,
+                        "height": 3,
+                        "width": 0.2
+                    }
+                },
+                "position": [4,0,0,90,90]
+            },
+            "wall3":{
+                "class": "Box",
+                "shape": {
+                    "class": "Cube",
+                    "arguments": {
+                        "lenght": 8,
+                        "height": 3,
+                        "width": 0.2
+                    }
+                },
+                "position": [0,4,0,180,90]
+            },
+            "wall4":{
+                "class": "Box",
+                "shape": {
+                    "class": "Cube",
+                    "arguments": {
+                        "lenght": 8,
+                        "height": 3,
+                        "width": 0.2
+                    }
+                },
+                "position": [-4,0,0,270,90]
+            },
+            "wall5":{
+                "class": "Box",
+                "shape": {
+                    "class": "Cube",
+                    "arguments": {
+                        "lenght": 6,
+                        "height": 3,
+                        "width": 0.2
+                    }
+                },
+                "position": [0,-3,0,0,90]
+            },
+            "wall6":{
+                "class": "Box",
+                "shape": {
+                    "class": "Cube",
+                    "arguments": {
+                        "lenght": 6,
+                        "height": 3,
+                        "width": 0.2
+                    }
+                },
+                "position": [3,0,0,90,90]
+            },
+            "wall7":{
+                "class": "Box",
+                "shape": {
+                    "class": "Cube",
+                    "arguments": {
+                        "lenght": 6,
+                        "height": 3,
+                        "width": 0.2
+                    }
+                },
+                "position": [0,3,0,180,90]
+            },
+            "wall8":{
+                "class": "Box",
+                "shape": {
+                    "class": "Cube",
+                    "arguments": {
+                        "lenght": 6,
+                        "height": 3,
+                        "width": 0.2
+                    }
+                },
+                "position": [-3,0,0,270,90]
+            }
+            
+        }
+    },
+    "rigid_point_ball1": {
+        "class": "RigidPointBall",
+        "position": [0.0,3.5,0,70,90],
+        "shape": {
+            "class": "Cylinder",
+            "arguments": {
+                "radius": 0.2,
+                "height": 1
+            }
+        }
+    },
+    "rigid_point_ball2": {
+        "class": "RigidPointBall",
+        "position": [0.0,3.5,0,170,90],
+        "shape": {
+            "class": "Cylinder",
+            "arguments": {
+                "radius": 0.2,
+                "height": 1
+            }
+        }
+    }
+}

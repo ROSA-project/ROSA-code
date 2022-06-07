@@ -2,15 +2,19 @@ import unittest
 import numpy as np
 import sys
 import json
-sys.path.append("simulator")
 
-import tests.testing_tools as teto
-import intersection_instance as in_in
+# meant to be run from root directory
+# yet we have assumed simulator being in the path all over our code
+sys.path.append("src/simulator")
 
+import src.tests.testing_tools as teto
+import src.simulator.intersection_instance as in_in
+
+json_path_prefix = "src/tests/"
 
 class RectangleCircleIntersection(unittest.TestCase):
     def test_rectangle_to_lines_decomposition(self):
-        json_filename = "tests/rectangle_to_lines_decomposition.json"
+        json_filename = json_path_prefix + "rectangle_to_lines_decomposition.json"
         with open(json_filename, "r") as f:
             testcases = json.load(f)
         
@@ -28,7 +32,7 @@ class RectangleCircleIntersection(unittest.TestCase):
             test_counter += 1
 
     def test_horizontal_line_segment_intersection(self):
-        json_filename = "tests/horizontal_line_segment_intersection.json"
+        json_filename = json_path_prefix + "horizontal_line_segment_intersection.json"
         with open(json_filename, "r") as f:
             testcases = json.load(f)
         
@@ -46,7 +50,7 @@ class RectangleCircleIntersection(unittest.TestCase):
             test_counter += 1
 
     def test_line_circle_intersection(self):
-        json_filename = "tests/circle_line_intersection.json"
+        json_filename = json_path_prefix + "circle_line_intersection.json"
         with open(json_filename, "r") as f:
             testcases = json.load(f)
         
