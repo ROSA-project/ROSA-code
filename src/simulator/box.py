@@ -6,7 +6,7 @@ import cube
 
 
 class Box(Object):
-    def __init__(self, oid: ObjectId, name: string, cube: cube.Cube, position: Position,
+    def __init__(self, oid: ObjectId, name: str, cube: cube.Cube, position: Position,
                  owner_object: Object):
         # if not isinstance(cube, cube.Cube):
         #     raise ValueError("A Box object must have Cube shape")

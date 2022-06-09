@@ -2,7 +2,9 @@
 from __future__ import annotations
 from shape import Shape
 from position import Position
-from intersection_instance import IntersectionInstance
+import intersection_instance as in_in
+import copy
+import logger
 
 ObjectId = int  # type aliasing, since we might change ObjectId composition
 
@@ -13,9 +15,13 @@ class Object:
         self.oid = oid
         self.name = name
         self.shape = shape
+        # TODO we should do this deepcopy for all? a nicer way?
         self.position = position
+        self.__previous_position = position
         self.owner_object = owner_object
         self.dependent_objects: dict[ObjectId, Object] = {}
+        self._latest_intersections: list[in_in.IntersectionInstance] = []
+        self._infinitesimal_intersection_occured: bool = False
 
     def add_dependent_object(self, obj: Object):
         self.dependent_objects[obj.oid] = obj
@@ -41,11 +47,44 @@ class Object:
 
         return offspring_objects
 
-    def set_intersections(self, intersections: list[IntersectionInstance]) -> None:
-        """Registers this round's intersections to be later used by evolve().
+    def set_intersections(self, intersections: list[in_in.IntersectionInstance]) -> None:
         """
-        # TODO: should it be simply stored in a member variable?
-        pass
+        Registers this round's intersections
+        if any infinitesimal intersection, calls handle_infinitesimal_intersection
+        to decide on the consequences in the current evolution cycle
+        note that the consequences on behavior of the robot will be handled in the 
+        next evolution cycle
+        """
+        self._latest_intersections = copy.copy(intersections)
+        self._infinitesimal_intersection_occured = False
+        for in_in in self._latest_intersections:
+            if in_in.does_intersect() and in_in.is_infinitesimal():
+                self._infinitesimal_intersection_occured = True
+                
+        if self._infinitesimal_intersection_occured:
+            self.infinitesimal_intersection_immediate()
+    
+    def infinitesimal_intersection_immediate(self):
+        """
+        by default, we revert the position without reverting the rest of the state
+        """
+        logger.Logger.add_line("infinitestimal intersection detected, reverting position (default Object behavior)")
+        self.revert_position()
+
+    def update_position(self,new_position):
+        """
+        all changes to the position must go through this function
+        This is to ensure we keep the state. 
+        # TODO how to enforce this?
+        """
+        self.__previous_position = copy.copy(self.position)
+        self.position = copy.copy(new_position)
+
+    def revert_position(self):
+        # TODO leaves the position and previous position the same.
+        # better to somehow invalidate previous position? (same should happen in
+        # constructor where these two are again the same)
+        self.position = copy.copy(self.__previous_position)
 
     def visualize(self) -> list:
         """
