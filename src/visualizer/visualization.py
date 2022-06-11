@@ -144,8 +144,9 @@ class Visualizer:
         """Assigns colors randomly to each object (assigned to Owner for compound object)
         """
         list_color = ["b", "g", "r", "c", "m", "y", "k", "#00FFFF", "#7FFFD4", "#0000FF", "#C1F80A",
-                 "#8C000F", "#8C000F", "#FF00FF", "#D2691E", "#650021", "#008000", "#06C2AC",
-                 "#FE420F", "#AAA662", "#800080", "#F0E68C", "#069AF3"]
+                      "#8C000F", "#8C000F", "#FF00FF", "#D2691E", "#650021", "#008000", "#06C2AC",
+                      "#FE420F", "#AAA662", "#800080", "#F0E68C", "#069AF3","#01153E", "#FF6347",
+                      "#580F41", "#A9561E", "#6E750E","#C20078", "#9ACD32", "#929591"]
         obj = dict()
         for oid in self.data["shapes"]:
             if oid not in self.data["owners"]:
