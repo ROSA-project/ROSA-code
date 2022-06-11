@@ -115,13 +115,16 @@ class Visualizer:
         return x_data, y_data
 
     def __avg_length(self, owner: ObjectId) -> float:
-        # gives the average between dimensions as the length of arrow
+        """gives the average between dimensions as the length of arrow
+        Args:
+            owner: the object ID that we want to draw the arrow
+        """
         # TODO : just for now , we need to decide for this
         sum_dimension, num = 0, 1
         ob = self.data["shapes"][owner]
         if ob is None:
             for oid in self.data["owners"]:
-                if self.data["owners"][oid] is ob:
+                if self.data["owners"][oid] is owner:
                     sum_dimension = self.__avg_length(oid)
                     num += 1
             return sum_dimension / float(0.5 * num)
