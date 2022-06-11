@@ -182,11 +182,8 @@ class Visualizer:
         for oid in info:
             if oid in self.data["owners"]:
                 self.lines2d[index].set_data(info[oid][0], info[oid][1])
-                while True:
-                    if self.data["owners"][oid] in self.data["owners"]:
-                        oid = self.data["owners"][oid]
-                    else:
-                        break
+                while self.data["owners"][oid] in self.data["owners"]:
+                    oid = self.data["owners"][oid]
                 self.lines2d[index].set_color(self.__colors[self.data["owners"][oid]])
                 index += 1
             else:
