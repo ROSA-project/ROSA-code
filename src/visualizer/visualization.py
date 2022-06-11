@@ -152,6 +152,7 @@ class Visualizer:
 
     def __animate(self, time_index: int):
 
+        global data
         frame_interval = 0.025
         step_round = 3
         time_instance = ("{:." + str(step_round) + "f}").format(time_index * frame_interval)
@@ -177,6 +178,11 @@ class Visualizer:
         for oid in info:
             if oid in self.data["owners"]:
                 self.lines2d[index].set_data(info[oid][0], info[oid][1])
+                while True:
+                    if self.data["owners"][oid] in self.data["owners"]:
+                        oid = self.data["owners"][oid]
+                    else:
+                        break
                 self.lines2d[index].set_color(self.__colors[self.data["owners"][oid]])
                 index += 1
             else:
