@@ -38,7 +38,9 @@ class Visualizer:
         for i in range(2 * len(self.data["shapes"])):
             obj = self.axes.plot([], [])[0]
             self.lines2d.append(obj)
+        # Between independent objects, we randomly assign color to each one
         self.__colors = self.__color_info()
+
         # TODO: It is currently hardcoded, it will be set by the user later
         # The angle between large length of arrow and small length of its head
         self.__arrow_head_angle = 37
@@ -127,7 +129,7 @@ class Visualizer:
                 if self.data["owners"][oid] is owner:
                     sum_dimension = self.__avg_length(oid)
                     num += 1
-            return sum_dimension / float(0.5 * num)
+            return sum_dimension / float(0.7 * num)
         else:
             s = ob["type"]
             if s == "Cube":
@@ -145,8 +147,9 @@ class Visualizer:
         """
         list_color = ["b", "g", "r", "c", "m", "y", "k", "#00FFFF", "#7FFFD4", "#0000FF", "#C1F80A",
                       "#8C000F", "#8C000F", "#FF00FF", "#D2691E", "#650021", "#008000", "#06C2AC",
-                      "#FE420F", "#AAA662", "#800080", "#F0E68C", "#069AF3","#01153E", "#FF6347",
-                      "#580F41", "#A9561E", "#6E750E","#C20078", "#9ACD32", "#929591"]
+                      "#FE420F", "#AAA662", "#800080", "#F0E68C", "#069AF3", "#01153E", "#FF6347",
+                      "#580F41", "#A9561E", "#6E750E", "#C20078", "#9ACD32", "#929591"]
+        # obj is a dictionary, have independent object's ID as a key and color's ID as value
         obj = dict()
         for oid in self.data["shapes"]:
             if oid not in self.data["owners"]:
@@ -160,7 +163,7 @@ class Visualizer:
         frame_interval = 0.025
         step_round = 3
         time_instance = ("{:." + str(step_round) + "f}").format(time_index * frame_interval)
-        info = dict()
+        info = dict()  # Sorts the data of each object (by key-value)
         for oid in self.data["shapes"]:
             if self.data["shapes"][oid] is not None:
                 s = self.data["shapes"][oid]
@@ -178,8 +181,10 @@ class Visualizer:
                 data = self.__arrow_points(time_instance, oid, arrow_length)
                 info[oid] = [data[0], data[1]]
 
+        # At the same time as set data into a figure, it also set colors by owners
         index = 0
         for oid in info:
+            # here, it's check the top owners to set color
             if oid in self.data["owners"]:
                 self.lines2d[index].set_data(info[oid][0], info[oid][1])
                 while self.data["owners"][oid] in self.data["owners"]:
