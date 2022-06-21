@@ -2,7 +2,7 @@ import numpy as np
 import physical_object
 import position
 import copy
-import logger
+import saeed_logger as logger
 
 # TODO move
 non_zero_criterion = 0.0001

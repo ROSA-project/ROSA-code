@@ -4,7 +4,7 @@ from shape import Shape
 from position import Position
 import intersection_instance as in_in
 import copy
-import logger
+import saeed_logger as logger
 
 ObjectId = int  # type aliasing, since we might change ObjectId composition
 
