@@ -3,7 +3,7 @@ sys.path.append(r"simulator")
 sys.path.append(r"visualizer")
 from world import World
 from visualization import Visualizer
-import logger
+import saeed_logger as logger
 
 
 logger.Logger.initialize("default_log.txt")

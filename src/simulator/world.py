@@ -10,7 +10,7 @@ from position import Position
 from collections import defaultdict
 from typing import DefaultDict
 import json
-import logger
+import saeed_logger as logger
 
 # type aliasing
 InInType = DefaultDict[ObjectId, list[IntersectionInstance]]

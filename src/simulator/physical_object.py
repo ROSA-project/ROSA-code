@@ -3,7 +3,7 @@ import shape
 import position
 import numpy as np
 import copy
-import logger
+import saeed_logger as logger
 
 
 class RigidPhysicalObject(object.Object):

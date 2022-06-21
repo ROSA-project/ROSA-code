@@ -1,5 +1,5 @@
 from __future__ import annotations
-import logger
+import saeed_logger as logger
 import object
 import numpy as np
 
