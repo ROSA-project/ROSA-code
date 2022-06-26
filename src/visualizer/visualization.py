@@ -35,6 +35,8 @@ class Visualizer:
             print("Error in opening file ", self.__vis_output_filename)
             raise e
 
+        # notice: The number 2 in the following code is for calculating the maximum number of graphs
+        # Suppose each shape has an arrow
         for i in range(2 * len(self.data["shapes"])):
             obj = self.axes.plot([], [])[0]
             self.lines2d.append(obj)
@@ -122,6 +124,8 @@ class Visualizer:
             owner: the object ID that we want to draw the arrow
         """
         # TODO : just for now , we need to decide for this
+        # notice : I chose the number 0.7 to have the right size for the arrow length
+        # in the algorithm below the size is a small value
         sum_dimension, num = 0, 1
         ob = self.data["shapes"][owner]
         if ob is None:
@@ -138,7 +142,7 @@ class Visualizer:
             elif s == "Cylinder":
                 sum_dimension += self.data["shapes"][owner]["dimension"][0]
                 num += 1
-        avg_length = sum_dimension / float(0.8 * num)
+        avg_length = sum_dimension / float(0.7 * num)
 
         return avg_length
 
