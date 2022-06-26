@@ -94,6 +94,8 @@ class Object:
         return position
 
     def dump_shape_info(self):
+        if self.shape is None:
+            return None
         return self.shape.dump_info()
 
     def bounding_box(self) -> Box:

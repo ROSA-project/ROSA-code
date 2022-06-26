@@ -45,7 +45,7 @@ class World:
         self.__duration_sec: int = 10
         self.__vis_frame_interval_ms = 0.025
         self.__next_frame_time_msec = 0
-                
+
     def evolve(self, delta_t: float) -> None:
         """Transitions the objects into next state.
 
@@ -92,12 +92,12 @@ class World:
         non_infinitesimal_intersection_exists = False
         for i in range(len(oids)):
             oid_1 = oids[i]
-            for j in range(i+1, len(oids)):
+            for j in range(i + 1, len(oids)):
                 oid_2 = oids[j]
                 # TODO skipping shape-less objects, but shapelessness is not so well-defined
                 # let's return to this later
                 if not (self.objects[oid_1].shape == None \
-                    or self.objects[oid_2].shape == None):
+                        or self.objects[oid_2].shape == None):
                     instance = IntersectionInstance(self.objects[oid_1], self.objects[oid_2])
                     # instance has to be added for both objects
                     intersection_result[oid_1].append(instance)
@@ -139,30 +139,31 @@ class World:
         current_percentage = 0
         while self.__current_time_ms < self.__duration_sec:
             delta_t = self.pick_delta_t()
-            if int(self.__current_time_ms / self.__duration_sec*100) > current_percentage:
-                current_percentage = int(self.__current_time_ms / self.__duration_sec*100)
+            if int(self.__current_time_ms / self.__duration_sec * 100) > current_percentage:
+                current_percentage = int(self.__current_time_ms / self.__duration_sec * 100)
                 print(str(current_percentage) + "% processed")
             logger.Logger.add_line("at t = " + str(self.__current_time_ms) + ", "
-                                    "picked delta_t = " + str(delta_t))
+                                                                             "picked delta_t = " + str(delta_t))
             self.evolve(delta_t)
             intersection_result, non_infinitesimal_intersection_exists = self.intersect()
             # TODO I don't want to assert so I can see the output :D assert kills the wrapper
-            #assert(not non_infinitesimal_intersection_exists)
+            # assert(not non_infinitesimal_intersection_exists)
             if non_infinitesimal_intersection_exists:
                 print("non-infinitesimal_intersection happened! exiting simulation loop")
                 break
-            
+
             # passes intersection result to the objects
             # where the info will be used by object to handle possible intersection
             # consequences. (differentiate this from object evolution)
             self.register_intersections(intersection_result)
 
             self.update_visualization_json()
-            
+
             self.__current_time_ms = self.__current_time_ms + delta_t
             self.__num_evolutions += 1
 
         self.dump_all_shapes_info()
+        self.dump_all_owners_info()
         self.dump_vis_data_to_file()
 
     def update_visualization_json(self):
@@ -176,10 +177,7 @@ class World:
         # dump visualization info for shapes to the output json file
         shapes_info_dict = {"shapes": {}}
         for oid in self.objects:
-            if self.objects[oid].shape is not None:
-                # TODO: to be replaced with proper handling of compound objects (if cond)
-                shapes_info_dict["shapes"][oid] = self.objects[oid].dump_shape_info()
-
+            shapes_info_dict["shapes"][oid] = self.objects[oid].dump_shape_info()
         self.__vis_data.update(shapes_info_dict)
 
     def dump_vis_data_to_file(self):
@@ -198,7 +196,16 @@ class World:
         """
         objects_info = dict()
         for oid in self.objects:
-            if self.objects[oid].shape is not None:
-                # TODO: to be replaced with proper handling of compound objects (if cond)
-                objects_info[oid] = self.objects[oid].visualize()
+            # TODO:In higher versions, this should be changed (if the visualize method is changed)
+            objects_info[oid] = self.objects[oid].visualize()
         return objects_info
+
+    def dump_all_owners_info(self) -> None:
+        """ dump visualization info for Owners between objects to the output json file
+
+        """
+        owners_info = {"owners": {}}
+        for oid in self.objects:
+            if self.objects[oid].owner_object is not None:
+                owners_info["owners"][oid] = str(self.objects[oid].owner_object.oid)
+        self.__vis_data.update(owners_info)
