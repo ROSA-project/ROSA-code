@@ -1,8 +1,8 @@
 import object
 
 
-class Non_physical_object(object.Object):
+class NonPhysicalObject(object.Object):
     """
-    Object without physical existence, it does not intersect with objects
+    Object without physical existence, its intersection with other objects does not cause bumps.
     """
     pass
