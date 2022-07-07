@@ -7,6 +7,7 @@ from object import Object, ObjectId
 from box import Box
 from cube import Cube
 from position import Position
+from object_registry import ObjectRegistry
 from collections import defaultdict
 from typing import DefaultDict
 import json
@@ -35,7 +36,8 @@ class World:
 
     def __init__(self, map_filename: str, vis_filename: str):
         m = Map()
-        self.objects: dict[ObjectId, Object] = m.parse_map(map_filename)
+        self.registry: ObjectRegistry = m.parse_map(map_filename)
+        # self.objects: dict[ObjectId, Object] = m.parse_map(map_filename)
         self.__vis_data = dict()
         self.__creation_ts: float = time.time()  # current timestamp
         self.__num_evolutions: int = 0
@@ -52,33 +54,25 @@ class World:
         Args:
             delta_t: Time difference between now and next state in seconds.
         """
-        for oid in self.objects:
-            if self.objects[oid].is_evolvable():
-                offspring_objects = self.objects[oid].evolve(delta_t)
-                self.add_object(offspring_objects)
+        for oid in self.registry.get_objects():
+            if self.registry.get_objects()[oid].is_evolvable():
+                offspring_objects = self.registry.get_objects()[oid].evolve(delta_t)
+                self.registry.add_objects(offspring_objects)
                 # TODO these newly added objects don't get an evolve() in this round?
 
         self.delete_expired_objects()
-
-    def add_object(self, new_objects: dict[ObjectId, Object]) -> None:
-        """Appends new objects to the list of world objects.
-
-        Args:
-            new_objects: Will be added to self.objects
-        """
-        self.objects.update(new_objects)
 
     def delete_expired_objects(self) -> None:
         """Removes objects which are supposed to die in this iteration.
         """
         # Cannot erase from dictionary in a loop, so do it in two steps
         delete_keys: list[ObjectId] = []
-        for oid in self.objects:
-            if self.objects[oid].time_to_die():
+        for oid in self.registry.get_objects():
+            if self.registry.get_objects()[oid].time_to_die():
                 delete_keys.append(oid)
 
         for oid in delete_keys:
-            del self.objects[oid]
+            del self.registry.get_objects()[oid]
 
     def intersect(self) -> tuple:
         """Returns the intersection of every pair of objects.
@@ -88,7 +82,7 @@ class World:
             ObjectId
         """
         intersection_result: InInType = defaultdict(list)  # final result
-        oids: list[ObjectId] = list(self.objects.keys())  # TODO: better way to get oids?
+        oids: list[ObjectId] = list(self.registry.get_objects().keys())  # TODO: better way to get oids?
         non_infinitesimal_intersection_exists = False
         for i in range(len(oids)):
             oid_1 = oids[i]
@@ -96,9 +90,10 @@ class World:
                 oid_2 = oids[j]
                 # TODO skipping shape-less objects, but shapelessness is not so well-defined
                 # let's return to this later
-                if not (self.objects[oid_1].shape == None \
-                        or self.objects[oid_2].shape == None):
-                    instance = IntersectionInstance(self.objects[oid_1], self.objects[oid_2])
+                if not (self.registry.get_objects()[oid_1].shape == None \
+                        or self.registry.get_objects()[oid_2].shape == None):
+                    instance = IntersectionInstance(self.registry.get_objects()[oid_1],
+                                                    self.registry.get_objects()[oid_2])
                     # instance has to be added for both objects
                     intersection_result[oid_1].append(instance)
                     intersection_result[oid_2].append(instance)
@@ -118,15 +113,15 @@ class World:
             A dictionary where a list of IntersectionInstance objects is stored per object
         """
         for oid in intersection_result:
-            self.objects[oid].set_intersections(intersection_result[oid])
+            self.registry.get_objects()[oid].set_intersections(intersection_result[oid])
 
     def pick_delta_t(self) -> float:
         """Returns a delta_t for the current cycle
         """
         # TODO: For now, we will only  run the world for one round
         delta_t_list = [self.__duration_sec + 1]
-        for oid in self.objects:
-            delta_t_list.append(self.objects[oid].get_required_delta_t())
+        for oid in self.registry.get_objects():
+            delta_t_list.append(self.registry.get_objects()[oid].get_required_delta_t())
         return float(min(set(delta_t_list) - {0}))
 
     def run(self) -> None:
@@ -176,8 +171,8 @@ class World:
     def dump_all_shapes_info(self):
         # dump visualization info for shapes to the output json file
         shapes_info_dict = {"shapes": {}}
-        for oid in self.objects:
-            shapes_info_dict["shapes"][oid] = self.objects[oid].dump_shape_info()
+        for oid in self.registry.get_objects():
+            shapes_info_dict["shapes"][oid] = self.registry.get_objects()[oid].dump_shape_info()
         self.__vis_data.update(shapes_info_dict)
 
     def dump_vis_data_to_file(self):
@@ -195,9 +190,9 @@ class World:
             Dictionary with ObjectID as key, and object's visualization info as value.
         """
         objects_info = dict()
-        for oid in self.objects:
+        for oid in self.registry.get_objects():
             # TODO:In higher versions, this should be changed (if the visualize method is changed)
-            objects_info[oid] = self.objects[oid].visualize()
+            objects_info[oid] = self.registry.get_objects()[oid].visualize()
         return objects_info
 
     def dump_all_owners_info(self) -> None:
@@ -205,7 +200,7 @@ class World:
 
         """
         owners_info = {"owners": {}}
-        for oid in self.objects:
-            if self.objects[oid].owner_object is not None:
-                owners_info["owners"][oid] = str(self.objects[oid].owner_object.oid)
+        for oid in self.registry.get_objects():
+            if self.registry.get_objects()[oid].owner_object is not None:
+                owners_info["owners"][oid] = str(self.registry.get_objects()[oid].owner_object.oid)
         self.__vis_data.update(owners_info)
