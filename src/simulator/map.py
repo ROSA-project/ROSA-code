@@ -10,11 +10,11 @@ import json
 
 
 class Map:
-    def __init__(self):
+    def __init__(self, registry: ObjectRegistry):
         self.next_available_id = 0
-        self.registry = ObjectRegistry()
+        self.registry = registry
 
-    def parse_map(self, filename: str) -> dict[ObjectId, Object]:
+    def parse_map(self, filename: str) -> ObjectRegistry:
         """Loads the input json file and creates the objects.
         """
         try:
@@ -28,8 +28,8 @@ class Map:
             print("Error in opening file ", filename)
             raise e
 
-    @staticmethod
-    def instantiate_object(obj_json, new_id: ObjectId, name: string, owner: Object) \
+
+    def instantiate_object(self, obj_json, new_id: ObjectId, name: string, owner: Object) \
             -> Object:
         shape: Shape = Map.get_shape(obj_json)
         assert (shape is None) == (obj_json["class"] == "CompoundPhysical"), \
@@ -37,16 +37,16 @@ class Map:
         position: Position = Map.get_position(obj_json)
         cname = obj_json["class"]
         if cname == "Box":
-            return Box(new_id, name, shape, position, owner)
+            return Box(new_id, name, shape, position, owner, self.registry)
         elif cname == "RigidPointBall":
             # TODO hardcoding acceleration and velocity not to change 
             # Erfan's code w/o discussion
             # TODO also skipping name for now
-            return RigidPointBall(new_id, shape, position, 0, 2, owner)
+            return RigidPointBall(new_id, shape, position, 0, 2, owner, self.registry)
         else:
             assert cname == "Simple" or cname == "CompoundPhysical", \
                 f"Unknown 'class' name for object: {cname}"
-            return Object(new_id, name, shape, position, owner)
+            return Object(new_id, name, shape, position, owner, self.registry)
 
     @staticmethod
     def get_shape(obj_json) -> Shape:
@@ -81,7 +81,7 @@ class Map:
         this_level_objects = {}
         for oname in parsed:
             new_id: ObjectId = self.registry.get_next_id()
-            obj = Map.instantiate_object(parsed[oname], new_id, oname, owner)
+            obj = self.instantiate_object(parsed[oname], new_id, oname, owner)
             this_level_objects[new_id] = obj
             if "subobjects" in parsed[oname]:
                 assert parsed[oname]["class"] == "CompoundPhysical", \

@@ -2,16 +2,19 @@
 from __future__ import annotations
 from shape import Shape
 from position import Position
+from object_registry import ObjectRegistry
 import intersection_instance as in_in
 import copy
 import saeed_logger as logger
+
 
 ObjectId = int  # type aliasing, since we might change ObjectId composition
 
 
 class Object:
     def __init__(self, oid: ObjectId, name: string, shape: Shape, position: Position,
-                 owner_object: Object):
+                 owner_object: Object, registry: ObjectRegistry):
+        self.registry = registry
         self.oid = oid
         self.name = name
         self.shape = shape

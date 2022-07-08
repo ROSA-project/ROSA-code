@@ -23,7 +23,9 @@ class World:
        runs the main cycle.
     
     Attributes:
-        objects: dictionary of form [object_id -> Object]
+        registry: an instance of ObjectRegistry through which one can access list of all objects,
+        this object will be passed to other objects so that they can register objects of their own to
+        the list of all objects
         __creation_ts: timestamp of world creation
         __num_evolutions: how many evolutions have the world had so far
         __duration_sec: determines how many seconds the world instance will exist for
@@ -35,9 +37,9 @@ class World:
     """
 
     def __init__(self, map_filename: str, vis_filename: str):
-        m = Map()
-        self.registry: ObjectRegistry = m.parse_map(map_filename)
-        # self.objects: dict[ObjectId, Object] = m.parse_map(map_filename)
+        self.registry: ObjectRegistry = ObjectRegistry()
+        m = Map(self.registry)
+        m.parse_map(map_filename)
         self.__vis_data = dict()
         self.__creation_ts: float = time.time()  # current timestamp
         self.__num_evolutions: int = 0

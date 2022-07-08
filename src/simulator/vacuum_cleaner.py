@@ -6,12 +6,13 @@ from position import Position
 from cylinder import Cylinder
 from sensor import Sensor
 from bumper_sensor import BumperSensor
+from object_registry import ObjectRegistry
 import numpy as np
 
 
 class VacuumCleanerV0(Robot):
     def __init__(self, oid: ObjectId, position: Position, owner_object:Object, \
-        parameters: dict[str,]):
+        parameters: dict[str,], registry: ObjectRegistry):
         # TODO saeed: making assumption that from the usual inputs of Object constructor
         #   we only need position. e.g. robots have no owner? it still doesn't hurt so I
         #   include it.
@@ -20,7 +21,7 @@ class VacuumCleanerV0(Robot):
         
         #assuming Robot didn't override Object's constructor
         Robot.__init__(self,oid,\
-            Cylinder(parameters["diameter"],parameters["height"]),position, owner_object)
+            Cylinder(parameters["diameter"],parameters["height"]),position, owner_object, registry)
         
         # TODO saeed: where does the oid of sensor comes from? fetched from Map? how do we have
         #  acess to Map here?
