@@ -18,15 +18,15 @@ class VacuumCleanerV0(Robot):
         #   include it.
         # TODO saeed: class-associated object, needs parameters. How do we collect these from
         #   map and pass?
-        
+        self.registry = registry
         #assuming Robot didn't override Object's constructor
         Robot.__init__(self,oid,\
-            Cylinder(parameters["diameter"],parameters["height"]),position, owner_object, registry)
+            Cylinder(parameters["diameter"],parameters["height"]),position, owner_object, self.registry)
         
         # TODO saeed: where does the oid of sensor comes from? fetched from Map? how do we have
         #  acess to Map here?
         self.sensor_id = self.registry.get_next_available_id()
-        self.sensor: Sensor = BumperSensor(self.sensor_id,self.shape,position,self)
+        self.sensor: Sensor = BumperSensor(self.sensor_id,self.shape,position,self,self.registry)
         self.registry.add_objects({self.sensor_id:self.sensor})
 
         self.forward_speed: float = 1 #unit m/s
