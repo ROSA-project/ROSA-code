@@ -80,7 +80,7 @@ class Map:
         # stores a dictionary of objects at this current level (and not deeper)
         this_level_objects = {}
         for oname in parsed:
-            new_id: ObjectId = self.registry.get_next_id()
+            new_id: ObjectId = self.registry.get_next_available_id()
             obj = self.instantiate_object(parsed[oname], new_id, oname, owner)
             this_level_objects[new_id] = obj
             if "subobjects" in parsed[oname]:

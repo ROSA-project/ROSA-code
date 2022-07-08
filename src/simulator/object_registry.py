@@ -23,7 +23,7 @@ class ObjectRegistry:
         """
         self.__objects.update(new_objects)
 
-    def get_next_id(self) -> ObjectId:
+    def get_next_available_id(self) -> ObjectId:
         """
         Returns the next available id.
         """
