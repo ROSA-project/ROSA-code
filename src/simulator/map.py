@@ -5,6 +5,7 @@ from box import Box
 from cube import Cube
 from cylinder import Cylinder
 from ball import RigidPointBall
+from vacuum_cleaner import VacuumCleanerV0
 from object_registry import ObjectRegistry
 import json
 
@@ -28,7 +29,6 @@ class Map:
             print("Error in opening file ", filename)
             raise e
 
-
     def instantiate_object(self, obj_json, new_id: ObjectId, name: string, owner: Object) \
             -> Object:
         shape: Shape = Map.get_shape(obj_json)
@@ -43,6 +43,9 @@ class Map:
             # Erfan's code w/o discussion
             # TODO also skipping name for now
             return RigidPointBall(new_id, shape, position, 0, 2, owner, self.registry)
+        elif cname == "VacuumCleanerV0":
+            return VacuumCleanerV0(new_id, name, position, owner, {"diameter": shape.radius, "height": shape.height},
+                                   self.registry)
         else:
             assert cname == "Simple" or cname == "CompoundPhysical", \
                 f"Unknown 'class' name for object: {cname}"

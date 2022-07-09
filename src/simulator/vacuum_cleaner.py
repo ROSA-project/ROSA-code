@@ -1,5 +1,4 @@
 from math import dist
-from turtle import position
 from object import ObjectId, Object
 from robot import Robot
 from position import Position
@@ -11,22 +10,20 @@ import numpy as np
 
 
 class VacuumCleanerV0(Robot):
-    def __init__(self, oid: ObjectId, position: Position, owner_object:Object, \
+    def __init__(self, oid: ObjectId,name: str, position: Position, owner_object:Object, \
         parameters: dict[str,], registry: ObjectRegistry):
         # TODO saeed: making assumption that from the usual inputs of Object constructor
         #   we only need position. e.g. robots have no owner? it still doesn't hurt so I
         #   include it.
         # TODO saeed: class-associated object, needs parameters. How do we collect these from
         #   map and pass?
-        self.registry = registry
         #assuming Robot didn't override Object's constructor
-        Robot.__init__(self,oid,\
-            Cylinder(parameters["diameter"],parameters["height"]),position, owner_object, self.registry)
-        
+        Robot.__init__(self,oid, name,\
+            Cylinder(parameters["diameter"],parameters["height"]),position, owner_object, registry)
         # TODO saeed: where does the oid of sensor comes from? fetched from Map? how do we have
         #  acess to Map here?
         self.sensor_id = self.registry.get_next_available_id()
-        self.sensor: Sensor = BumperSensor(self.sensor_id,self.shape,position,self,self.registry)
+        self.sensor: Sensor = BumperSensor(self.sensor_id, name, self.shape, position, self, self.registry)
         self.registry.add_objects({self.sensor_id:self.sensor})
 
         self.forward_speed: float = 1 #unit m/s

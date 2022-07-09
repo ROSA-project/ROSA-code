@@ -12,7 +12,7 @@ ObjectId = int  # type aliasing, since we might change ObjectId composition
 
 
 class Object:
-    def __init__(self, oid: ObjectId, name: string, shape: Shape, position: Position,
+    def __init__(self, oid: ObjectId, name: str, shape: Shape, position: Position,
                  owner_object: Object, registry: ObjectRegistry):
         self.registry = registry
         self.oid = oid
