@@ -1,0 +1,67 @@
+{
+    "room": {
+        "class": "CompoundPhysical",
+        "position": [0,0,0,0,0],
+        "subobjects": {
+            "wall0":{
+                "class": "Box",
+                "shape": {
+                    "class": "Cube",
+                    "arguments": {
+                        "lenght": 4,
+                        "height": 3,
+                        "width": 0.2
+                    }
+                },
+                "position": [0,0,0,0,90]
+            },
+            "wall1":{
+                "class": "Box",
+                "shape": {
+                    "class": "Cube",
+                    "arguments": {
+                        "lenght": 4,
+                        "height": 3,
+                        "width": 0.2
+                    }
+                },
+                "position": [2,2,0,80,90]
+            },
+            "wall2":{
+                "class": "Box",
+                "shape": {
+                    "class": "Cube",
+                    "arguments": {
+                        "lenght": 4,
+                        "height": 3,
+                        "width": 0.2
+                    }
+                },
+                "position": [0,4,0,20,90]
+            },
+            "wall3":{
+                "class": "Box",
+                "shape": {
+                    "class": "Cube",
+                    "arguments": {
+                        "lenght": 4,
+                        "height": 3,
+                        "width": 0.2
+                    }
+                },
+                "position": [-2,2,0,100,90]
+            }
+        }
+    },
+    "robot1": {
+        "class": "VacuumCleanerV0",
+        "position": [0.5,2,0,45,90],
+        "shape": {
+            "class": "Cylinder",
+            "arguments": {
+                "radius": 0.2,
+                "height": 1
+            }
+        }
+    }
+}
