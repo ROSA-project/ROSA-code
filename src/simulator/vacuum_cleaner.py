@@ -43,7 +43,7 @@ class VacuumCleanerV0(Robot):
         self.total_elapsed_time=0
     
     def evolve(self, delta_t: float) -> dict[ObjectId, Object]:
-        if self.sensor.sense(delta_t):
+        if self.sensor.sense():
             # a hit occured
             self.elapsed_time_on_state = 0
             if self.state == "forward":
