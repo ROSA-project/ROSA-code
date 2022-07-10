@@ -25,6 +25,7 @@ class Visualizer:
         self.axes = plt.axes(xlim=(-side, side), ylim=(-side, side))
         self.line = self.axes.plot([], [])
         self.lines2d = []
+        plt.grid(ls="--")
         self.data = dict()
         self.plot_arrows = True
         self.__vis_output_filename = json_filename
@@ -161,12 +162,12 @@ class Visualizer:
                 list_color.remove(obj[oid])
         return obj
 
-    def __animate(self, time_index: int):
+    def animate(self, time_index: int):
 
         global data
         frame_interval = 0.025
         step_round = 3
-        time_instance = ("{:." + str(step_round) + "f}").format(time_index * frame_interval)
+        time_instance = ("{:." + str(step_round) + "f}").format(float(time_index) * frame_interval)
         info = dict()  # Sorts the data of each object (by key-value)
         for oid in self.data["shapes"]:
             if self.data["shapes"][oid] is not None:
@@ -211,14 +212,13 @@ class Visualizer:
         """
         frame_interval = 0.025
         animated = animation.FuncAnimation(self.figure,  # input a figure for animation
-                                           self.__animate,  # input method to update figure for each frame
+                                           self.animate,  # input method to update figure for each frame
                                            np.arange(len(self.data) - 2),
                                            # Enter a list for the previous method for each frame
                                            interval=frame_interval * 1000,  # the frame (by mS)
                                            # Notice: blit=True means only re-draw the parts that have changed.
                                            blit=True,
                                            repeat=False)  # No repetition
-        plt.grid(ls="--")
         plt.show()
         # TODO saeed: works on my macbook but needs a closer look, 
         # it seems to be platform dependent.
