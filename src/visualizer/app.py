@@ -62,7 +62,7 @@ class App(tk.Tk):
                               , foreground="green")
         self.time_input.delete(0, tk.END)
 
-        if (slider_index - 1) > (len(self.visualize.data) - 3):
+        if (slider_index + 1) > (len(self.visualize.data) - 3):
             top_time = round(float(len(self.visualize.data) - 3) * self.frame_interval, 3)
             self.label_crr.config(text=f"Error!.The time is outside the defined range(less range is {top_time} !)"
                                   , foreground="red")
