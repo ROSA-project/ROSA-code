@@ -7,6 +7,7 @@ from sensor import Sensor
 from bumper_sensor import BumperSensor
 from object_registry import ObjectRegistry
 import numpy as np
+import copy
 
 
 class VacuumCleanerV0(Robot):
@@ -28,7 +29,7 @@ class VacuumCleanerV0(Robot):
 
         self.forward_speed: float = 1 #unit m/s
         self.reverse_speed: float = 0.2
-        self.turning_speed: float = 25 #unit deg/s
+        self.turning_speed: float = 50 #unit deg/s
 
         self.turn_on_hit_angle: float = 50 #degrees
         self.reverse_on_hit_duration: float = 1 #seconds
@@ -44,7 +45,9 @@ class VacuumCleanerV0(Robot):
     
     def evolve(self, delta_t: float) -> dict[ObjectId, Object]:
         if self.sensor.sense():
-            # a hit occured
+            # a hit occured. 
+            # State (position) is reverted by Object. Here we just make a decision
+            # about what to do upon bump
             self.elapsed_time_on_state = 0
             if self.state == "forward":
                 self.state = "turn left"
@@ -60,6 +63,7 @@ class VacuumCleanerV0(Robot):
         else:
             #no hit so no unexpcted change of state
             self.elapsed_time_on_state += delta_t
+            new_position = copy.copy(self.position)
             if self.state_duration != -1:
                 # we're in a duration-limited state
                 if self.elapsed_time_on_state >= self.state_duration:
@@ -70,25 +74,29 @@ class VacuumCleanerV0(Robot):
             if self.state == "forward":
                 distance = self.forward_speed * delta_t
                 #that is when oriented toward left we get decreasing x
-                self.position.x += distance * np.cos(np.pi/180*self.position.phi)
+                new_position.x += distance * np.cos(np.pi/180*self.position.phi)
                 #that is when oriented toward buttom we get decreasing y
-                self.position.y += distance * np.sin(np.pi/180*self.position.phi)
+                new_position.y += distance * np.sin(np.pi/180*self.position.phi)
             elif self.state == "turn left":
                 # left meaning increasing phi
                 rotation = self.turning_speed * delta_t #in degrees
-                self.position.phi += rotation 
+                new_position.phi += rotation 
             elif self.state == "reverse":
                 if self.elapsed_time_on_state == 0:
                     #reversing not began yet, reverse the direction
-                    self.position.phi = -self.position.phi
+                    new_position.phi = -self.position.phi
 
                 distance = self.reverse_speed * delta_t
                 #that is when oriented toward left we get decreasing x
-                self.position.x += distance * np.cos(np.pi/180*self.position.phi)
+                new_position.x += distance * np.cos(np.pi/180*self.position.phi)
                 #that is when oriented toward buttom we get decreasing y
-                self.position.y += distance * np.sin(np.pi/180*self.position.phi)
+                new_position.y += distance * np.sin(np.pi/180*self.position.phi)
             else:
                 raise Exception("unknown state: " + self.state)
+            
+            self.update_position(new_position)
+            self.sensor.update_position(new_position)
+
         #print("x=" + str(self.position.x) + " ," + "y=" + str(self.position.y) + " ," + \
         #    "phi=" + str(self.position.phi))
         
