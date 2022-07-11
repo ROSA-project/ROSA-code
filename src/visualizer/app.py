@@ -85,7 +85,8 @@ class App(tk.Tk):
             index = time_input / self.frame_interval
             if float(index) <= (len(self.visualize.data) - 3):
                 self.slider_update.set(index)
-                self.label_crr.config(text="")
+                self.label_crr.config(text=f"Time :{time_input}"
+                                      , foreground="green")
                 self.time_input.delete(0, tk.END)
             else:
                 top_time = round(float(len(self.visualize.data) - 3) * self.frame_interval, 3)
