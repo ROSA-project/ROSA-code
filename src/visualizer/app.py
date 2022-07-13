@@ -64,7 +64,7 @@ class App(tk.Tk):
 
         if (slider_index + 1) > (len(self.visualize.data) - 3):
             top_time = round(float(len(self.visualize.data) - 3) * self.frame_interval, 3)
-            self.label_crr.config(text=f"Error!.The time is outside the defined range(less range is {top_time} !)"
+            self.label_crr.config(text=f"Error!.The time is outside the defined range(top range is {top_time} !)"
                                   , foreground="red")
 
     def subtract_1(self):
@@ -83,14 +83,15 @@ class App(tk.Tk):
         try:
             time_input = float(self.time_input.get())
             index = time_input / self.frame_interval
-            if float(index) <= (len(self.visualize.data) - 3):
+            if 0<= float(index) <= (len(self.visualize.data) - 3):
                 self.slider_update.set(index)
                 self.label_crr.config(text=f"Time :{time_input}"
                                       , foreground="green")
                 self.time_input.delete(0, tk.END)
             else:
                 top_time = round(float(len(self.visualize.data) - 3) * self.frame_interval, 3)
-                self.label_crr.config(text=f"Error!.The time is outside the defined range(top range is {top_time}!)"
+                self.label_crr.config(text=f"Error!.The time is outside the defined range(less range is 0, and"
+                                           f" top range is {top_time}!)"
                                       , foreground="red")
         except:
             self.label_crr.config(text="Error!.Please inter the right time", foreground="red")
