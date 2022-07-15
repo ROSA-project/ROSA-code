@@ -23,9 +23,8 @@ class VacuumCleanerV0(Robot):
                        Cylinder(parameters["diameter"], parameters["height"]), position, owner_object, registry)
         # TODO saeed: where does the oid of sensor comes from? fetched from Map? how do we have
         #  acess to Map here?
-        self.sensor_id = self.registry.get_next_available_id()
-        self.sensor: Sensor = BumperSensor(self.sensor_id, name, self.shape, position, self, self.registry)
-        self.registry.add_objects({self.sensor_id: self.sensor})
+        self.sensor: Sensor = BumperSensor(self.registry.get_next_available_id(), name, self.shape, position, self, self.registry)
+        self.registry.add_objects({self.sensor.oid: self.sensor})
 
         self.forward_speed: float = 1  # unit m/s
         self.reverse_speed: float = 0.2
