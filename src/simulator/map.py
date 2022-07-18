@@ -5,14 +5,17 @@ from box import Box
 from cube import Cube
 from cylinder import Cylinder
 from ball import RigidPointBall
+from vacuum_cleaner import VacuumCleanerV0
+from object_registry import ObjectRegistry
 import json
 
 
 class Map:
-    def __init__(self):
+    def __init__(self, registry: ObjectRegistry):
         self.next_available_id = 0
+        self.registry = registry
 
-    def parse_map(self, filename: str) -> dict[ObjectId, Object]:
+    def parse_map(self, filename: str) -> ObjectRegistry:
         """Loads the input json file and creates the objects.
         """
         try:
@@ -20,35 +23,33 @@ class Map:
                 parsed = json.load(f)
                 obj_map = {}
                 self.get_objects(obj_map, parsed, None)
-                return obj_map
+                self.registry.add_objects(obj_map)
+                return self.registry
         except (OSError, IOError) as e:
             print("Error in opening file ", filename)
             raise e
 
-    def get_next_id(self) -> ObjectId:
-        oid = self.next_available_id
-        self.next_available_id += 1
-        return oid
-
-    @staticmethod
-    def instantiate_object(obj_json, new_id: ObjectId, name: string, owner: Object)\
+    def instantiate_object(self, obj_json, new_id: ObjectId, name: string, owner: Object) \
             -> Object:
         shape: Shape = Map.get_shape(obj_json)
-        assert (shape is None) == (obj_json["class"] == "CompoundPhysical"),\
+        assert (shape is None) == (obj_json["class"] == "CompoundPhysical"), \
             "Only CompoundPhysical objects can be shape-less"
         position: Position = Map.get_position(obj_json)
         cname = obj_json["class"]
         if cname == "Box":
-            return Box(new_id, name, shape, position, owner)
+            return Box(new_id, name, shape, position, owner, self.registry)
         elif cname == "RigidPointBall":
             # TODO hardcoding acceleration and velocity not to change 
             # Erfan's code w/o discussion
             # TODO also skipping name for now
-            return RigidPointBall(new_id, shape, position, 0, 2, owner)
+            return RigidPointBall(new_id, shape, position, 0, 2, owner, self.registry)
+        elif cname == "VacuumCleanerV0":
+            return VacuumCleanerV0(new_id, name, position, owner, {"diameter": shape.radius, "height": shape.height},
+                                   self.registry)
         else:
-            assert cname == "Simple" or cname == "CompoundPhysical",\
+            assert cname == "Simple" or cname == "CompoundPhysical", \
                 f"Unknown 'class' name for object: {cname}"
-            return Object(new_id, name, shape, position, owner)
+            return Object(new_id, name, shape, position, owner, self.registry)
 
     @staticmethod
     def get_shape(obj_json) -> Shape:
@@ -77,16 +78,16 @@ class Map:
             print("Error in parsing object's position: ", str(e))
             raise e
 
-    def get_objects(self, obj_map: dict[ObjectId, Object], parsed, owner: Object)\
+    def get_objects(self, obj_map: dict[ObjectId, Object], parsed, owner: Object) \
             -> dict[ObjectId, Object]:
         # stores a dictionary of objects at this current level (and not deeper)
         this_level_objects = {}
         for oname in parsed:
-            new_id: ObjectId = self.get_next_id()
-            obj = Map.instantiate_object(parsed[oname], new_id, oname, owner)
+            new_id: ObjectId = self.registry.get_next_available_id()
+            obj = self.instantiate_object(parsed[oname], new_id, oname, owner)
             this_level_objects[new_id] = obj
             if "subobjects" in parsed[oname]:
-                assert parsed[oname]["class"] == "CompoundPhysical",\
+                assert parsed[oname]["class"] == "CompoundPhysical", \
                     "Only CompoundPhysical objects can have subobjects"
                 obj.dependent_objects = self.get_objects(
                     obj_map, parsed[oname]["subobjects"], obj)
@@ -95,5 +96,3 @@ class Map:
 
             obj_map[new_id] = obj
         return this_level_objects
-
-

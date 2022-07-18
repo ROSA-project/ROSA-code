@@ -1,8 +1,6 @@
 from object import Object
-from shape import Shape
-
 
 class Sensor(Object):
     def sense(self):
-        # TODO tbd
+        # to be overridden in its child classes
         pass

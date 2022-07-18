@@ -4,6 +4,7 @@ import position
 import numpy as np
 import copy
 import saeed_logger as logger
+from object_registry import ObjectRegistry
 
 
 class RigidPhysicalObject(object.Object):
@@ -15,9 +16,9 @@ class RigidPhysicalObject(object.Object):
 
     def __init__(self, oid: object.ObjectId, shape: shape.Shape,
                  position: position.Position, acceleration: float,
-                 velocity: float, owner_object: object.Object):
+                 velocity: float, owner_object: object.Object, registry: ObjectRegistry):
         
-        super().__init__(self, oid, shape, position, owner_object)
+        super().__init__(self, oid, shape, position, owner_object, registry)
         self.acceleration: float = acceleration
         self.velocity: float = velocity
 

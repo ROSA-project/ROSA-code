@@ -2,16 +2,18 @@
 from __future__ import annotations
 from shape import Shape
 from position import Position
+from object_registry import ObjectRegistry
 import intersection_instance as in_in
 import copy
 import saeed_logger as logger
+
 
 ObjectId = int  # type aliasing, since we might change ObjectId composition
 
 
 class Object:
-    def __init__(self, oid: ObjectId, name: string, shape: Shape, position: Position,
-                 owner_object: Object):
+    def __init__(self, oid: ObjectId, name: str, shape: Shape, position: Position,
+                 owner_object: Object, registry: ObjectRegistry):
         self.oid = oid
         self.name = name
         self.shape = shape
@@ -19,6 +21,7 @@ class Object:
         self.position = position
         self.__previous_position = position
         self.owner_object = owner_object
+        self.registry = registry
         self.dependent_objects: dict[ObjectId, Object] = {}
         self._latest_intersections: list[in_in.IntersectionInstance] = []
         self._infinitesimal_intersection_occured: bool = False
