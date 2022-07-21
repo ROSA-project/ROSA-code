@@ -1,0 +1,26 @@
+{
+    "point_1": {
+      "position" :[0,0,2],
+      "theta" : -90,
+      "phi"   :  90,
+      "expected_point" : [2.0,0.0,0.0]
+    },
+    "point_2": {
+      "position" :[1,1,1],
+      "theta" : 90,
+      "phi"   : 90,
+      "expected_point" : [-1.0,1.0,-1.0]
+    },
+    "point_3": {
+      "position" :[1,1,0],
+      "theta" : 270,
+      "phi"   : 180,
+      "expected_point" : [-1.0,0.0,1.0]
+    },
+    "point_4": {
+        "position" :[1,-1,-1],
+        "theta" : 90,
+        "phi"   : 90,
+        "expected_point" : [1.0,1.0,1.0]
+      }
+}
