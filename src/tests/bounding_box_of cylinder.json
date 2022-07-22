@@ -22,5 +22,11 @@
       "rotation_angle" : [90,45],
       "dimension" : [1,1],
       "expected_dimension_box" : [2.122, 2.0, 2.122]
+    },
+    "cylinder_5": {
+      "position" :[0,0,1],
+      "rotation_angle" : [30,30],
+      "dimension" : [0.5,2],
+      "expected_dimension_box" : [1.366,1.616,2.232]
     }
 }
