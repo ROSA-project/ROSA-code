@@ -16,11 +16,11 @@ class Shape:
         pass
 
     def rotation(x: float, y: float, z: float, phi: float, theta: float):
-        cos_theta = cos(deg2rad(-theta))
+        cos_theta = cos(deg2rad(theta))
         cos_phi = cos(deg2rad(phi))
-        sin_theta = sin(deg2rad(-theta))
+        sin_theta = sin(deg2rad(theta))
         sin_phi = sin(deg2rad(phi))
-        new_x = round(x * cos_phi - y * sin_phi * cos_theta + z * sin_theta * sin_phi, 3)
-        new_y = round(x * sin_phi + y * cos_theta * cos_phi - z * cos_phi * sin_theta, 3)
-        new_z = round(y * sin_theta + z * cos_theta, 3)
+        new_x = round(x * cos_phi*cos_theta - y * sin_phi + z * sin_theta * cos_phi, 3)
+        new_y = round(x * sin_phi*cos_theta + y * cos_phi + z * sin_phi * sin_theta, 3)
+        new_z = round(-x * sin_theta + z * cos_theta, 3)
         return [new_x, new_y, new_z]
