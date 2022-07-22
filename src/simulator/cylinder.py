@@ -22,7 +22,7 @@ class Cylinder(Shape):
         points = [[r, 0, h / 2], [0, r, h / 2], [-r, 0, h / 2], [0, -r, h / 2]]
         new_x, new_y, new_z = [], [], []
         for point in points:
-            if position.theta in [0,180,-180]:
+            if position.theta in [0, 180, -180]:
                 new_point = Shape.rotation(point[0], point[1], point[2], 0, 0)
             else:
                 new_point = Shape.rotation(point[0], point[1], point[2], position.phi, position.theta)
@@ -32,7 +32,7 @@ class Cylinder(Shape):
         length = 2 * max([abs(x) for x in new_x])
         width = 2 * max([abs(y) for y in new_y])
         height = 2 * max([abs(z) for z in new_z])
-        bounding_box = Box(oid=None,name=None,cube=Cube(length= length,width= width,height= height),
+        bounding_box = Box(oid=None, name=None, cube=Cube(length=length, width=width, height=height),
                            position=Position(position.x, position.y, position.z, 0, 0),
                            owner_object=None,
                            registry=None)

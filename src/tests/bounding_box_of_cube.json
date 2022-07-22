@@ -1,0 +1,26 @@
+{
+  "cube_1": {
+    "position" :[0,0,0],
+    "rotation_angle" : [45,0],
+    "dimension" : [2,2,2],
+    "expected_dimension_box" : [2.828, 2.828, 2.0]
+  },
+  "cube_2": {
+    "position" :[0,0,0],
+    "rotation_angle" : [0,45],
+    "dimension" : [2,2,2],
+    "expected_dimension_box" : [2.0, 2.828, 2.828]
+  },
+  "cube_3": {
+    "position" :[0,0,0],
+    "rotation_angle" : [0,0],
+    "dimension" : [2,2,2],
+    "expected_dimension_box" : [2.0, 2.0, 2.0]
+  },
+  "cube_4": {
+      "position" :[1,0,0],
+      "rotation_angle" : [45,45],
+      "dimension" : [2,2,2],
+      "expected_dimension_box" : [3.414, 3.414, 2.828]
+    }
+}
