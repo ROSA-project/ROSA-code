@@ -1,6 +1,7 @@
 from __future__ import annotations
 from position import Position
 from shape import Shape
+from box import Box
 from cube import Cube
 
 
@@ -10,29 +11,32 @@ class Cylinder(Shape):
         self.radius = radius
         self.height = height
 
-    def bounding_box(self) -> Box:
+    def bounding_box(self, position: Position) -> Box:
         """Returns smallest enclosing upright Box
         """
 
         # TODO: The following calculation is only for an upright cube
         # dimension calculations
-        length = self.shape.length
-        height = self.shape.height
-        width = self.shape.width
-
-        # position calculations
-        x = self.position.x
-        y = self.position.y
-        z = self.position.z
-        phi = self.position.phi
-        theta = self.position.theta
-
-        # assign return Arguments
-        bb_cube = Cube(length, height, width)
-        bb_position = Position(x, y, z, phi, theta)
-
-        # return Box(1, bb_cube, bb_position)
-        pass
+        r = self.radius
+        h = self.height
+        points = [[r, 0, h / 2], [0, r, h / 2], [-r, 0, h / 2], [0, -r, h / 2]]
+        new_x, new_y, new_z = [], [], []
+        for point in points:
+            if position.theta in [0,180,-180]:
+                new_point = Shape.rotation(point[0], point[1], point[2], 0, 0)
+            else:
+                new_point = Shape.rotation(point[0], point[1], point[2], position.phi, position.theta)
+            new_x.append(new_point[0])
+            new_y.append(new_point[1])
+            new_z.append(new_point[2])
+        length = 2 * max([abs(x) for x in new_x])
+        width = 2 * max([abs(y) for y in new_y])
+        height = 2 * max([abs(z) for z in new_z])
+        bounding_box = Box(oid=None,name=None,cube=Cube(length= length,width= width,height= height),
+                           position=Position(position.x, position.y, position.z, 0, 0),
+                           owner_object=None,
+                           registry=None)
+        return bounding_box
 
     def dump_info(self) -> dict:
         """Returns the shape info required for visualization
@@ -43,6 +47,3 @@ class Cylinder(Shape):
         """
 
         return {"type": __class__.__name__, "dimension": [self.radius]}
-
-
-
