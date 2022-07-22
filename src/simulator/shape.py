@@ -15,7 +15,7 @@ class Shape:
     def dump_info(self):
         pass
 
-    def rotation(x: float, y: float, z: float, phi: float, theta: float) -> list:
+    def rotation(x: float, y: float, z: float, phi: float, theta: float) -> list[float]:
         """rotate the point by angles
         Args:
             x,y,z = coordinate of point in Cartesian
