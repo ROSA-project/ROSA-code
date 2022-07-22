@@ -15,7 +15,7 @@
       "position" :[1,1,0],
       "theta" : 270,
       "phi"   : 180,
-      "expected_point" : [0.0,-1.0,1.0]
+      "expected_point" : [0.0, -1.0,1.0]
     },
     "point_4": {
         "position" :[1,-1,-1],
