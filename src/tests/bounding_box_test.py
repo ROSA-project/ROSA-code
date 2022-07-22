@@ -4,21 +4,28 @@ import sys
 sys.path.append(r"src/simulator")
 import json
 import testing_tools as teto
+from cube import Cube
 from cylinder import Cylinder
 from position import Position
 
 json_path_prefix = "src/tests/"
 
 
-class BoundingBoxOfCylinder(unittest.TestCase):
+class BoundingBoxTest(unittest.TestCase):
     def test_bounding_box(self):
-        json_filename = json_path_prefix + "bounding_box_of_cylinder.json"
+        json_filename = json_path_prefix + "bounding_box_test_input.json"
         with open(json_filename, "r") as f:
             testcases = json.load(f)
         test_counter = 0
         for testcase in testcases:
             with self.subTest(i=test_counter):
-                c = Cylinder(testcases[testcase]["dimension"][0], testcases[testcase]["dimension"][1])
+                if testcases[testcase]["type"] == "Cube":
+                    c = Cube(testcases[testcase]["dimension"][0],
+                             testcases[testcase]["dimension"][1],
+                             testcases[testcase]["dimension"][2])
+                elif testcases[testcase]["type"] == "Cylinder":
+                    c = Cylinder(testcases[testcase]["dimension"][0], testcases[testcase]["dimension"][1])
+
                 position = Position(testcases[testcase]["position"][0],
                                     testcases[testcase]["position"][1],
                                     testcases[testcase]["position"][2],
@@ -33,3 +40,4 @@ class BoundingBoxOfCylinder(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

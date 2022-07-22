@@ -15,7 +15,15 @@ class Shape:
     def dump_info(self):
         pass
 
-    def rotation(x: float, y: float, z: float, phi: float, theta: float):
+    def rotation(x: float, y: float, z: float, phi: float, theta: float) -> list:
+        """rotate the point by angles
+        Args:
+            x,y,z = coordinate of point in Cartesian
+            phi = angle of rotation about z-axes respectively
+            theta = angle of rotation about y-axes respectively
+        return:
+            list of new coordinate point after rotation
+        """
         cos_theta = cos(deg2rad(theta))
         cos_phi = cos(deg2rad(phi))
         sin_theta = sin(deg2rad(theta))
