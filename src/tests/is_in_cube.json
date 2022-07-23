@@ -1,0 +1,142 @@
+{
+  "t_0: a point on the top surface of the cube": {
+    "length": 10,
+    "height": 12,
+    "width": 15,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [2,3,9],
+    "expected_output": 1
+  },
+  "t_1: a point on one of the top left corners of the surface of the cube": {
+    "length": 10,
+    "height": 12,
+    "width": 15,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [-4,-5.5,9],
+    "expected_output": 1
+  },
+  "t_2: a point on one of the top right corners of the surface of the cube": {
+    "length": 10,
+    "height": 12,
+    "width": 15,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [6,9.5,9],
+    "expected_output": 1
+  },
+  "t_3: a point at the bottom surface of the cube": {
+    "length": 10,
+    "height": 12,
+    "width": 15,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [2,3,-3],
+    "expected_output": 1
+  },
+  "t_4: a point at one of the left bottom corners of the surface of the cube": {
+    "length": 10,
+    "height": 12,
+    "width": 15,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [-4,-5.5,-3],
+    "expected_output": 1
+  },
+  "t_5: a point at one of the right bottom corners of the surface of the cube": {
+    "length": 10,
+    "height": 12,
+    "width": 15,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [6,9.5,-3],
+    "expected_output": 1
+  },
+  "t_6: a point on the surface of the cube":{
+    "length": 10,
+    "height": 12,
+    "width": 15,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [-4,-5.5,2],
+    "expected_output": 1
+  },
+  "t_7: a point inside of the cube":{
+    "length": 10,
+    "height": 12,
+    "width": 15,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [0,7.5,2],
+    "expected_output": 1
+  },
+  "t_8: a point above the cube":{
+    "length": 10,
+    "height": 12,
+    "width": 15,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [0,7.5,10],
+    "expected_output": 0
+  },
+  "t_9: a point below the cube":{
+    "length": 10,
+    "height": 12,
+    "width": 15,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [0,7.5,-4],
+    "expected_output": 0
+  },
+  "t_10: a point outside of the cube but within the interval of its z":{
+    "length": 10,
+    "height": 12,
+    "width": 15,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [12,10,5],
+    "expected_output": 0
+  },
+  "t_11: a point outside of the cube but within the interval of its x":{
+    "length": 10,
+    "height": 12,
+    "width": 15,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [2,10,10],
+    "expected_output": 0
+  },
+  "t_12: a point outside of the cube but within the interval of its y":{
+    "length": 10,
+    "height": 12,
+    "width": 15,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [-10,5,10],
+    "expected_output": 0
+  },
+  "t_13: a point outside of the cube":{
+    "length": 10,
+    "height": 12,
+    "width": 15,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [-10,10,10],
+    "expected_output": 0
+  }
+}
