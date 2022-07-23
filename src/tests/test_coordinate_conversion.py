@@ -1,8 +1,11 @@
 import unittest
 import json
 import sys
+
 sys.path.append("src/simulator")
 json_path_prefix = "src/tests/"
+import src.simulator.coordinate_conversion as conversion
+
 
 class TestCylinderCubeIntersection(unittest.TestCase):
 
@@ -13,14 +16,16 @@ class TestCylinderCubeIntersection(unittest.TestCase):
         test_counter = 0
         for testcase in testcases:
             with self.subTest(i=test_counter):
-                cartesian_coordinate = coordinate_conversion.cylindrical_to_cartesian_coordinate(testcases[testcase]["r"],
-                                                                                 testcases[testcase]["theta"],
-                                                                                 testcases[testcase]["z"])
+                cartesian_coordinate = conversion.CoordinateConversion.cylindrical_to_cartesian_coordinate(
+                    testcases[testcase]["r"],
+                    testcases[testcase]["theta"],
+                    testcases[testcase]["z"])
                 expected_coordinate = testcases[testcase]["expected_output"]
                 self.assertAlmostEqual(cartesian_coordinate["x"], expected_coordinate["x"], msg=testcase)
                 self.assertAlmostEqual(cartesian_coordinate["y"], expected_coordinate["y"], msg=testcase)
                 self.assertAlmostEqual(cartesian_coordinate["z"], expected_coordinate["z"], msg=testcase)
             test_counter += 1
+
 
 if __name__ == '__main__':
     unittest.main()

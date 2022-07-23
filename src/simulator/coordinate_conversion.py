@@ -2,7 +2,7 @@ import math
 
 
 class CoordinateConversion():
-    @classmethod
+    @staticmethod
     def cylindrical_to_cartesian_coordinate(r: float, theta: float, z: float) -> dict[str, float]:
         """
         Gets a point in the cylindrical coordinate system and converts it to cartesian coordinate system.
