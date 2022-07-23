@@ -22,7 +22,7 @@ class Cylinder(Shape):
         points = [[r, 0, h / 2], [0, r, h / 2], [-r, 0, h / 2], [0, -r, h / 2]]
         new_x, new_y, new_z = [], [], []
         for point in points:
-            if position.theta in [0, 180, -180]:
+            if position.theta % 180 == 0:
                 new_point = Shape.rotation(point[0], point[1], point[2], 0, 0)
             else:
                 new_point = Shape.rotation(point[0], point[1], point[2], position.phi, position.theta)
