@@ -1,0 +1,38 @@
+{
+  "t_0": {
+      "r": 0,
+      "theta": 0,
+      "phi": 0,
+      "expected_output": {"x": 0, "y": 0, "z": 0}
+  },
+  "t_1": {
+      "r": 5,
+      "theta": 20,
+      "phi": 10,
+      "expected_output": {"x": 1.684120444, "y": 0.2969558731, "z": 4.698463104}
+  },
+  "t_2": {
+      "r": 0,
+      "theta": 20,
+      "phi": 40,
+      "expected_output": {"x": 0, "y": 0, "z": 0}
+  },
+  "t_3": {
+      "r": 5,
+      "theta": 90,
+      "phi": 0,
+      "expected_output": {"x": 5, "y": 0, "z": 0}
+  },
+  "t_4": {
+    "r": -5,
+    "theta": -90,
+    "phi": 0,
+    "expected_output": {"x": 5, "y": 0, "z": 0}
+  },
+  "t_5": {
+    "r": 5,
+    "theta": -90,
+    "phi": -45,
+    "expected_output": {"x": -3.535533906, "y": 3.535533906, "z": 0}
+  }
+}
