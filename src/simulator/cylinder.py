@@ -14,27 +14,30 @@ class Cylinder(Shape):
     def bounding_box(self, position: Position) -> Box:
         """Returns smallest enclosing upright Box
 
-           Calculation the smallest bounding box,function moves
-        the shape to the origin position,then rotates it with the
-        corner points. After that,it calculates the dimensions of
-        the box that is tangent to the farthest corners of the rotation.
-        then returns the shape in last position, and bounding box have position
-        Exactly the same position as shape.
+        Calculate the smallest bounding box. The function
+        moves the shape to the coordinate origin,calculates
+        the corner points of its dimensions and rotates it.
+        The box is surrounded by the farthest rotated points.
+        Then it returns the shape in the last position. The bounding box
+        has the exact same position as the shape.
         """
         # TODO: The following calculation is only for an upright cube
         r = self.radius
         h = self.height
-        # Notice: Because the shape is symmetrical,
-        # only the corner points of top disk are needed, then double the dimensions.
+        # Because the cylinder has symmetry, we only need the top side points of the disk.
+        # We calculate the distance of the farthest points and then get the dimensions
+        # of the bounding box. Note, since we used the top points, because of symmetry,
+        # we double the dimensions of the bounding box so that the box surrounds the bottom
+        # points of the disk.
         points = [[r, 0, h / 2], [0, r, h / 2], [-r, 0, h / 2], [0, -r, h / 2]]
         new_x = list()
         new_y = list()
         new_z = list()
         for point in points:
-            # Notice: At these angles, theta does not change the shape,
-            # and because it is symmetrical, phi does not affect the shape.
-            # then we replace them with 0.
             if position.theta % 180 == 0:
+                # Notice: At these angles, theta does not change the shape,
+                # and because it is symmetrical, phi does not affect the shape.
+                # then we replace them with 0.
                 new_point = Shape.rotation(point[0], point[1], point[2], 0, 0)
             else:
                 new_point = Shape.rotation(point[0], point[1], point[2], position.phi, position.theta)
