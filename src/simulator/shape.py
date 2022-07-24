@@ -1,6 +1,6 @@
 from __future__ import annotations
 from position import Position
-from numpy import cos, sin, deg2rad
+from numpy import cos, sin, deg2rad, dot
 
 
 class Shape:
@@ -28,7 +28,12 @@ class Shape:
         cos_phi = cos(deg2rad(phi))
         sin_theta = sin(deg2rad(theta))
         sin_phi = sin(deg2rad(phi))
-        new_x = round(x * cos_phi*cos_theta - y * sin_phi + z * sin_theta * cos_phi, 3)
-        new_y = round(x * sin_phi*cos_theta + y * cos_phi + z * sin_phi * sin_theta, 3)
-        new_z = round(-x * sin_theta + z * cos_theta, 3)
-        return [new_x, new_y, new_z]
+        old_point = [x, y, z]
+        rotation_theta = [[cos_theta, 0, sin_theta],
+                          [0, 1, 0],
+                          [-sin_theta, 0, cos_theta]]
+        rotation_phi = [[cos_phi, -sin_phi, 0],
+                        [sin_phi, cos_phi, 0],
+                        [0, 0, 1]]
+        new_point = dot(rotation_phi, dot(rotation_theta, old_point))
+        return new_point
