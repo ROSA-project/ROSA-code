@@ -13,15 +13,27 @@ class Cylinder(Shape):
 
     def bounding_box(self, position: Position) -> Box:
         """Returns smallest enclosing upright Box
-        """
 
+           Calculation the smallest bounding box,function moves
+        the shape to the origin position,then rotates it with the
+        corner points. After that,it calculates the dimensions of
+        the box that is tangent to the farthest corners of the rotation.
+        then returns the shape in last position, and bounding box have position
+        Exactly the same position as shape.
+        """
         # TODO: The following calculation is only for an upright cube
-        # dimension calculations
         r = self.radius
         h = self.height
+        # Notice: Because the shape is symmetrical,
+        # only the corner points of top disk are needed, then double the dimensions.
         points = [[r, 0, h / 2], [0, r, h / 2], [-r, 0, h / 2], [0, -r, h / 2]]
-        new_x, new_y, new_z = [], [], []
+        new_x = list()
+        new_y = list()
+        new_z = list()
         for point in points:
+            # Notice: At these angles, theta does not change the shape,
+            # and because it is symmetrical, phi does not affect the shape.
+            # then we replace them with 0.
             if position.theta % 180 == 0:
                 new_point = Shape.rotation(point[0], point[1], point[2], 0, 0)
             else:

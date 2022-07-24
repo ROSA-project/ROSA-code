@@ -18,10 +18,10 @@ class Shape:
     def rotation(x: float, y: float, z: float, phi: float, theta: float) -> list[float]:
         """rotate the point by angles
         Args:
-            x,y,z = coordinate of point in Cartesian
-            phi = angle of rotation about z-axes respectively
-            theta = angle of rotation about y-axes respectively
-        return:
+            x,y,z : coordinate of point in Cartesian
+            phi : angle of rotation about z-axes respectively
+            theta : angle of rotation about y-axes respectively
+        Return:
             list of new coordinate point after rotation
         """
         cos_theta = cos(deg2rad(theta))

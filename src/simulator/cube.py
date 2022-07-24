@@ -12,15 +12,23 @@ class Cube(Shape):
 
     def bounding_box(self, position: Position) -> Box:
         """Returns smallest enclosing upright Box
+
+           Calculation the smallest bounding box,function moves
+        the shape to the origin position,then rotates it with the
+        corner points. After that,it calculates the dimensions of
+        the box that is tangent to the farthest corners of the rotation.
+
         """
         l = self.length
         w = self.width
         h = self.height
+        # Notice: Because the shape is symmetrical,
+        # only the corner points of top disk are needed, then double the dimensions.
         points = [[l / 2, w / 2, h / 2], [-l / 2, w / 2, h / 2],
-                  [l / 2, -w / 2, h / 2], [-l / 2, -w / 2, h / 2],
-                  [l / 2, w / 2, -h / 2], [-l / 2, w / 2, -h / 2],
-                  [l / 2, -w / 2, -h / 2], [-l / 2, -w / 2, -h / 2]]
-        new_x, new_y, new_z = [], [], []
+                  [l / 2, -w / 2, h / 2], [-l / 2, -w / 2, h / 2]]
+        new_x = list()
+        new_y = list()
+        new_z = list()
         for point in points:
             new_point = Shape.rotation(point[0], point[1], point[2], position.phi, position.theta)
             new_x.append(new_point[0])
