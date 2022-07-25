@@ -7,6 +7,7 @@ json_path_prefix = "src/tests/"
 
 class MyTestCase(unittest.TestCase):
     def test_calculate_orientation_quaternion(self):
+        # TODO: add more testcases
         json_filename = json_path_prefix + "orientation_quaternion.json"
         with open(json_filename, "r") as f:
             testcases = json.load(f)
