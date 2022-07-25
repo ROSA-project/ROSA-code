@@ -32,7 +32,7 @@
     "x": 1,
     "y": 2,
     "z": 3,
-    "point": [4,6,-5],
+    "point": [4,6,-2],
     "expected_output": 1
   },
   "t_5: a point at the bottom surface of the cylinder": {
@@ -41,7 +41,7 @@
     "x": 1,
     "y": 2,
     "z": 3,
-    "point": [0,6,-5],
+    "point": [0,6,-2],
     "expected_output": 1
   },
   "t_6: a point inside of the cylinder": {
@@ -68,7 +68,7 @@
     "x": 1,
     "y": 2,
     "z": 3,
-    "point": [4,6,5.2],
+    "point": [4,6,9],
     "expected_output": 0
   },
   "t_9: a point below the cylinder": {
@@ -80,16 +80,7 @@
     "point": [4,6,-5.2],
     "expected_output": 0
   },
-  "t_10: a point above the cylinder": {
-    "radius": 5,
-    "height": 10,
-    "x": 1,
-    "y": 2,
-    "z": 3,
-    "point": [4,6,6],
-    "expected_output": 0
-  },
-  "t_11: a point outside of the cylinder": {
+  "t_10: a point outside of the cylinder": {
     "radius": 5,
     "height": 10,
     "x": 1,

@@ -33,11 +33,11 @@ class TestCylinderCubeIntersection(unittest.TestCase):
             test_counter += 1
 
     def test_average_point(self):
-        self.assertListEqual(in_in.average_point([[1, 2, 3], [-1, 12, 6], [1.2, -3.6, 7.8], [0, 0, 0]]),
+        self.assertListEqual(in_in.IntersectionInstance.average_point([[1, 2, 3], [-1, 12, 6], [1.2, -3.6, 7.8], [0, 0, 0]]),
                              [0.3, 2.6, 4.2])
-        self.assertListEqual(in_in.average_point([[1.1, 2.2, 3.3]]), [1.1, 2.2, 3.3])
+        self.assertListEqual(in_in.IntersectionInstance.average_point([[1.1, 2.2, 3.3]]), [1.1, 2.2, 3.3])
         with self.assertRaises(ValueError):
-            in_in.average_point([])
+            in_in.IntersectionInstance.average_point([])
 
     def test_is_in_cylinder(self):
         # checks to see whether a point is in the given axis-aligned cylinder or not
@@ -52,7 +52,7 @@ class TestCylinderCubeIntersection(unittest.TestCase):
 
             with self.subTest(i=test_counter):
                 self.assertEqual(
-                    in_in.is_in_cylinder(cylinder, testcases[testcase]["point"]),
+                    in_in.IntersectionInstance.is_in_cylinder(cylinder, testcases[testcase]["point"]),
                     bool(testcases[testcase]["expected_output"]), msg=testcase)
             test_counter += 1
 
