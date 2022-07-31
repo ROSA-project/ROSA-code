@@ -1,21 +1,21 @@
 from __future__ import annotations
-from object import Object, ObjectId
+import object as obj
 from position import Position
 from box import Box
 from cube import Cube
 from cylinder import Cylinder
 from ball import RigidPointBall
 from vacuum_cleaner import VacuumCleanerV0
-from object_registry import ObjectRegistry
+import object_registry
 import json
 
 
 class Map:
-    def __init__(self, registry: ObjectRegistry):
+    def __init__(self, registry: object_registry.ObjectRegistry):
         self.next_available_id = 0
         self.registry = registry
 
-    def parse_map(self, filename: str) -> ObjectRegistry:
+    def parse_map(self, filename: str) -> object_registry.ObjectRegistry:
         """Loads the input json file and creates the objects.
         """
         try:
@@ -29,8 +29,8 @@ class Map:
             print("Error in opening file ", filename)
             raise e
 
-    def instantiate_object(self, obj_json, new_id: ObjectId, name: string, owner: Object) \
-            -> Object:
+    def instantiate_object(self, obj_json, new_id: obj.ObjectId, name: str, owner: obj.Object) \
+            -> obj.Object:
         shape: Shape = Map.get_shape(obj_json)
         assert (shape is None) == (obj_json["class"] == "CompoundPhysical"), \
             "Only CompoundPhysical objects can be shape-less"
@@ -49,7 +49,7 @@ class Map:
         else:
             assert cname == "Simple" or cname == "CompoundPhysical", \
                 f"Unknown 'class' name for object: {cname}"
-            return Object(new_id, name, shape, position, owner, self.registry)
+            return obj.Object(new_id, name, shape, position, owner, self.registry)
 
     @staticmethod
     def get_shape(obj_json) -> Shape:
@@ -78,12 +78,12 @@ class Map:
             print("Error in parsing object's position: ", str(e))
             raise e
 
-    def get_objects(self, obj_map: dict[ObjectId, Object], parsed, owner: Object) \
-            -> dict[ObjectId, Object]:
+    def get_objects(self, obj_map: dict[obj.ObjectId, obj.Object], parsed, owner: obj.Object) \
+            -> dict[obj.ObjectId, obj.Object]:
         # stores a dictionary of objects at this current level (and not deeper)
         this_level_objects = {}
         for oname in parsed:
-            new_id: ObjectId = self.registry.get_next_available_id()
+            new_id: obj.ObjectId = self.registry.get_next_available_id()
             obj = self.instantiate_object(parsed[oname], new_id, oname, owner)
             this_level_objects[new_id] = obj
             if "subobjects" in parsed[oname]:

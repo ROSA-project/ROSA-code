@@ -281,6 +281,9 @@ class IntersectionInstance:
 
     @staticmethod
     def average_point(points: list) -> list:
+        """
+        Gets a list of points and returns the average point of it in the form of [average_x,average_y,average_z]
+        """
         if len(points) == 0:
             raise ValueError("The given list has no points")
         sum_of_x = 0
@@ -316,7 +319,7 @@ class IntersectionInstance:
         """
         Checks whether the given point is in the given axis-aligned cube or not.
         Args:
-            cube: an axis-lengthaligned cube
+            cube: an axis-aligned cube
             point: a list of coordinates of the point in the form of [x,y,z]
         """
         if (cube.position.x - (cube.shape.length / 2)) <= point[0] and (cube.position.x + (cube.shape.length / 2)) >= \
@@ -373,6 +376,17 @@ class IntersectionInstance:
                                                                   (interval_of_z[1] + interval_of_z[0]) / 2, 0, 0),
                                        owner_object=None, registry=None)
             return intersection_box
+
+    @staticmethod
+    def parametric_line_equation(first_point: list[float], second_point: list[float]) -> list[float]:
+        """
+        Gets two points and returns the parametric line equation in the form of [point, direction_vector]
+        """
+        direction_vector = [second_point[0] - first_point[0], second_point[1] - first_point[1],
+                            second_point[2] - first_point[2]]
+        if direction_vector == [0, 0, 0]:
+            raise ValueError("The given points are the same.")
+        return [first_point, direction_vector]
 
     def is_infinitesimal(self) -> bool:
         if self.__does_intersect:

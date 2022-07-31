@@ -33,22 +33,11 @@ class TestCylinderCubeIntersection(unittest.TestCase):
                         testcases[testcase]["expected_output"], msg=testcase)
                 test_counter += 1
 
-    # def test_parametric_line_equation(self):
-    #     self.assertListEqual(in_in.parametric_line_equation([10, 15, 20], [-1, 6, 8]), [[10, 15, 20], [-11, -9, -12]])
-    #     with self.assertRaises(ValueError):
-    #         in_in.parametric_line_equation([1, 2, 3], [1, 2, 3])
-    #
-    # def test_translation(self):
-    #     json_filename = json_path_prefix + "translation.json"
-    #     with open(json_filename, "r") as f:
-    #         testcases = json.load(f)
-    #     test_counter = 0
-    #     for testcase in testcases:
-    #         with self.subTest(i=test_counter):
-    #             self.assertListEqual(
-    #                 in_in.translation(testcases[testcase]["point"], testcases[testcase]["translation_vector"]),
-    #                 testcases[testcase]["translated_point"], msg=testcase)
-    #         test_counter += 1
+    def test_parametric_line_equation(self):
+        self.assertListEqual(in_in.IntersectionInstance.parametric_line_equation([10, 15, 20], [-1, 6, 8]),
+                             [[10, 15, 20], [-11, -9, -12]])
+        with self.assertRaises(ValueError):
+            in_in.IntersectionInstance.parametric_line_equation([1, 2, 3], [1, 2, 3])
 
     def test_average_point(self):
         self.assertListEqual(
