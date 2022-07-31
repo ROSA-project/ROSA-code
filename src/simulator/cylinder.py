@@ -11,6 +11,7 @@ class Cylinder(shape.Shape):
         self.height = height
 
     def bounding_box(self, position: position.Position) -> box.Box:
+
         """Returns smallest enclosing upright Box
 
         Calculate the smallest bounding box. The function
