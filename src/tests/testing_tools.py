@@ -30,7 +30,7 @@ def matrix_almost_equal(matrix1: list, matrix2: list):
 
 
 def bounding_box_equal(box1: Box, box2: Box):
-    if box1.position.x == box2.position.x and box1.position.y == box2.position.y and box1.position.z == box2.position.z and box1.position.phi == box2.position.theta:
+    if box1.position.x == box2.position.x and box1.position.y == box2.position.y and box1.position.z == box2.position.z and box1.position.phi == box2.position.phi and box1.position.theta == box2.position.theta:
         if box1.shape.length == box2.shape.length and box1.shape.height == box2.shape.height and box1.shape.width == box2.shape.width:
             return True
         else:

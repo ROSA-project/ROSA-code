@@ -1,6 +1,9 @@
 from __future__ import annotations
 import saeed_logger as logger
 import object
+import box
+import cube
+import position
 import numpy as np
 
 # TODO move
@@ -142,7 +145,7 @@ class IntersectionInstance:
         logger.Logger.add_line("line-circle intersection:")
         logger.Logger.add_line("input line = " + str(p1) + " , " + str(p2))
         logger.Logger.add_line("input circle center = " + str(circle_center) + " and "
-                                "radius = " + str(circle_radius))
+                                                                               "radius = " + str(circle_radius))
 
         p1 = r_matrix.dot(p1)
         p2 = r_matrix.dot(p2)
@@ -158,8 +161,10 @@ class IntersectionInstance:
             intersect_points_distance = -1
         elif np.linalg.norm(
                 IntersectionInstance.horizontal_line_segment_intersection(p1, p2,
-                      [circle_center[0] - circle_radius, circle_center[1]],
-                      [circle_center[0] + circle_radius, circle_center[1]])) == 0:
+                                                                          [circle_center[0] - circle_radius,
+                                                                           circle_center[1]],
+                                                                          [circle_center[0] + circle_radius,
+                                                                           circle_center[1]])) == 0:
             # horizontally separated
             # logger.Logger.add_line("horizontally separated")
             intersect_points_distance = -1
@@ -273,6 +278,101 @@ class IntersectionInstance:
     def cylinder_cylinder(self):
         # TODO to be implemented        
         pass
+
+    @staticmethod
+    def average_point(points: list) -> list:
+        if len(points) == 0:
+            raise ValueError("The given list has no points")
+        sum_of_x = 0
+        sum_of_y = 0
+        sum_of_z = 0
+        number_of_points = len(points)
+        for point in points:
+            sum_of_x += point[0]
+            sum_of_y += point[1]
+            sum_of_z += point[2]
+        return [sum_of_x / number_of_points, sum_of_y / number_of_points, sum_of_z / number_of_points]
+
+    @staticmethod
+    def is_in_cylinder(cylinder: object.Object, point: list) -> bool:
+        """
+        Checks whether the given point is in the given axis-aligned cylinder or not.
+        Args:
+            cylinder: an axis-aligned cylinder
+            point: a list of coordinates of the point in the form of [x,y,z]
+        """
+        if (point[0] - cylinder.position.x) ** 2 + (point[1] - cylinder.position.y) ** 2 <= (
+                cylinder.shape.radius) ** 2:
+            if (point[2] <= cylinder.position.z + (cylinder.shape.height / 2)) and (
+                    point[2] >= cylinder.position.z - (cylinder.shape.height / 2)):
+                return True
+            else:
+                return False
+        else:
+            return False
+
+    @staticmethod
+    def is_in_cube(cube: object.Object, point: list) -> bool:
+        """
+        Checks whether the given point is in the given axis-aligned cube or not.
+        Args:
+            cube: an axis-lengthaligned cube
+            point: a list of coordinates of the point in the form of [x,y,z]
+        """
+        if (cube.position.x - (cube.shape.length / 2)) <= point[0] and (cube.position.x + (cube.shape.length / 2)) >= \
+                point[0]:
+            if (cube.position.y - (cube.shape.width / 2)) <= point[1] and (cube.position.y + (cube.shape.width / 2)) >= \
+                    point[1]:
+                if (cube.position.z - (cube.shape.height / 2)) <= point[2] and (
+                        cube.position.z + (cube.shape.height / 2)) >= point[2]:
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
+
+    @staticmethod
+    def intersection_of_intervals(first_interval: list[float], second_interval: list[float]) -> list[float]:
+        """
+        Gets two closed intervals and returns the intersection of them, if there's no intersection then it returns None
+        """
+        if (first_interval[1] <= second_interval[0]) or (first_interval[0] >= second_interval[1]):
+            return None
+        else:
+            start = max(first_interval[0], second_interval[0])
+            end = min(first_interval[1], second_interval[1])
+            return [start, end]
+
+    @staticmethod
+    def intersection_of_bounding_boxes(box1: box.Box, box2: box.Box) -> box.Box:
+        """
+        Gets two bounding boxes and returns the box of their intersection, if there's no intersection it returns None
+        """
+        interval_of_x1 = [box1.position.x - (box1.shape.length / 2), box1.position.x + (box1.shape.length / 2)]
+        interval_of_x2 = [box2.position.x - (box2.shape.length / 2), box2.position.x + (box2.shape.length / 2)]
+        interval_of_y1 = [box1.position.y - (box1.shape.width / 2), box1.position.y + (box1.shape.width / 2)]
+        interval_of_y2 = [box2.position.y - (box2.shape.width / 2), box2.position.y + (box2.shape.width / 2)]
+        interval_of_z1 = [box1.position.z - (box1.shape.height / 2), box1.position.z + (box1.shape.height / 2)]
+        interval_of_z2 = [box2.position.z - (box2.shape.height / 2), box2.position.z + (box2.shape.height / 2)]
+        interval_of_x = IntersectionInstance.intersection_of_intervals(interval_of_x1, interval_of_x2)
+        interval_of_y = IntersectionInstance.intersection_of_intervals(interval_of_y1, interval_of_y2)
+        interval_of_z = IntersectionInstance.intersection_of_intervals(interval_of_z1, interval_of_z2)
+        if interval_of_x is None or interval_of_y is None or interval_of_z is None:
+            return None
+        else:
+            length = interval_of_x[1] - interval_of_x[0]
+            width = interval_of_y[1] - interval_of_y[0]
+            height = interval_of_z[1] - interval_of_z[0]
+            # TODO: Should I pass objectRegistry to intersection_box?
+            intersection_box = box.Box(oid=None, name="intersection box",
+                                       cube=cube.Cube(length=length, height=height, width=width),
+                                       position=position.Position((interval_of_x[1] + interval_of_x[0]) / 2,
+                                                                  (interval_of_y[1] + interval_of_y[0]) / 2,
+                                                                  (interval_of_z[1] + interval_of_z[0]) / 2, 0, 0),
+                                       owner_object=None, registry=None)
+            return intersection_box
 
     def is_infinitesimal(self) -> bool:
         if self.__does_intersect:

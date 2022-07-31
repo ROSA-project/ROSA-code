@@ -1,17 +1,16 @@
 from __future__ import annotations
-from position import Position
-from shape import Shape
-from box import Box
-from cube import Cube
+import position
+import shape
+import cube
+import box
 
-
-class Cylinder(Shape):
+class Cylinder(shape.Shape):
     def __init__(self, radius: float, height: float):
-        Shape.__init__(self)
+        shape.Shape.__init__(self)
         self.radius = radius
         self.height = height
 
-    def bounding_box(self, position: Position) -> Box:
+    def bounding_box(self, position: position.Position) -> box.Box:
         """Returns smallest enclosing upright Box
 
         Calculate the smallest bounding box. The function
@@ -39,9 +38,9 @@ class Cylinder(Shape):
                 # Notice: At these angles, theta does not change the shape,
                 # and because it is symmetrical, phi does not affect the shape.
                 # then we replace them with 0.
-                new_point = Shape.rotation(point[0], point[1], point[2], 0, 0)
+                new_point = shape.Shape.rotation(point[0], point[1], point[2], 0, 0)
             else:
-                new_point = Shape.rotation(point[0], point[1], point[2], position.phi, position.theta)
+                new_point = shape.Shape.rotation(point[0], point[1], point[2], position.phi, position.theta)
             new_points[0].append(new_point[0])
             new_points[1].append(new_point[1])
             new_points[2].append(new_point[2])
@@ -57,8 +56,8 @@ class Cylinder(Shape):
         width = 2 * max([abs(y) for y in new_points[1]])
         height = 2 * max([abs(z) for z in new_points[2]])
 
-        bounding_box = Box(None, None, Cube(length=length, width=width, height=height),
-                           Position(position.x, position.y, position.z, 0, 0),
+        bounding_box = box.Box(None, None, cube.Cube(length=length, width=width, height=height),
+                           position.Position(position.x, position.y, position.z, 0, 0),
                            None, None)
         return bounding_box
 

@@ -1,6 +1,8 @@
 # postponed evaluation of annotations. With python 3.11, we won't need this
 from __future__ import annotations
-from shape import Shape
+import shape
+import box
+# from shape import Shape
 from position import Position
 import object_registry
 import intersection_instance as in_in
@@ -12,7 +14,7 @@ ObjectId = int  # type aliasing, since we might change ObjectId composition
 
 
 class Object:
-    def __init__(self, oid: ObjectId, name: str, shape: Shape, position: Position,
+    def __init__(self, oid: ObjectId, name: str, shape: shape.Shape, position: Position,
                  owner_object: Object, registry: object_registry.ObjectRegistry):
         self.oid = oid
         self.name = name
@@ -101,7 +103,7 @@ class Object:
             return None
         return self.shape.dump_info()
 
-    def bounding_box(self) -> Box:
+    def bounding_box(self) -> box.Box:
         pass
 
     def get_required_delta_t(self) -> float:
