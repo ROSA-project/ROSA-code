@@ -120,35 +120,41 @@ class TestCylinderCubeIntersection(unittest.TestCase):
                             intersection_box), msg=testcase)
             test_counter += 1
 
-    # def test_cylinder_cube(self):
-    #
-    #     json_filename = json_path_prefix + "cylinder_cube.json"
-    #     with open(json_filename, "r") as f:
-    #         testcases = json.load(f)
-    #     test_counter = 0
-    #     for testcase in testcases:
-    #         with self.subTest(i=test_counter):
-    #             cylinder = object.Object(1, "Cylinder", Cylinder(testcases[testcase]["cylinder"]["radius"],
-    #                                                       testcases[testcase]["cylinder"]["height"]),
-    #                               Position(testcases[testcase]["cylinder"]["x"], testcases[testcase]["cylinder"]["y"],
-    #                                        testcases[testcase]["cylinder"]["z"],
-    #                                        testcases[testcase]["cylinder"]["phi"],
-    #                                        testcases[testcase]["cylinder"]["theta"]), None, None)
-    #             cube = object.Object(1, "Cube",
-    #                           Cube(testcases[testcase]["cube"]["length"], testcases[testcase]["cube"]["height"],
-    #                                testcases[testcase]["cube"]["width"]),
-    #                           Position(testcases[testcase]["cube"]["x"], testcases[testcase]["cube"]["y"],
-    #                                    testcases[testcase]["cube"]["z"], testcases[testcase]["cube"]["phi"],
-    #                                    testcases[testcase]["cube"]["theta"]), None, None)
-    #             intersection_instance = in_in.IntersectionInstance(cylinder, cube)
-    #             if (testcases[testcase]["output"]["does_intersect"] == False):
-    #                 self.assertFalse(intersection_instance.does_intersect(), msg=testcase)
-    #             else:
-    #                 self.assertTrue(intersection_instance.does_intersect(), msg=testcase)
-    #                 self.assertEqual(intersection_instance.is_infinitesimal(), testcases[testcase]["output"]["is_infinitesimal"], msg=testcase)
-    #                 self.assertListEqual(intersection_instance.get_intersection_point(), testcases[testcase]["output"]["intersection_points"], msg=testcase)
-    #
-    #         test_counter += 1
+    def test_cylinder_cube(self):
+
+        json_filename = json_path_prefix + "cylinder_cube.json"
+        with open(json_filename, "r") as f:
+            testcases = json.load(f)
+        test_counter = 0
+        for testcase in testcases:
+            with self.subTest(i=test_counter):
+                cylinder_obj = object.Object(1, "Cylinder", cylinder.Cylinder(testcases[testcase]["cylinder"]["radius"],
+                                                                          testcases[testcase]["cylinder"]["height"]),
+                                         position.Position(testcases[testcase]["cylinder"]["x"],
+                                                           testcases[testcase]["cylinder"]["y"],
+                                                           testcases[testcase]["cylinder"]["z"],
+                                                           testcases[testcase]["cylinder"]["phi"],
+                                                           testcases[testcase]["cylinder"]["theta"]), None, None)
+                cube_obj = object.Object(1, "Cube",
+                                     cube.Cube(testcases[testcase]["cube"]["length"],
+                                               testcases[testcase]["cube"]["height"],
+                                               testcases[testcase]["cube"]["width"]),
+                                     position.Position(testcases[testcase]["cube"]["x"],
+                                                       testcases[testcase]["cube"]["y"],
+                                                       testcases[testcase]["cube"]["z"],
+                                                       testcases[testcase]["cube"]["phi"],
+                                                       testcases[testcase]["cube"]["theta"]), None, None)
+                intersection_instance = in_in.IntersectionInstance(cylinder_obj, cube_obj)
+                if (bool(testcases[testcase]["output"]["does_intersect"]) == False):
+                    self.assertFalse(intersection_instance.does_intersect(), msg=testcase)
+                else:
+                    self.assertTrue(intersection_instance.does_intersect(), msg=testcase)
+                    self.assertEqual(intersection_instance.is_infinitesimal(),
+                                     bool(testcases[testcase]["output"]["is_infinitesimal"]), msg=testcase)
+                    self.assertListEqual(intersection_instance.get_intersection_point(),
+                                         testcases[testcase]["output"]["intersection_point"], msg=testcase)
+
+            test_counter += 1
 
     def test_non_physical_object_intersection(self):
         pass

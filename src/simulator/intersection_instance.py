@@ -1,10 +1,15 @@
 from __future__ import annotations
+
+import math
+
 import saeed_logger as logger
 import object
 import box
 import cube
 import position
 import numpy as np
+import copy
+import pyquaternion as pq
 
 # TODO move
 epsilon_criterion = 0.1
@@ -19,9 +24,12 @@ class IntersectionInstance:
     def __init__(self, object1: object.Object, object2: object.Object):
         self.object1 = object1
         self.object2 = object2
+        self.acceptable_volume_of_intersection = 10
+        self.accuracy = 1
         self.__does_intersect = False
         self.__is_infinitesimal = False
         self._intersection_points = []
+        self._intersection_point = []
         self.intersect()
 
     def intersect(self) -> dict:
@@ -37,7 +45,7 @@ class IntersectionInstance:
                          (self.object2.shape.dump_info())["type"]]
 
         if "Cylinder" in shape_classes and "Cube" in shape_classes:
-            self.cylinder_cube()
+            self.cylinder_cube_intersection()
         elif shape_classes == ["Cube", "Cube"]:
             self.cube_cube()
         elif shape_classes == ["Cylinder", "Cylinder"]:
@@ -297,17 +305,23 @@ class IntersectionInstance:
         return [sum_of_x / number_of_points, sum_of_y / number_of_points, sum_of_z / number_of_points]
 
     @staticmethod
-    def is_in_cylinder(cylinder: object.Object, point: list) -> bool:
+    def is_in_cylinder(cylinder_obj: object.Object, point: list) -> bool:
         """
         Checks whether the given point is in the given axis-aligned cylinder or not.
         Args:
             cylinder: an axis-aligned cylinder
             point: a list of coordinates of the point in the form of [x,y,z]
         """
-        if (point[0] - cylinder.position.x) ** 2 + (point[1] - cylinder.position.y) ** 2 <= (
-                cylinder.shape.radius) ** 2:
-            if (point[2] <= cylinder.position.z + (cylinder.shape.height / 2)) and (
-                    point[2] >= cylinder.position.z - (cylinder.shape.height / 2)):
+        if (point[0] - cylinder_obj.position.x) ** 2 + (point[1] - cylinder_obj.position.y) ** 2 < (
+                cylinder_obj.shape.radius) ** 2 or np.isclose(
+            (point[0] - cylinder_obj.position.x) ** 2 + (point[1] - cylinder_obj.position.y) ** 2, (
+                                                                                                           cylinder_obj.shape.radius) ** 2):
+            if ((point[2] < cylinder_obj.position.z + (cylinder_obj.shape.height / 2)) or np.isclose(point[2],
+                                                                                                     cylinder_obj.position.z + (
+                                                                                                             cylinder_obj.shape.height / 2))) and (
+                    point[2] > cylinder_obj.position.z - (cylinder_obj.shape.height / 2) or np.isclose(point[2],
+                                                                                                       cylinder_obj.position.z - (
+                                                                                                               cylinder_obj.shape.height / 2))):
                 return True
             else:
                 return False
@@ -315,19 +329,30 @@ class IntersectionInstance:
             return False
 
     @staticmethod
-    def is_in_cube(cube: object.Object, point: list) -> bool:
+    def is_in_cube(cube_obj: object.Object, point: list) -> bool:
         """
         Checks whether the given point is in the given axis-aligned cube or not.
         Args:
             cube: an axis-aligned cube
             point: a list of coordinates of the point in the form of [x,y,z]
         """
-        if (cube.position.x - (cube.shape.length / 2)) <= point[0] and (cube.position.x + (cube.shape.length / 2)) >= \
-                point[0]:
-            if (cube.position.y - (cube.shape.width / 2)) <= point[1] and (cube.position.y + (cube.shape.width / 2)) >= \
-                    point[1]:
-                if (cube.position.z - (cube.shape.height / 2)) <= point[2] and (
-                        cube.position.z + (cube.shape.height / 2)) >= point[2]:
+        if ((cube_obj.position.x - (cube_obj.shape.length / 2)) < point[0] or np.isclose(point[0], (
+                cube_obj.position.x - (cube_obj.shape.length / 2)))) and (
+                (cube_obj.position.x + (cube_obj.shape.length / 2)) > \
+                point[0] or np.isclose(point[0], cube_obj.position.x + (cube_obj.shape.length / 2))):
+            if ((cube_obj.position.y - (cube_obj.shape.width / 2)) < point[1] or np.isclose(point[1],
+                                                                                            cube_obj.position.y - (
+                                                                                                    cube_obj.shape.width / 2))) and (
+                    (
+                            cube_obj.position.y + (cube_obj.shape.width / 2)) > \
+                    point[1] or np.isclose(point[1], cube_obj.position.y + (cube_obj.shape.width / 2))):
+                if ((cube_obj.position.z - (cube_obj.shape.height / 2)) < point[2] or np.isclose(point[2],
+                                                                                                 cube_obj.position.z - (
+                                                                                                         cube_obj.shape.height / 2))) and (
+                        (
+                                cube_obj.position.z + (cube_obj.shape.height / 2)) > point[2] or np.isclose(point[2],
+                                                                                                            cube_obj.position.z + (
+                                                                                                                    cube_obj.shape.height / 2))):
                     return True
                 else:
                     return False
@@ -346,6 +371,8 @@ class IntersectionInstance:
         else:
             start = max(first_interval[0], second_interval[0])
             end = min(first_interval[1], second_interval[1])
+            if np.isclose(end - start, 0):
+                return None
             return [start, end]
 
     @staticmethod
@@ -388,6 +415,103 @@ class IntersectionInstance:
             raise ValueError("The given points are the same.")
         return [first_point, direction_vector]
 
+    @staticmethod
+    def convert_to_axis_aligned(obj: object.Object) -> object.Object:
+        if obj.position.phi == 0 and obj.position.theta == 0:
+            return obj
+        else:
+            orientation_quaternion = obj.position.calculate_orientation_quaternion(obj.shape.height)
+            rotation_quaternion = orientation_quaternion.inverse
+            center = [obj.position.x, obj.position.y, obj.position.z]
+            rotated_center = rotation_quaternion.rotate(center)
+            # TODO: Is it necessary to use deepcopy? if not, it's better not to use it because it's very slow
+            axis_aligned_object = copy.deepcopy(obj)
+            axis_aligned_object.position.x = rotated_center[0]
+            axis_aligned_object.position.y = rotated_center[1]
+            axis_aligned_object.position.z = rotated_center[2]
+            axis_aligned_object.position.phi = 0
+            axis_aligned_object.position.theta = 0
+            return axis_aligned_object
+
+    def cylinder_cube_intersection(self):
+        if (self.object1.shape.dump_info())["type"] == "Cylinder":
+            cylinder_object = self.object1
+            cube_object = self.object2
+        else:
+            cylinder_object = self.object2
+            cube_object = self.object1
+        # Calculating bounding boxes of each object and their box of intersection
+        bounding_box_of_cylinder = cylinder_object.shape.bounding_box(cylinder_object.position)
+        bounding_box_of_cube = cube_object.shape.bounding_box(cube_object.position)
+        # a copy of each of object which is axis-aligned
+        intersection_box = IntersectionInstance.intersection_of_bounding_boxes(bounding_box_of_cylinder,
+                                                                               bounding_box_of_cube)
+        axis_aligned_cube = IntersectionInstance.convert_to_axis_aligned(cube_object)
+        axis_aligned_cylinder = IntersectionInstance.convert_to_axis_aligned(cylinder_object)
+        # calculating rotation quaternion for each object, so that one can apply the rotation that makes objects
+        # axis-aligned to any point
+        cube_rotation_quaternion = cube_object.position.calculate_orientation_quaternion(
+            cube_object.shape.height).inverse
+        cylinder_rotation_quaternion = cylinder_object.position.calculate_orientation_quaternion(
+            cylinder_object.shape.height).inverse
+        # If there's no intersection between the bounding boxes we are done.
+        if intersection_box == None:
+            self.__does_intersect = False
+            return
+        else:
+            # number of internal points in each direction:
+            l = math.floor((intersection_box.shape.length / self.accuracy) + 1)
+            w = math.floor((intersection_box.shape.width / self.accuracy) + 1)
+            h = math.floor((intersection_box.shape.height / self.accuracy) + 1)
+            # we choose the point with the smallest coordinates in the intersection box as the first internal point
+            # to check
+            starting_point = [intersection_box.position.x - (intersection_box.shape.length / 2),
+                              intersection_box.position.y - (intersection_box.shape.width / 2),
+                              intersection_box.position.z - (intersection_box.shape.height / 2)]
+            # keeping track of the maximum coordinates, so that later we can compute the volume of intersection
+            max_x = max_y = max_z = -1 * math.inf
+            min_x = min_y = min_z = math.inf
+            # generating internal points with the given accuracy and checking each internal point to see whether it's
+            # in the intersection of the two objects or not
+            for i in range(l):
+                for j in range(w):
+                    for k in range(h):
+                        point = [starting_point[0] + (i * self.accuracy), starting_point[1] + (j * self.accuracy),
+                                 starting_point[2] + (k * self.accuracy)]
+                        # checks to make sure the generated point is in the intersection box:
+                        if IntersectionInstance.is_in_cube(intersection_box, point):
+                            if IntersectionInstance.is_in_cube(axis_aligned_cube, cube_rotation_quaternion.rotate(
+                                    point)) and IntersectionInstance.is_in_cylinder(axis_aligned_cylinder,
+                                                                                    cylinder_rotation_quaternion.rotate(
+                                                                                        point)):
+                                self._intersection_points.append(point)
+                                # adjusting the maximum of coordinates according to the new intersection point
+                                if point[0] > max_x:
+                                    max_x = point[0]
+                                elif point[0] < min_x:
+                                    min_x = point[0]
+                                if point[1] > max_y:
+                                    max_y = point[1]
+                                elif point[1] < min_y:
+                                    min_y = point[1]
+                                if point[2] > max_z:
+                                    max_z = point[2]
+                                elif point[2] < min_z:
+                                    min_z = point[2]
+                        else:
+                            break
+            # calculating the volume of the smallest cube containing all the intersecting points
+            volume_of_intersection = (max_x - min_x) * (max_y - min_y) * (max_z - min_z)
+            if len(self._intersection_points) != 0:
+                self.__does_intersect = True
+                self._intersection_point = IntersectionInstance.average_point(self._intersection_points)
+                if volume_of_intersection <= self.acceptable_volume_of_intersection:
+                    self.__is_infinitesimal = True
+                else:
+                    self.__is_infinitesimal = False
+            else:
+                self.__does_intersect = False
+
     def is_infinitesimal(self) -> bool:
         if self.__does_intersect:
             return self.__is_infinitesimal
@@ -395,8 +519,11 @@ class IntersectionInstance:
             raise Exception(
                 "don't call this function if you haven't checked does_intersect first :D")
 
-    def get_intersection_point(self):
+    def get_intersection_points(self):
         if not self._intersection_points:
             raise Exception(
                 "no intersection recorded., the method must not have been called")
         return self._intersection_points
+
+    def get_intersection_point(self) -> list:
+        return self._intersection_point
