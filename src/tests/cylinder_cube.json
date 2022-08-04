@@ -1,5 +1,139 @@
 {
-  "t_1: a cylinder and a cube that does not intersect.": {
+  "t_0: a cube inside a cylinder.": {
+    "cylinder": {
+      "radius": 16,
+      "height": 20,
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "length": 8,
+      "height": 10,
+      "width": 8,
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "does_intersect": 1,
+      "is_infinitesimal": 0,
+      "intersection_point": [0,0,0]
+    }
+  },
+  "t_1: a cylinder inside a cube.": {
+    "cylinder": {
+      "radius": 8,
+      "height": 5,
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "length": 20,
+      "height": 10,
+      "width": 20,
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "does_intersect": 1,
+      "is_infinitesimal": 0,
+      "intersection_point": [0,0,0]
+    }
+  },
+  "t_2: tangent cube and cylinder": {
+    "cylinder": {
+      "radius": 4,
+      "height": 5,
+      "x": 8,
+      "y": 8,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "length": 8,
+      "height": 10,
+      "width": 8,
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "does_intersect": 0,
+      "is_infinitesimal": 0,
+      "intersection_point": []
+    }
+  },
+  "t_3: tangent cube and cylinder": {
+    "cylinder": {
+      "radius": 8,
+      "height": 10,
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "phi": 90,
+      "theta": 90
+    },
+    "cube": {
+      "length": 10,
+      "height": 10,
+      "width": 10,
+      "x": 0,
+      "y": 10,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "does_intersect": 0,
+      "is_infinitesimal": 0,
+      "intersection_point": []
+    }
+  },
+  "t_4": {
+    "cylinder": {
+      "radius": 1,
+      "height": 8,
+      "x": 0,
+      "y": 5,
+      "z": 0,
+      "phi": 90,
+      "theta": 90
+    },
+    "cube": {
+      "length": 4,
+      "height": 6,
+      "width": 4,
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "does_intersect": 1,
+      "is_infinitesimal": 1,
+      "intersection_point": [
+        0,
+        1.5,
+        0
+      ]
+    }
+  },
+  "t_5: a cylinder and a cube that their bounding boxes does not intersect.": {
     "cylinder": {
       "radius": 5,
       "height": 10,
@@ -20,10 +154,35 @@
       "theta": 0
     },
     "output": {
-      "does_intersect" : 0,
-      "is_infinitesimal" : 0,
-      "intersection_points":[]
+      "does_intersect": 0,
+      "is_infinitesimal": 0,
+      "intersection_point": []
     }
-
+  },
+  "t_6: a cylinder and a cube that their bounding boxes does intersect but they don't.": {
+    "cylinder": {
+      "radius": 0.5,
+      "height": 10,
+      "x": 0,
+      "y": 0,
+      "z": 5,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "length": 0.3,
+      "height": 10,
+      "width": 0.3,
+      "x": -1,
+      "y": -1,
+      "z": 5,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "does_intersect": 0,
+      "is_infinitesimal": 0,
+      "intersection_point": []
+    }
   }
 }
