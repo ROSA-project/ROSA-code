@@ -144,7 +144,9 @@ class TestCylinderCubeIntersection(unittest.TestCase):
                                                        testcases[testcase]["cube"]["z"],
                                                        testcases[testcase]["cube"]["phi"],
                                                        testcases[testcase]["cube"]["theta"]), None, None)
-                intersection_instance = in_in.IntersectionInstance(cylinder_obj, cube_obj)
+                accuracy = testcases[testcase]["accuracy"]
+                maximum_possible_volume_of_intersection = testcases[testcase]["maximum_possible_volume_of_intersection"]
+                intersection_instance = in_in.IntersectionInstance(cylinder_obj, cube_obj, accuracy, maximum_possible_volume_of_intersection)
                 if (bool(testcases[testcase]["output"]["does_intersect"]) == False):
                     self.assertFalse(intersection_instance.does_intersect(), msg=testcase)
                 else:

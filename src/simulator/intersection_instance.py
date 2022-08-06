@@ -21,11 +21,11 @@ class IntersectionInstance:
        # TODO currently a sketch. Interface no defined right.
     """
 
-    def __init__(self, object1: object.Object, object2: object.Object):
+    def __init__(self, object1: object.Object, object2: object.Object, accuracy: float, maximum_possible_volume_of_intersection: float ):
         self.object1 = object1
         self.object2 = object2
-        self.acceptable_volume_of_intersection = 10
-        self.accuracy = 1
+        self.__maximum_possible_volume_of_intersection = maximum_possible_volume_of_intersection
+        self.__accuracy = accuracy
         self.__does_intersect = False
         self.__is_infinitesimal = False
         self._intersection_points = []
@@ -460,9 +460,9 @@ class IntersectionInstance:
             return
         else:
             # number of internal points in each direction:
-            l = math.floor((intersection_box.shape.length / self.accuracy) + 1)
-            w = math.floor((intersection_box.shape.width / self.accuracy) + 1)
-            h = math.floor((intersection_box.shape.height / self.accuracy) + 1)
+            l = math.floor((intersection_box.shape.length / self.__accuracy) + 1)
+            w = math.floor((intersection_box.shape.width / self.__accuracy) + 1)
+            h = math.floor((intersection_box.shape.height / self.__accuracy) + 1)
             # we choose the point with the smallest coordinates in the intersection box as the first internal point
             # to check
             starting_point = [intersection_box.position.x - (intersection_box.shape.length / 2),
@@ -476,8 +476,8 @@ class IntersectionInstance:
             for i in range(l):
                 for j in range(w):
                     for k in range(h):
-                        point = [starting_point[0] + (i * self.accuracy), starting_point[1] + (j * self.accuracy),
-                                 starting_point[2] + (k * self.accuracy)]
+                        point = [starting_point[0] + (i * self.__accuracy), starting_point[1] + (j * self.__accuracy),
+                                 starting_point[2] + (k * self.__accuracy)]
                         # checks to make sure the generated point is in the intersection box:
                         if IntersectionInstance.is_in_cube(intersection_box, point):
                             if IntersectionInstance.is_in_cube(axis_aligned_cube, cube_rotation_quaternion.rotate(
@@ -505,7 +505,7 @@ class IntersectionInstance:
             if len(self._intersection_points) != 0:
                 self.__does_intersect = True
                 self._intersection_point = IntersectionInstance.average_point(self._intersection_points)
-                if volume_of_intersection <= self.acceptable_volume_of_intersection:
+                if volume_of_intersection <= self.__maximum_possible_volume_of_intersection:
                     self.__is_infinitesimal = True
                 else:
                     self.__is_infinitesimal = False
@@ -527,3 +527,8 @@ class IntersectionInstance:
 
     def get_intersection_point(self) -> list:
         return self._intersection_point
+
+    def get_maximum_intersection_volume(self) -> float:
+        return self.__maximum_possible_volume_of_intersection
+    def get_accuracy(self) -> float:
+        return self.__accuracy

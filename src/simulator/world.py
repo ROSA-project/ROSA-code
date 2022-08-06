@@ -95,7 +95,7 @@ class World:
                 if not (self.registry.get_objects()[oid_1].shape == None \
                         or self.registry.get_objects()[oid_2].shape == None):
                     instance = IntersectionInstance(self.registry.get_objects()[oid_1],
-                                                    self.registry.get_objects()[oid_2])
+                                                    self.registry.get_objects()[oid_2], 1, 10)
                     # instance has to be added for both objects
                     intersection_result[oid_1].append(instance)
                     intersection_result[oid_2].append(instance)
