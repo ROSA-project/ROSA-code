@@ -1,5 +1,9 @@
 {
   "cube_1": {
+  "comment":["rotation_angle : the ange of axis(phi and theta) for rotate"
+            ,"dimension : dimension of shapes that rotate"
+            ,"type : type of shape"
+            ,"expected_dimension_box : dimension of bounding box of shape that we expected "],
   "position" :[0,0,0],
   "rotation_angle" : [45,0],
   "dimension" : [2,2,2],
@@ -89,5 +93,33 @@
     "dimension" : [1,1],
     "type" : "Cylinder",
     "expected_dimension_box" : [2.0,1.0,2.0]
+  },
+    "cylinder_10": {
+    "position" :[0,0,0],
+    "rotation_angle" : [0,90],
+    "dimension" : [0,2],
+    "type" : "Cylinder",
+    "expected_dimension_box" : [2.0, 0.0, 0.0]
+  },
+  "cylinder_11": {
+    "position" :[0,0,0],
+    "rotation_angle" : [0,45],
+    "dimension" : [0,2],
+    "type" : "Cylinder",
+    "expected_dimension_box" : [1.4142135624, 0, 1.4142135624]
+  },
+  "cylinder_12": {
+    "position" :[0,0,0],
+    "rotation_angle" : [45,45],
+    "dimension" : [0,1],
+    "type" : "Cylinder",
+    "expected_dimension_box" : [0.5,0.5,0.7071067812]
+  },
+  "cylinder_13": {
+    "position" :[0,0,0],
+    "rotation_angle" : [60,30],
+    "dimension" : [0,2],
+    "type" : "Cylinder",
+    "expected_dimension_box" : [0.5, 0.8660254038, 1.7320508076]
   }
 }
