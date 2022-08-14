@@ -5,7 +5,7 @@ from object_registry import ObjectRegistry
 from robot import Robot
 import numpy as np
 
-RadioID = str
+RadioID = str  # type aliasing, since we might change RadioID composition
 
 
 class Base(Object):
@@ -15,7 +15,7 @@ class Base(Object):
         self.radio_id = rid
         self.error = error
 
-    def get_distance(self, robot: Robot):
+    def get_distance(self, robot: Robot) -> float:
         delta_x = self.position.x - robot.position.x
         delta_y = self.position.y - robot.position.y
         delta_z = self.position.z - robot.position.z
