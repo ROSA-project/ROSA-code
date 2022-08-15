@@ -1,0 +1,32 @@
+{
+  "g_0":{
+    "type": "zero_theta_cube_corner",
+    "distance_between_center_and_corner": ,
+    "intersection_height": ,
+    "testcase": {
+      "accuracy":,
+      "intersection_volume_threshold":,
+      "cylinder": {
+      "radius": ,
+      "height": ,
+      "x": ,
+      "y": ,
+      "z": ,
+      "phi": ,
+      "theta":
+      },
+      "cube": {
+        "length": ,
+        "height": ,
+        "width": ,
+        "x": ,
+        "y": ,
+        "z": ,
+        "phi": ,
+        "theta":
+      },
+      "output": {
+      }
+    }
+  }
+}
