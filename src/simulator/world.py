@@ -97,14 +97,19 @@ class World:
                         or self.registry.get_objects()[oid_2].shape == None):
                     instance = IntersectionInstance(self.registry.get_objects()[oid_1],
                                                     self.registry.get_objects()[oid_2])
-                    # instance has to be added for both objects except when one of them is a non-physical object
+                    # instance has to be added for intersections with physical objects only
                     if isinstance(self.registry.get_objects()[oid_1], non_physical_object.NonPhysicalObject):
                         intersection_result[oid_1].append(instance)
                     elif isinstance(self.registry.get_objects()[oid_2], non_physical_object.NonPhysicalObject):
                         intersection_result[oid_2].append(instance)
+                    elif isinstance(self.registry.get_objects()[oid_1],
+                                    non_physical_object.NonPhysicalObject) and isinstance(
+                            self.registry.get_objects()[oid_2], non_physical_object.NonPhysicalObject):
+                        continue
                     else:
                         intersection_result[oid_1].append(instance)
                         intersection_result[oid_2].append(instance)
+
                     if instance.does_intersect():
                         if not instance.is_infinitesimal():
                             non_infinitesimal_intersection_exists = True
