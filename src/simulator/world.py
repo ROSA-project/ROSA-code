@@ -98,14 +98,14 @@ class World:
                     instance = IntersectionInstance(self.registry.get_objects()[oid_1],
                                                     self.registry.get_objects()[oid_2])
                     # instance has to be added for intersections with physical objects only
-                    if isinstance(self.registry.get_objects()[oid_1], non_physical_object.NonPhysicalObject):
-                        intersection_result[oid_1].append(instance)
-                    elif isinstance(self.registry.get_objects()[oid_2], non_physical_object.NonPhysicalObject):
-                        intersection_result[oid_2].append(instance)
-                    elif isinstance(self.registry.get_objects()[oid_1],
+                    if isinstance(self.registry.get_objects()[oid_1],
                                     non_physical_object.NonPhysicalObject) and isinstance(
                             self.registry.get_objects()[oid_2], non_physical_object.NonPhysicalObject):
                         continue
+                    elif isinstance(self.registry.get_objects()[oid_1], non_physical_object.NonPhysicalObject):
+                        intersection_result[oid_1].append(instance)
+                    elif isinstance(self.registry.get_objects()[oid_2], non_physical_object.NonPhysicalObject):
+                        intersection_result[oid_2].append(instance)
                     else:
                         intersection_result[oid_1].append(instance)
                         intersection_result[oid_2].append(instance)
