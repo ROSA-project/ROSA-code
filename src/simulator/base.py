@@ -35,3 +35,6 @@ class Base(object.Object):
 
     def evolve(self, delta_t: float):
         pass
+
+    def is_evolvable(self) -> bool:
+        return False
