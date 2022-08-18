@@ -5,14 +5,15 @@ import object_registry
 from robot import Robot
 import numpy as np
 
-RadioID = str  # type aliasing, since we might change RadioID composition
+RadioID = object.ObjectId
 
 
 class Base(object.Object):
     """
-    Object for keeping the robot and moving between it, etc.
-    The robot receives information from this object, such as distance.
+    A physical station, primarily in charge of communicating with robots
+    and facilitating their navigation by transmitting their (estimated) distances with the base.
     """
+
     def __init__(self, oid: object.ObjectId, name: str, shape: Shape, position: Position,
                  owner_object: object.Object, registry: object_registry.ObjectRegistry,
                  rid: RadioID, standard_deviation: float):
@@ -20,13 +21,17 @@ class Base(object.Object):
         self.radio_id = rid
         self.standard_deviation = standard_deviation
 
-    def get_distance(self, robot: Robot) -> float:
-        delta_x = self.position.x - robot.position.x
-        delta_y = self.position.y - robot.position.y
-        delta_z = self.position.z - robot.position.z
-        true_distance = np.sqrt(delta_x ** 2 + delta_y ** 2 + delta_z ** 2)
-        distance = true_distance + np.random.normal(loc=0, scale=self.standard_deviation)
-        return distance
+    def get_distance(self, robot: Robot, time: float):
+        frame_interval = 0.025
+        if time % frame_interval == 0:
+            delta_x = self.position.x - robot.position.x
+            delta_y = self.position.y - robot.position.y
+            delta_z = self.position.z - robot.position.z
+            true_distance = np.sqrt(delta_x ** 2 + delta_y ** 2 + delta_z ** 2)
+            distance = true_distance + np.random.normal(loc=0, scale=self.standard_deviation)
+            return distance
+        else:
+            return None
 
     def evolve(self, delta_t: float):
         pass

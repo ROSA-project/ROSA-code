@@ -7,6 +7,7 @@ from cylinder import Cylinder
 from ball import RigidPointBall
 from vacuum_cleaner import VacuumCleanerV0
 from object_registry import ObjectRegistry
+from base import Base
 import json
 
 
@@ -46,6 +47,10 @@ class Map:
         elif cname == "VacuumCleanerV0":
             return VacuumCleanerV0(new_id, name, position, owner, {"diameter": shape.radius, "height": shape.height},
                                    self.registry)
+        elif cname == "Base":
+            new_rid = self.registry.get_next_available_id()
+            standard_deviation = obj_json["Standard_deviation"]
+            return Base(new_id, name, shape, position, owner, self.registry, new_rid, standard_deviation)
         else:
             assert cname == "Simple" or cname == "CompoundPhysical", \
                 f"Unknown 'class' name for object: {cname}"
@@ -60,7 +65,7 @@ class Map:
                 args = obj_json["shape"]["arguments"]
                 cname = obj_json["shape"]["class"]
                 if cname == "Cube":
-                    return Cube(args["lenght"], args["height"], args["width"])
+                    return Cube(args["length"], args["height"], args["width"])
                 elif cname == "Cylinder":
                     return Cylinder(args["radius"], args["height"])
                 else:
