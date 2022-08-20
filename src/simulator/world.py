@@ -87,24 +87,23 @@ class World:
         intersection_result: InInType = defaultdict(list)  # final result
         oids: list[ObjectId] = list(self.registry.get_objects().keys())  # TODO: better way to get oids?
         non_infinitesimal_intersection_exists = False
+        non_physical = non_physical_object.NonPhysicalObject
         for i in range(len(oids)):
             oid_1 = oids[i]
+            object_1 = self.registry.get_objects()[oid_1]
             for j in range(i + 1, len(oids)):
                 oid_2 = oids[j]
+                object_2 = self.registry.get_objects()[oid_2]
                 # TODO skipping shape-less objects, but shapelessness is not so well-defined
                 # let's return to this later
-                if not (self.registry.get_objects()[oid_1].shape == None \
-                        or self.registry.get_objects()[oid_2].shape == None):
-                    instance = IntersectionInstance(self.registry.get_objects()[oid_1],
-                                                    self.registry.get_objects()[oid_2])
+                if not (object_1.shape == None or object_2.shape == None):
+                    instance = IntersectionInstance(object_1, object_2)
                     # instance has to be added for intersections with physical objects only
-                    if isinstance(self.registry.get_objects()[oid_1],
-                                    non_physical_object.NonPhysicalObject) and isinstance(
-                            self.registry.get_objects()[oid_2], non_physical_object.NonPhysicalObject):
+                    if isinstance(object_1, non_physical) and isinstance(object_2, non_physical):
                         continue
-                    elif isinstance(self.registry.get_objects()[oid_1], non_physical_object.NonPhysicalObject):
+                    elif isinstance(object_1, non_physical):
                         intersection_result[oid_1].append(instance)
-                    elif isinstance(self.registry.get_objects()[oid_2], non_physical_object.NonPhysicalObject):
+                    elif isinstance(object_2, non_physical):
                         intersection_result[oid_2].append(instance)
                     else:
                         intersection_result[oid_1].append(instance)
