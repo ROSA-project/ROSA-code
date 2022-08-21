@@ -1,0 +1,26 @@
+{
+  "t_0": {
+      "r": 0,
+      "theta": 0,
+      "z": 0,
+      "expected_output": {"x": 0, "y": 0, "z": 0}
+  },
+  "t_1": {
+      "r": 0,
+      "theta": 40,
+      "z": 10,
+      "expected_output": {"x": 0, "y": 0, "z": 10}
+  },
+  "t_2": {
+      "r": 5,
+      "theta": 90,
+      "z": 7,
+      "expected_output": {"x": 0, "y": 5, "z": 7}
+  },
+  "t_3": {
+      "r": -5,
+      "theta": -90,
+      "z": -7,
+      "expected_output": {"x": 0, "y": 5, "z": -7}
+  }
+}

@@ -1,16 +1,16 @@
 from __future__ import annotations
-from shape import Shape
-from position import Position
-from box import Box
+import shape
+import position as p
+import box
 
-
-class Cube(Shape):
+class Cube(shape.Shape):
     def __init__(self, length: float, height: float, width: float):
         self.length = length
         self.height = height
         self.width = width
 
-    def bounding_box(self, position: Position) -> Box:
+    def bounding_box(self, position: p.Position) -> box.Box:
+
         """Returns smallest enclosing upright Box
 
         Calculate the smallest bounding box. The function
@@ -35,7 +35,7 @@ class Cube(Shape):
         # like [x-points, y-points, z-points]
         new_points = [[], [], []]
         for point in points:
-            new_point = Shape.rotation(point[0], point[1], point[2], position.phi, position.theta)
+            new_point = shape.Shape.rotation(point[0], point[1], point[2], position.phi, position.theta)
             new_points[0].append(new_point[0])
             new_points[1].append(new_point[1])
             new_points[2].append(new_point[2])
@@ -51,8 +51,8 @@ class Cube(Shape):
         width = 2 * max([abs(y) for y in new_points[1]])
         height = 2 * max([abs(z) for z in new_points[2]])
 
-        bounding_box = Box(None, None, Cube(length=length, width=width, height=height),
-                           Position(position.x, position.y, position.z, 0, 0),
+        bounding_box = box.Box(None, None, Cube(length=length, width=width, height=height),
+                           p.Position(position.x, position.y, position.z, 0, 0),
                            None, None)
         return bounding_box
 

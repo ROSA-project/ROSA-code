@@ -1,15 +1,15 @@
 from __future__ import annotations
-from position import Position
-from object import Object, ObjectId
-from object_registry import ObjectRegistry
+import position
+import object as obj
+import object_registry
 import shape
 import cube
 
 
-class Box(Object):
-    def __init__(self, oid: ObjectId, name: str, cube: cube.Cube, position: Position,
-                 owner_object: Object, registry: ObjectRegistry):
+class Box(obj.Object):
+    def __init__(self, oid: obj.ObjectId, name: str, cube: cube.Cube, position: position.Position,
+                 owner_object: obj.Object, registry: object_registry.ObjectRegistry):
         # if not isinstance(cube, cube.Cube):
         #     raise ValueError("A Box object must have Cube shape")
 
-        Object.__init__(self, oid, name, cube, position, owner_object, registry)
+        obj.Object.__init__(self, oid, name, cube, position, owner_object, registry)

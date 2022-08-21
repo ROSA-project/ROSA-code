@@ -1,0 +1,92 @@
+{
+  "t_1: a point on the boundary of the cylinder": {
+    "radius": 5,
+    "height": 10,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [4,6,4],
+    "expected_output": 1
+  },
+  "t_2: a point on the top corner of the surface of the cylinder": {
+    "radius": 5,
+    "height": 10,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [4,6,5],
+    "expected_output": 1
+  },
+  "t_3: a point on the top surface of the cylinder":{
+    "radius": 5,
+    "height": 10,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [0,6,5],
+    "expected_output": 1
+  },
+  "t_4: a point at the bottom corner of the surface of the cylinder": {
+    "radius": 5,
+    "height": 10,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [4,6,-2],
+    "expected_output": 1
+  },
+  "t_5: a point at the bottom surface of the cylinder": {
+    "radius": 5,
+    "height": 10,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [0,6,-2],
+    "expected_output": 1
+  },
+  "t_6: a point inside of the cylinder": {
+    "radius": 5,
+    "height": 10,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [1,1,3],
+    "expected_output": 1
+  },
+  "t_7: a point outside of the cylinder but within the interval of z of the cylinder": {
+    "radius": 5,
+    "height": 10,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [5,6,3],
+    "expected_output": 0
+  },
+    "t_8: a point above the cylinder": {
+    "radius": 5,
+    "height": 10,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [4,6,9],
+    "expected_output": 0
+  },
+  "t_9: a point below the cylinder": {
+    "radius": 5,
+    "height": 10,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [4,6,-5.2],
+    "expected_output": 0
+  },
+  "t_10: a point outside of the cylinder": {
+    "radius": 5,
+    "height": 10,
+    "x": 1,
+    "y": 2,
+    "z": 3,
+    "point": [5,6,7],
+    "expected_output": 0
+  }
+}

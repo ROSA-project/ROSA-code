@@ -1,0 +1,232 @@
+{
+  "t_0: both boxes are the same": {
+    "box_1": {
+      "length": 5,
+      "height": 10,
+      "width": 15,
+      "x": 1,
+      "y": 2,
+      "z": 3
+    },
+    "box_2": {
+      "length": 5,
+      "height": 10,
+      "width": 15,
+      "x": 1,
+      "y": 2,
+      "z": 3
+    },
+    "intersection_box": {
+      "length": 5,
+      "height": 10,
+      "width": 15,
+      "x": 1,
+      "y": 2,
+      "z": 3
+    }
+  },
+  "t_1: boxes have no intersection": {
+    "box_1": {
+      "length": 5,
+      "height": 10,
+      "width": 15,
+      "x": 1,
+      "y": 2,
+      "z": 3
+    },
+    "box_2": {
+      "length": 1,
+      "height": 2,
+      "width": 3,
+      "x": 40,
+      "y": 45,
+      "z": 50
+    },
+    "intersection_box": "None"
+  },
+  "t_2: boxes are tangent ": {
+    "box_1": {
+      "length": 5,
+      "height": 10,
+      "width": 15,
+      "x": 1,
+      "y": 2,
+      "z": 3
+    },
+    "box_2": {
+      "length": 2,
+      "height": 4,
+      "width": 3,
+      "x": 4.5,
+      "y": 11,
+      "z": 10
+    },
+    "intersection_box": "None"
+  },
+  "t_3: one box is contained entirely in another": {
+    "box_1": {
+      "length": 5,
+      "height": 10,
+      "width": 15,
+      "x": 1,
+      "y": 2,
+      "z": 3
+    },
+    "box_2": {
+      "length": 2,
+      "height": 4,
+      "width": 12,
+      "x": 1.5,
+      "y": 3,
+      "z": 5
+    },
+    "intersection_box": {
+      "length": 2,
+      "height": 4,
+      "width": 12,
+      "x": 1.5,
+      "y": 3,
+      "z": 5
+    }
+  },
+  "t_4: boxes are not contained entirely in each other but do intersect": {
+    "box_1": {
+      "length": 5,
+      "height": 10,
+      "width": 15,
+      "x": 1,
+      "y": 2,
+      "z": 3
+    },
+    "box_2": {
+      "length": 4,
+      "height": 3,
+      "width": 2,
+      "x": 4.5,
+      "y": 9,
+      "z": -1.5
+    },
+    "intersection_box": {
+      "length": 1,
+      "height": 2,
+      "width": 1.5,
+      "x": 3,
+      "y": 8.75,
+      "z": -1
+    }
+  },
+  "t_5: boxes that have no common interval for z": {
+    "box_1": {
+      "length": 5,
+      "height": 10,
+      "width": 15,
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "box_2": {
+      "length": 5,
+      "height":4 ,
+      "width": 15,
+      "x": 0,
+      "y": 0,
+      "z": -10
+    },
+    "intersection_box": "None"
+  },
+    "t_6: boxes that have no common interval for x": {
+    "box_1": {
+      "length": 5,
+      "height": 10,
+      "width": 15,
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "box_2": {
+      "length": 10,
+      "height":10 ,
+      "width": 15,
+      "x": -15,
+      "y": 0,
+      "z": 0
+    },
+    "intersection_box": "None"
+  },
+  "t_7: boxes that have no common interval for y": {
+    "box_1": {
+      "length": 5,
+      "height": 10,
+      "width": 15,
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "box_2": {
+      "length": 5,
+      "height":10 ,
+      "width": 20,
+      "x": 0,
+      "y": 28,
+      "z": 0
+    },
+    "intersection_box": "None"
+  },
+  "t_8: boxes that have a common interval for x": {
+    "box_1": {
+      "length": 5,
+      "height": 10,
+      "width": 15,
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "box_2": {
+      "length": 5,
+      "height":4 ,
+      "width": 20,
+      "x": 0,
+      "y": 28,
+      "z": -10
+    },
+    "intersection_box": "None"
+  },
+  "t_9: boxes that have a common interval for y": {
+    "box_1": {
+      "length": 5,
+      "height": 10,
+      "width": 15,
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "box_2": {
+      "length": 10,
+      "height":4 ,
+      "width": 15,
+      "x": -15,
+      "y": 0,
+      "z": -10
+    },
+    "intersection_box": "None"
+  },
+  "t_10: boxes that have a common interval for z": {
+    "box_1": {
+      "length": 5,
+      "height": 10,
+      "width": 15,
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "box_2": {
+      "length": 10,
+      "height":8 ,
+      "width": 20,
+      "x": -15,
+      "y": 28,
+      "z": 0
+    },
+    "intersection_box": "None"
+  }
+}

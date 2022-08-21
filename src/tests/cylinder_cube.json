@@ -1,0 +1,640 @@
+{
+    "t_1": {
+      "accuracy":0.1,
+      "maximum_possible_volume_of_intersection":10 ,
+      "almost_zero": 1 ,
+      "epsilon_for_point_of_intersection": 0.5,
+      "cylinder": {
+        "radius": 3,
+        "height": 10,
+        "x": 4,
+        "y": -1,
+        "z": -5,
+        "phi": 0,
+        "theta": 0
+      },
+      "cube": {
+        "height": 15,
+        "length": 10,
+        "width": 10,
+        "x": -3,
+        "y": 1,
+        "z": 5,
+        "phi": 0,
+        "theta": 0
+      },
+      "output": {
+        "volume_of_intersection": 11.18,
+        "intersection_point": [1.5,-1,-1.25]
+      }
+  },
+  "t_2": {
+      "accuracy":0.05,
+      "maximum_possible_volume_of_intersection":10 ,
+      "almost_zero": 1 ,
+      "epsilon_for_point_of_intersection": 0.5,
+      "cylinder": {
+        "radius": 0.7071,
+        "height": 8,
+        "x": 1.4142,
+        "y": 0.7071,
+        "z": -2,
+        "phi": 0,
+        "theta": 0
+      },
+      "cube": {
+        "height": 4,
+        "length": 1.4142,
+        "width": 1.4142,
+        "x": 0.7071,
+        "y": 0.7071,
+        "z": 0,
+        "phi": 0,
+        "theta": 0
+      },
+      "output": {
+        "volume_of_intersection": 4,
+        "intersection_point": [1.06,0.7,0]
+      }
+  },
+  "t_3": {
+      "accuracy":0.05,
+      "maximum_possible_volume_of_intersection":10 ,
+      "almost_zero": 1 ,
+      "epsilon_for_point_of_intersection": 0.5,
+      "cylinder": {
+        "radius": 1.5,
+        "height": 6,
+        "x": 0,
+        "y": 1.5,
+        "z": -6,
+        "phi": 0,
+        "theta": 0
+      },
+      "cube": {
+        "height": 10,
+        "length": 3,
+        "width": 4,
+        "x": 2.5,
+        "y": 2,
+        "z": -1,
+        "phi": 0,
+        "theta": 0
+      },
+      "output": {
+        "volume_of_intersection": 3.354,
+        "intersection_point": [1.25,1.5,-4.5]
+      }
+  },
+  "t_4": {
+      "accuracy":0.05,
+      "maximum_possible_volume_of_intersection":10 ,
+      "almost_zero": 1 ,
+      "epsilon_for_point_of_intersection": 0.5,
+      "cylinder": {
+        "radius": 2,
+        "height": 8,
+        "x": 6,
+        "y": 3,
+        "z": -4,
+        "phi": 0,
+        "theta": 0
+      },
+      "cube": {
+        "height": 8,
+        "length": 5,
+        "width": 2,
+        "x": 5.5,
+        "y": 5,
+        "z": -4,
+        "phi": 0,
+        "theta": 0
+      },
+      "output": {
+        "volume_of_intersection": 27.71,
+        "intersection_point": [6,4.5,-4]
+      }
+  },
+  "t_5": {
+      "accuracy":0.05,
+      "maximum_possible_volume_of_intersection":10 ,
+      "almost_zero": 1 ,
+      "epsilon_for_point_of_intersection": 0.5,
+      "cylinder": {
+        "radius": 2,
+        "height": 8,
+        "x": 5,
+        "y": 5,
+        "z": -3,
+        "phi": 0,
+        "theta": 0
+      },
+      "cube": {
+        "height": 4,
+        "length": 6,
+        "width": 3,
+        "x": 6,
+        "y": 2.5,
+        "z": -5,
+        "phi": 0,
+        "theta": 0
+      },
+      "output": {
+        "volume_of_intersection": 13.84,
+        "intersection_point": [5,3.5,-5]
+      }
+  },
+  "t_6": {
+      "accuracy":0.05,
+      "maximum_possible_volume_of_intersection":10 ,
+      "almost_zero": 1 ,
+      "epsilon_for_point_of_intersection": 0.5,
+      "cylinder": {
+        "radius": 2,
+        "height": 8,
+        "x": 5,
+        "y": 2,
+        "z": 0,
+        "phi": 0,
+        "theta": 0
+      },
+      "cube": {
+        "height": 8,
+        "length": 2,
+        "width": 4,
+        "x": 3,
+        "y": 5,
+        "z": 0,
+        "phi": 0,
+        "theta": 0
+      },
+      "output": {
+        "volume_of_intersection": 4.41,
+        "intersection_point": [3.63,3.37,0]
+      }
+  },
+  "t_7": {
+      "accuracy":0.05,
+      "maximum_possible_volume_of_intersection":10 ,
+      "almost_zero": 1 ,
+      "epsilon_for_point_of_intersection": 0.5,
+      "cylinder": {
+        "radius": 2,
+        "height": 10,
+        "x": 4,
+        "y": 5,
+        "z": 2,
+        "phi": 0,
+        "theta": 0
+      },
+      "cube": {
+        "height": 5,
+        "length": 2,
+        "width": 3,
+        "x": 6,
+        "y": 2.5,
+        "z": -2.5,
+        "phi": 0,
+        "theta": 0
+      },
+      "output": {
+        "volume_of_intersection": 1.653,
+        "intersection_point": [5.37, 3.63,-1.5]
+      }
+  },
+  "t_8": {
+      "accuracy":0.05,
+      "maximum_possible_volume_of_intersection":15 ,
+      "almost_zero": 1 ,
+      "epsilon_for_point_of_intersection": 0.5,
+      "cylinder": {
+        "radius": 3,
+        "height": 5,
+        "x": 5,
+        "y": 5,
+        "z": -2.5,
+        "phi": 0,
+        "theta": 0
+      },
+      "cube": {
+        "height": 10,
+        "length": 2,
+        "width": 4,
+        "x": 3,
+        "y": 2,
+        "z": 2,
+        "phi": 0,
+        "theta": 0
+      },
+      "output": {
+        "volume_of_intersection": 10.14,
+        "intersection_point": [3.08, 3.08,-1.5]
+      }
+  },
+  "t_9": {
+      "accuracy":0.05,
+      "maximum_possible_volume_of_intersection":10 ,
+      "almost_zero": 1 ,
+      "epsilon_for_point_of_intersection": 0.5,
+      "cylinder": {
+        "radius": 4,
+        "height": 10,
+        "x": 3,
+        "y": 1,
+        "z": 3,
+        "phi": 0,
+        "theta": 0
+      },
+      "cube": {
+        "height": 4,
+        "length": 5,
+        "width": 3,
+        "x": 6.5,
+        "y": 3.5,
+        "z": 0,
+        "phi": 0,
+        "theta": 0
+      },
+      "output": {
+        "volume_of_intersection": 33.2928,
+        "intersection_point": [5.44, 3.44,0]
+      }
+  },
+  "t_10": {
+      "accuracy":0.05,
+      "maximum_possible_volume_of_intersection":10 ,
+      "almost_zero": 1 ,
+      "epsilon_for_point_of_intersection": 0.5,
+      "cylinder": {
+        "radius": 2,
+        "height": 8,
+        "x": 3,
+        "y": 4,
+        "z": 1,
+        "phi": 0,
+        "theta": 0
+      },
+      "cube": {
+        "height": 6,
+        "length": 2,
+        "width": 2,
+        "x": 2,
+        "y": 5,
+        "z": 2,
+        "phi": 0,
+        "theta": 0
+      },
+      "output": {
+        "volume_of_intersection": 24,
+        "intersection_point": [2, 5,2]
+      }
+  },
+  "t_11": {
+    "accuracy": 0.05,
+    "maximum_possible_volume_of_intersection": 10,
+    "almost_zero": 1,
+    "epsilon_for_point_of_intersection": 0.5,
+    "cylinder": {
+      "radius": 1,
+      "height": 8,
+      "x": 6,
+      "y": 6,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "height": 6,
+      "length": 3,
+      "width": 2,
+      "x": 3.5,
+      "y": 6,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "volume_of_intersection": 0,
+      "intersection_point": []
+    }
+  },
+  "t_12": {
+    "accuracy": 0.05,
+    "maximum_possible_volume_of_intersection": 10,
+    "almost_zero": 1,
+    "epsilon_for_point_of_intersection": 0.5,
+    "cylinder": {
+      "radius": 1,
+      "height": 10,
+      "x": 3,
+      "y": 5,
+      "z": 20,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "height": 6,
+      "length": 3,
+      "width": 2,
+      "x": 3.5,
+      "y": 3,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "volume_of_intersection": 0,
+      "intersection_point": []
+    }
+  },
+  "t_13": {
+    "accuracy": 0.05,
+    "maximum_possible_volume_of_intersection": 10,
+    "almost_zero": 1,
+    "epsilon_for_point_of_intersection": 0.5,
+    "cylinder": {
+      "radius": 1,
+      "height": 8,
+      "x": 1,
+      "y": 3,
+      "z": -4,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "height": 5,
+      "length": 3,
+      "width": 2,
+      "x": 3.5,
+      "y": 3,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "volume_of_intersection": 0,
+      "intersection_point": []
+    }
+  },
+  "t_14": {
+    "accuracy": 0.05,
+    "maximum_possible_volume_of_intersection": 10,
+    "almost_zero": 1,
+    "epsilon_for_point_of_intersection": 0.5,
+    "cylinder": {
+      "radius": 1,
+      "height": 12,
+      "x": 3,
+      "y": 1,
+      "z": 2,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "height": 9,
+      "length": 3,
+      "width": 2,
+      "x": 3.5,
+      "y": 3,
+      "z": 0.5,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "volume_of_intersection": 0,
+      "intersection_point": []
+    }
+  },
+  "t_15": {
+    "accuracy": 0.05,
+    "maximum_possible_volume_of_intersection": 10,
+    "almost_zero": 1,
+    "epsilon_for_point_of_intersection": 0.5,
+    "cylinder": {
+      "radius": 1,
+      "height": 5,
+      "x": 5,
+      "y": 3,
+      "z": 2.5,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "height": 5,
+      "length": 3,
+      "width": 2,
+      "x": 4.5,
+      "y": 3,
+      "z": 7.5,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "volume_of_intersection": 0,
+      "intersection_point": []
+    }
+  },
+  "t_16": {
+    "accuracy": 0.05,
+    "maximum_possible_volume_of_intersection": 10,
+    "almost_zero": 1,
+    "epsilon_for_point_of_intersection": 0.5,
+    "cylinder": {
+      "radius": 1,
+      "height": 5,
+      "x": 5,
+      "y": 3,
+      "z": 7.5,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "height": 5,
+      "length": 3,
+      "width": 2,
+      "x": 4.5,
+      "y": 3,
+      "z": 2.5,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "volume_of_intersection": 0,
+      "intersection_point": []
+    }
+  },
+  "t_17": {
+    "accuracy": 0.05,
+    "maximum_possible_volume_of_intersection": 10,
+    "almost_zero": 1,
+    "epsilon_for_point_of_intersection": 0.5,
+    "cylinder": {
+      "radius": 1,
+      "height": 5,
+      "x": 5,
+      "y": 3,
+      "z": 10,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "height": 5,
+      "length": 3,
+      "width": 2,
+      "x": 4.5,
+      "y": 3,
+      "z": 2.5,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "volume_of_intersection": 0,
+      "intersection_point": []
+    }
+  },
+  "t_18": {
+    "accuracy": 0.05,
+    "maximum_possible_volume_of_intersection": 10,
+    "almost_zero": 1,
+    "epsilon_for_point_of_intersection": 0.5,
+    "cylinder": {
+      "radius": 1,
+      "height": 5,
+      "x": 6,
+      "y": 2,
+      "z": 4.5,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "height": 5,
+      "length": 3,
+      "width": 2,
+      "x": 2.5,
+      "y": 2,
+      "z": 2.5,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "volume_of_intersection": 0,
+      "intersection_point": []
+    }
+  },
+  "t_19": {
+    "accuracy": 0.05,
+    "maximum_possible_volume_of_intersection": 10,
+    "almost_zero": 1,
+    "epsilon_for_point_of_intersection": 0.5,
+    "cylinder": {
+      "radius": 1,
+      "height": 5,
+      "x": 6,
+      "y": 2,
+      "z": 10,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "height": 5,
+      "length": 3,
+      "width": 2,
+      "x": 2.5,
+      "y": 2,
+      "z": 2.5,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "volume_of_intersection": 0,
+      "intersection_point": []
+    }
+  },
+  "t_20": {
+    "accuracy": 0.05,
+    "maximum_possible_volume_of_intersection": 10,
+    "almost_zero": 1,
+    "epsilon_for_point_of_intersection": 0.5,
+    "cylinder": {
+      "radius": 1,
+      "height": 5,
+      "x": 6,
+      "y": 2,
+      "z": 7.5,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "height": 5,
+      "length": 3,
+      "width": 2,
+      "x": 2.5,
+      "y": 2,
+      "z": 2.5,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "volume_of_intersection": 0,
+      "intersection_point": []
+    }
+  },
+  "t_21": {
+    "accuracy": 0.05,
+    "maximum_possible_volume_of_intersection": 10,
+    "almost_zero": 1,
+    "epsilon_for_point_of_intersection": 0.5,
+    "cylinder": {
+      "radius": 1,
+      "height": 6,
+      "x": 2.5,
+      "y": 2,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "height": 10,
+      "length": 3,
+      "width": 2,
+      "x": 2.5,
+      "y": 2,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "volume_of_intersection": 24,
+      "intersection_point": [2.5,2,0]
+    }
+  },
+  "t_22": {
+    "accuracy": 0.05,
+    "maximum_possible_volume_of_intersection": 10,
+    "almost_zero": 1,
+    "epsilon_for_point_of_intersection": 0.5,
+    "cylinder": {
+      "radius": 1.118,
+      "height": 10,
+      "x": 1.5,
+      "y": 2,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "cube": {
+      "height": 6,
+      "length": 1,
+      "width": 2,
+      "x": 1.5,
+      "y": 2,
+      "z": 0,
+      "phi": 0,
+      "theta": 0
+    },
+    "output": {
+      "volume_of_intersection": 12,
+      "intersection_point": [1.5,2,0]
+    }
+  }
+}
