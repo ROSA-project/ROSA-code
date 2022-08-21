@@ -1,6 +1,6 @@
 from __future__ import annotations
 import shape
-import position
+import position as p
 import box
 
 class Cube(shape.Shape):
@@ -9,7 +9,7 @@ class Cube(shape.Shape):
         self.height = height
         self.width = width
 
-    def bounding_box(self, position: position.Position) -> box.Box:
+    def bounding_box(self, position: p.Position) -> box.Box:
 
         """Returns smallest enclosing upright Box
 
@@ -52,7 +52,7 @@ class Cube(shape.Shape):
         height = 2 * max([abs(z) for z in new_points[2]])
 
         bounding_box = box.Box(None, None, Cube(length=length, width=width, height=height),
-                           position.Position(position.x, position.y, position.z, 0, 0),
+                           p.Position(position.x, position.y, position.z, 0, 0),
                            None, None)
         return bounding_box
 

@@ -1,5 +1,5 @@
 from __future__ import annotations
-import position
+import position as p
 import shape
 import cube
 import box
@@ -10,7 +10,7 @@ class Cylinder(shape.Shape):
         self.radius = radius
         self.height = height
 
-    def bounding_box(self, position: position.Position) -> box.Box:
+    def bounding_box(self, position: p.Position) -> box.Box:
 
         """Returns smallest enclosing upright Box
 
@@ -58,7 +58,7 @@ class Cylinder(shape.Shape):
         height = 2 * max([abs(z) for z in new_points[2]])
 
         bounding_box = box.Box(None, None, cube.Cube(length=length, width=width, height=height),
-                           position.Position(position.x, position.y, position.z, 0, 0),
+                           p.Position(position.x, position.y, position.z, 0, 0),
                            None, None)
         return bounding_box
 
