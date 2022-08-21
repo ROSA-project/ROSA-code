@@ -21,7 +21,8 @@ class IntersectionInstance:
        # TODO currently a sketch. Interface no defined right.
     """
 
-    def __init__(self, object1: object.Object, object2: object.Object, accuracy: float, maximum_possible_volume_of_intersection: float ):
+    def __init__(self, object1: object.Object, object2: object.Object, accuracy: float,
+                 maximum_possible_volume_of_intersection: float):
         self.object1 = object1
         self.object2 = object2
         self.__maximum_possible_volume_of_intersection = maximum_possible_volume_of_intersection
@@ -29,7 +30,9 @@ class IntersectionInstance:
         self.__does_intersect = False
         self.__is_infinitesimal = False
         self._intersection_points = []
+        # average of intersection_points:
         self._intersection_point = []
+        self._volume_of_intersection = 0
         self.intersect()
 
     def intersect(self) -> dict:
@@ -434,6 +437,10 @@ class IntersectionInstance:
             return axis_aligned_object
 
     def cylinder_cube_intersection(self):
+        """
+        Detects intersection between a cuboid and a cylinder, if an intersection exists it then calculates the volume
+        and the point of intersection. Evaluations of the class properties is done here.
+        """
         if (self.object1.shape.dump_info())["type"] == "Cylinder":
             cylinder_object = self.object1
             cube_object = self.object2
@@ -501,16 +508,23 @@ class IntersectionInstance:
                         else:
                             break
             # calculating the volume of the smallest cube containing all the intersecting points
-            volume_of_intersection = (max_x - min_x) * (max_y - min_y) * (max_z - min_z)
-            if len(self._intersection_points) != 0:
-                self.__does_intersect = True
-                self._intersection_point = IntersectionInstance.average_point(self._intersection_points)
-                if volume_of_intersection <= self.__maximum_possible_volume_of_intersection:
-                    self.__is_infinitesimal = True
-                else:
-                    self.__is_infinitesimal = False
+            self._volume_of_intersection = (max_x - min_x) * (max_y - min_y) * (max_z - min_z)
+            self.evaluate_intersection_properties()
+
+    def evaluate_intersection_properties(self):
+        """
+        Evaluates the fundamental properties of intersection based on intersection points and volume of
+        intersection.
+        """
+        if len(self._intersection_points) != 0:
+            self.__does_intersect = True
+            self._intersection_point = IntersectionInstance.average_point(self._intersection_points)
+            if self._volume_of_intersection <= self.__maximum_possible_volume_of_intersection:
+                self.__is_infinitesimal = True
             else:
-                self.__does_intersect = False
+                self.__is_infinitesimal = False
+        else:
+            self.__does_intersect = False
 
     def is_infinitesimal(self) -> bool:
         if self.__does_intersect:
@@ -530,5 +544,9 @@ class IntersectionInstance:
 
     def get_maximum_intersection_volume(self) -> float:
         return self.__maximum_possible_volume_of_intersection
+
     def get_accuracy(self) -> float:
         return self.__accuracy
+
+    def get_volume_of_intersection(self) -> float:
+        return self._volume_of_intersection

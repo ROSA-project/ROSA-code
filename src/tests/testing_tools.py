@@ -37,3 +37,11 @@ def bounding_box_equal(box1: Box, box2: Box):
             return False
     else:
         return False
+
+
+def point_almost_equal(point_1: list, point_2: list, epsilon: float) -> bool:
+    if (abs(point_1[0] - point_2[0]) <= epsilon and abs(point_1[1] - point_2[1]) <= epsilon and abs(
+            point_1[2] - point_2[2]) <= epsilon):
+        return True
+    else:
+        return False

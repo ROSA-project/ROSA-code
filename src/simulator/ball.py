@@ -36,7 +36,7 @@ class RigidPointBall(physical_object.RigidPhysicalObject):
 
                 # TODO we won't have this method. just an oversimplification for now
                 # bump_point expected to be a numpy array with 3 elements x, y and z
-                intersection_points = in_in.get_intersection_point()
+                intersection_points = in_in.get_intersection_points()
                 
                 # TODO temporary: average two intersection points to find the bump point.
                 bump_point = 1 / 2 * (intersection_points[0][0] + intersection_points[0][1])

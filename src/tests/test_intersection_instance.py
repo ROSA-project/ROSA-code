@@ -1,3 +1,4 @@
+import math
 import unittest
 import json
 import sys
@@ -120,8 +121,7 @@ class TestCylinderCubeIntersection(unittest.TestCase):
                             intersection_box), msg=testcase)
             test_counter += 1
 
-    def test_cylinder_cube(self):
-
+    def test_cylinder_cube_intersection(self):
         json_filename = json_path_prefix + "cylinder_cube.json"
         with open(json_filename, "r") as f:
             testcases = json.load(f)
@@ -129,32 +129,62 @@ class TestCylinderCubeIntersection(unittest.TestCase):
         for testcase in testcases:
             with self.subTest(i=test_counter):
                 cylinder_obj = object.Object(1, "Cylinder", cylinder.Cylinder(testcases[testcase]["cylinder"]["radius"],
-                                                                          testcases[testcase]["cylinder"]["height"]),
-                                         position.Position(testcases[testcase]["cylinder"]["x"],
-                                                           testcases[testcase]["cylinder"]["y"],
-                                                           testcases[testcase]["cylinder"]["z"],
-                                                           testcases[testcase]["cylinder"]["phi"],
-                                                           testcases[testcase]["cylinder"]["theta"]), None, None)
+                                                                              testcases[testcase]["cylinder"][
+                                                                                  "height"]),
+                                             position.Position(testcases[testcase]["cylinder"]["x"],
+                                                               testcases[testcase]["cylinder"]["y"],
+                                                               testcases[testcase]["cylinder"]["z"],
+                                                               testcases[testcase]["cylinder"]["phi"],
+                                                               testcases[testcase]["cylinder"]["theta"]), None, None)
                 cube_obj = object.Object(1, "Cube",
-                                     cube.Cube(testcases[testcase]["cube"]["length"],
-                                               testcases[testcase]["cube"]["height"],
-                                               testcases[testcase]["cube"]["width"]),
-                                     position.Position(testcases[testcase]["cube"]["x"],
-                                                       testcases[testcase]["cube"]["y"],
-                                                       testcases[testcase]["cube"]["z"],
-                                                       testcases[testcase]["cube"]["phi"],
-                                                       testcases[testcase]["cube"]["theta"]), None, None)
+                                         cube.Cube(testcases[testcase]["cube"]["length"],
+                                                   testcases[testcase]["cube"]["height"],
+                                                   testcases[testcase]["cube"]["width"]),
+                                         position.Position(testcases[testcase]["cube"]["x"],
+                                                           testcases[testcase]["cube"]["y"],
+                                                           testcases[testcase]["cube"]["z"],
+                                                           testcases[testcase]["cube"]["phi"],
+                                                           testcases[testcase]["cube"]["theta"]), None, None)
                 accuracy = testcases[testcase]["accuracy"]
                 maximum_possible_volume_of_intersection = testcases[testcase]["maximum_possible_volume_of_intersection"]
-                intersection_instance = in_in.IntersectionInstance(cylinder_obj, cube_obj, accuracy, maximum_possible_volume_of_intersection)
-                if (bool(testcases[testcase]["output"]["does_intersect"]) == False):
-                    self.assertFalse(intersection_instance.does_intersect(), msg=testcase)
+                volume_of_intersection = testcases[testcase]["output"]["volume_of_intersection"]
+                almost_zero = testcases[testcase]["almost_zero"]
+                epsilon = testcases[testcase]["epsilon_for_point_of_intersection"]
+                intersection_instance = in_in.IntersectionInstance(cylinder_obj, cube_obj, accuracy,
+                                                                   maximum_possible_volume_of_intersection)
+                intersection_point = testcases[testcase]["output"]["intersection_point"]
+                # checking volume of intersection
+                if volume_of_intersection > maximum_possible_volume_of_intersection:
+                    # if the volume_of_intersection is non-infinitesimal, then the output must be in the range of non-infinitesimal too.
+                    self.assertTrue(
+                        (intersection_instance.get_volume_of_intersection() > maximum_possible_volume_of_intersection),
+                        msg=testcase)
+                    self.assertTrue(
+                        teto.point_almost_equal(intersection_instance.get_intersection_point(), intersection_point,
+                                                epsilon), msg=testcase)
+                elif almost_zero < volume_of_intersection <= maximum_possible_volume_of_intersection:
+                    # infinitesimal intersection
+                    self.assertTrue(
+                        0 < intersection_instance.get_volume_of_intersection() <= maximum_possible_volume_of_intersection,
+                        msg=testcase)
+                    self.assertTrue(teto.point_almost_equal(intersection_instance.get_intersection_point(),
+                                                            intersection_point,
+                                                            epsilon), msg=testcase)
+                elif 0 <= volume_of_intersection <= almost_zero:
+                    # infinitesimal intersection which can be interpreted as no intersection too
+                    self.assertTrue(
+                        0 <= intersection_instance.get_volume_of_intersection() <= maximum_possible_volume_of_intersection,
+                        msg=testcase)
+                    if intersection_instance.get_volume_of_intersection() != 0:
+                        self.assertTrue(teto.point_almost_equal(intersection_instance.get_intersection_point(),
+                                                                intersection_point,
+                                                                epsilon), msg=testcase)
+                    else:
+                        self.assertEqual(len(intersection_instance.get_intersection_point()), 0)
                 else:
-                    self.assertTrue(intersection_instance.does_intersect(), msg=testcase)
-                    self.assertEqual(intersection_instance.is_infinitesimal(),
-                                     bool(testcases[testcase]["output"]["is_infinitesimal"]), msg=testcase)
-                    self.assertListEqual(intersection_instance.get_intersection_point(),
-                                         testcases[testcase]["output"]["intersection_point"], msg=testcase)
+                    # no intersection
+                    self.assertAlmostEqual(intersection_instance.get_volume_of_intersection(), 0, msg=testcase)
+                    self.assertEqual(len(intersection_instance.get_intersection_point()), 0)
 
             test_counter += 1
 
