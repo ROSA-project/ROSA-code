@@ -2,7 +2,6 @@ import object
 from position import Position
 from shape import Shape
 import object_registry
-from robot import Robot
 import numpy as np
 
 RadioID = object.ObjectId
@@ -26,6 +25,7 @@ class Base(object.Object):
         """
         It calculates and returns the distance between itself and the robot with some error.
         """
+        # TODO: The value of 0.05 is temporary, it should be modified later.
         if self.__timer % 0.05 == 0:
             delta_x = self.position.x - position.x
             delta_y = self.position.y - position.y
