@@ -100,6 +100,8 @@ class World:
                     instance = IntersectionInstance(object_1, object_2)
                     # instance has to be added for intersections with physical objects only
                     if isinstance(object_1, non_physical) and isinstance(object_2, non_physical):
+                        # TODO: For now, our only nonphysicalobject is distance measurement beam, but as the project
+                        #  develops the decision for this situation must be reconsidered.
                         continue
                     elif isinstance(object_1, non_physical):
                         intersection_result[oid_1].append(instance)
