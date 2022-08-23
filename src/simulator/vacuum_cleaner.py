@@ -8,6 +8,7 @@ from bumper_sensor import BumperSensor
 from object_registry import ObjectRegistry
 import numpy as np
 import copy
+import base
 
 
 class VacuumCleanerV0(Robot):
@@ -23,7 +24,8 @@ class VacuumCleanerV0(Robot):
                        Cylinder(parameters["diameter"], parameters["height"]), position, owner_object, registry)
         # TODO saeed: where does the oid of sensor comes from? fetched from Map? how do we have
         #  acess to Map here?
-        self.sensor: Sensor = BumperSensor(self.registry.get_next_available_id(), name, self.shape, position, self, self.registry)
+        self.sensor: Sensor = BumperSensor(self.registry.get_next_available_id(), name, self.shape, position, self,
+                                           self.registry)
         self.registry.add_objects({self.sensor.oid: self.sensor})
 
         self.forward_speed: float = 1  # unit m/s
@@ -108,3 +110,9 @@ class VacuumCleanerV0(Robot):
         delta_t = min(self.turn_on_hit_angle / self.turning_speed, self.reverse_on_hit_duration) / 10
         return delta_t
 
+    def distance(self, base: base.Base) -> float:
+        """
+        robot get distance between self and base
+        """
+        if base.name in self.bases:
+            return base.get_distance(self.position)

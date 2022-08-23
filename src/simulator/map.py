@@ -45,14 +45,13 @@ class Map:
             # TODO also skipping name for now
             return RigidPointBall(new_id, shape, position, 0, 2, owner, self.registry)
         elif cname == "VacuumCleanerV0":
-            bases = obj_json["Bases"]
+            bases = obj_json["bases"]
             return VacuumCleanerV0(new_id, name, position, owner, {"diameter": shape.radius, "height": shape.height},
                                    self.registry, bases)
         elif cname == "Base":
-            new_rid = obj_json["Radio_ID"]
-            standard_deviation = obj_json["Standard_deviation"]
-            time_using = obj_json["Time_using"]
-            return Base(new_id, name, shape, position, owner, self.registry, new_rid, standard_deviation, time_using)
+            standard_deviation = obj_json["standard_deviation"]
+            time_using = obj_json["time_using"]
+            return Base(new_id, name, shape, position, owner, self.registry, standard_deviation, time_using)
         else:
             assert cname == "Simple" or cname == "CompoundPhysical", \
                 f"Unknown 'class' name for object: {cname}"

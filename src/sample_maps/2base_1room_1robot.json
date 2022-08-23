@@ -64,9 +64,9 @@
                         "width": 1
                     }
           },
-          "Standard_deviation" : 0.2,
-          "Radio_ID": 1,
-          "Time_using": 0.05
+          "standard_deviation" : 0.2,
+          "radio_ID": 1,
+          "time_using": 0.05
     },
     "base-B": {
         "class": "Base",
@@ -79,9 +79,9 @@
                         "width": 0.5
                     }
           },
-          "Standard_deviation" : 0.1,
-            "Radio_ID": 2,
-            "Time_using": 0.05
+          "standard_deviation" : 0.1,
+            "radio_ID": 2,
+            "time_using": 0.05
     },
     "robot1": {
         "class": "VacuumCleanerV0",
@@ -93,6 +93,6 @@
                 "height": 1
             }
         },
-        "Bases": [1,2]
+        "bases": ["base-A","base-B"]
     }
 }

@@ -4,8 +4,6 @@ import shape
 import object_registry
 import numpy as np
 
-RadioID = object.ObjectId
-
 
 class Base(object.Object):
     """
@@ -15,9 +13,8 @@ class Base(object.Object):
 
     def __init__(self, oid: object.ObjectId, name: str, shape: shape.Shape, position: position.Position,
                  owner_object: object.Object, registry: object_registry.ObjectRegistry,
-                 rid: RadioID, standard_deviation: float, time_using : float):
+                 standard_deviation: float, time_using: float):
         super().__init__(oid, name, shape, position, owner_object, registry)
-        self.radio_id = rid
         self.standard_deviation = standard_deviation
         self.__timer = 0
         self.__time_using = time_using
@@ -28,9 +25,7 @@ class Base(object.Object):
         """
         # TODO: Temporarily, this method takes a position. It should change later.
 
-        # TODO: This number is temporary, until we decide on it
-        step_round = 3
-        if np.round(abs(self.__timer - self.__time_using), step_round) == 0:
+        if self.can_get:
             delta_x = self.position.x - position.x
             delta_y = self.position.y - position.y
             delta_z = self.position.z - position.z
@@ -38,8 +33,17 @@ class Base(object.Object):
             distance = true_distance + np.random.normal(loc=0, scale=self.standard_deviation)
             self.__timer = 0
             return distance
-        else:
-            return None
+
+    def can_get(self) -> bool:
+        """
+        To allow the request
+        """
+        # TODO: This number is temporary, until we decide on it
+        step_round = 3
+        if np.round(abs(self.__timer - self.__time_using), step_round) == 0:
+            return True
+
+        return False
 
     def evolve(self, delta_t: float) -> dict[object.ObjectId, object.Object]:
         """
