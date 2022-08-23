@@ -13,7 +13,7 @@
                         "width": 0.2
                     }
                 },
-                "position": [0,0,0,0,90]
+                "position": [0,4,0,0,90]
             },
             "wall1":{
                 "class": "Box",
@@ -25,7 +25,7 @@
                         "width": 0.2
                     }
                 },
-                "position": [2,2,0,80,90]
+                "position": [0,-4,0,0,90]
             },
             "wall2":{
                 "class": "Box",
@@ -37,7 +37,7 @@
                         "width": 0.2
                     }
                 },
-                "position": [0,4,0,20,90]
+                "position": [4,0,0,90,0]
             },
             "wall3":{
                 "class": "Box",
@@ -49,13 +49,13 @@
                         "width": 0.2
                     }
                 },
-                "position": [-2,2,0,100,90]
+                "position": [-4,0,0,90,0]
             }
         }
     },
     "base-A": {
         "class": "Base",
-        "position": [0,2,0,0,0],
+        "position": [2,2,0,0,0],
         "shape": {
             "class": "Cube",
             "arguments": {
@@ -64,11 +64,13 @@
                         "width": 1
                     }
           },
-          "Standard_deviation" : 0.2
+          "Standard_deviation" : 0.2,
+          "Radio_ID": 1,
+          "Time_using": 0.05
     },
-        "base-B": {
+    "base-B": {
         "class": "Base",
-        "position": [-1.5,1.5,0,0,0],
+        "position": [-2.5,-2.5,0,0,0],
         "shape": {
             "class": "Cube",
             "arguments": {
@@ -77,6 +79,20 @@
                         "width": 0.5
                     }
           },
-          "Standard_deviation" : 0.1
+          "Standard_deviation" : 0.1,
+            "Radio_ID": 2,
+            "Time_using": 0.05
+    },
+    "robot1": {
+        "class": "VacuumCleanerV0",
+        "position": [0,0,0,45,90],
+        "shape": {
+            "class": "Cylinder",
+            "arguments": {
+                "radius": 0.2,
+                "height": 1
+            }
+        },
+        "Bases": [1,2]
     }
 }

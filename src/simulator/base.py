@@ -28,7 +28,9 @@ class Base(object.Object):
         """
         # TODO: Temporarily, this method takes a position. It should change later.
 
-        if self.__timer == self.__time_using:
+        # TODO: This number is temporary, until we decide on it
+        step_round = 3
+        if np.round(abs(self.__timer - self.__time_using), step_round) == 0:
             delta_x = self.position.x - position.x
             delta_y = self.position.y - position.y
             delta_z = self.position.z - position.z
@@ -39,9 +41,9 @@ class Base(object.Object):
         else:
             return None
 
-    def evolve(self, delta_t: float):
+    def evolve(self, delta_t: float) -> dict[object.ObjectId, object.Object]:
         """
         Just like in the object class, only time is added to the timer
         """
         self.__timer += delta_t
-        object.Object.evolve(self, delta_t)
+        return object.Object.evolve(self, delta_t)

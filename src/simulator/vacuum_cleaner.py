@@ -12,7 +12,7 @@ import copy
 
 class VacuumCleanerV0(Robot):
     def __init__(self, oid: ObjectId, name: str, position: Position, owner_object: Object, \
-                 parameters: dict[str,], registry: ObjectRegistry):
+                 parameters: dict[str,], registry: ObjectRegistry, bases: list[ObjectId]):
         # TODO saeed: making assumption that from the usual inputs of Object constructor
         #   we only need position. e.g. robots have no owner? it still doesn't hurt so I
         #   include it.
@@ -41,6 +41,7 @@ class VacuumCleanerV0(Robot):
         self.elapsed_time_on_state = 0
 
         self.total_elapsed_time = 0
+        self.bases = bases
 
     def evolve(self, delta_t: float) -> dict[ObjectId, Object]:
         if self.sensor.sense():
