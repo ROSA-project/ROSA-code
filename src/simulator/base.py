@@ -25,7 +25,7 @@ class Base(object.Object):
         """
         # TODO: Temporarily, this method takes a position. It should change later.
 
-        if self.can_get:
+        if self.can_get():
             delta_x = self.position.x - position.x
             delta_y = self.position.y - position.y
             delta_z = self.position.z - position.z
@@ -33,13 +33,15 @@ class Base(object.Object):
             distance = true_distance + np.random.normal(loc=0, scale=self.standard_deviation)
             self.__timer = 0
             return distance
+        else:
+            return -1
 
     def can_get(self) -> bool:
         """
         To allow the request
         """
         # TODO: This number is temporary, until we decide on it
-        step_round = 3
+        step_round = 1
         if np.round(abs(self.__timer - self.__time_using), step_round) == 0:
             return True
 
