@@ -1,5 +1,5 @@
 from math import dist
-from object import ObjectId, Object
+import object
 from robot import Robot
 from position import Position
 from cylinder import Cylinder
@@ -12,8 +12,8 @@ import base
 
 
 class VacuumCleanerV0(Robot):
-    def __init__(self, oid: ObjectId, name: str, position: Position, owner_object: Object, \
-                 parameters: dict[str,], registry: ObjectRegistry, bases: list[ObjectId]):
+    def __init__(self, oid: object.ObjectId, name: str, position: Position, owner_object: object.Object, \
+                 parameters: dict[str,], registry: ObjectRegistry):
         # TODO saeed: making assumption that from the usual inputs of Object constructor
         #   we only need position. e.g. robots have no owner? it still doesn't hurt so I
         #   include it.
@@ -43,9 +43,9 @@ class VacuumCleanerV0(Robot):
         self.elapsed_time_on_state = 0
 
         self.total_elapsed_time = 0
-        self.bases = bases
+        self.bases = dict()
 
-    def evolve(self, delta_t: float) -> dict[ObjectId, Object]:
+    def evolve(self, delta_t: float) -> dict[object.ObjectId, object.Object]:
         if self.sensor.sense():
             # a hit occured.
             # State (position) is reverted by Object. Here we just make a decision
@@ -110,9 +110,12 @@ class VacuumCleanerV0(Robot):
         delta_t = min(self.turn_on_hit_angle / self.turning_speed, self.reverse_on_hit_duration) / 10
         return delta_t
 
-    def distance(self, base: base.Base) -> float:
+    def get_base(self, b: base.Base):
+        self.bases[b.oid] = b
+
+    def distance(self, oid: object.ObjectId) -> float:
         """
         robot get distance between self and base
         """
-        if base.name in self.bases:
-            return base.get_distance(self.position)
+        if oid in self.bases:
+            return self.bases[oid].get_distance(self.position)

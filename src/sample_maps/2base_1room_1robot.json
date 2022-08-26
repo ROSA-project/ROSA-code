@@ -64,8 +64,8 @@
                         "width": 1
                     }
           },
-          "standard_deviation" : 0,
-          "time_using": 0.25
+        "standard_deviation" : 0,
+        "no_response_gap": 0.25
     },
     "base-B": {
         "class": "Base",
@@ -78,8 +78,8 @@
                         "width": 0.5
                     }
           },
-          "standard_deviation" : 0,
-            "time_using": 0.25
+        "standard_deviation" : 0,
+        "no_response_gap": 0.25
     },
     "robot1": {
         "class": "VacuumCleanerV0",
