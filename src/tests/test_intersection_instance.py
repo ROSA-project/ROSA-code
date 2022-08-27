@@ -148,43 +148,27 @@ class TestCylinderCubeIntersection(unittest.TestCase):
                 accuracy = testcases[testcase]["accuracy"]
                 maximum_possible_volume_of_intersection = testcases[testcase]["maximum_possible_volume_of_intersection"]
                 volume_of_intersection = testcases[testcase]["output"]["volume_of_intersection"]
-                almost_zero = testcases[testcase]["almost_zero"]
-                epsilon = testcases[testcase]["epsilon_for_point_of_intersection"]
+                epsilon_for_volume = testcases[testcase]["epsilon_for_volume"]
+                epsilon_for_point_of_intersection = testcases[testcase]["epsilon_for_point_of_intersection"]
                 intersection_instance = in_in.IntersectionInstance(cylinder_obj, cube_obj, accuracy,
                                                                    maximum_possible_volume_of_intersection)
                 intersection_point = testcases[testcase]["output"]["intersection_point"]
-                # checking volume of intersection
-                if volume_of_intersection > maximum_possible_volume_of_intersection:
-                    # if the volume_of_intersection is non-infinitesimal, then the output must be in the range of non-infinitesimal too.
-                    self.assertTrue(
-                        (intersection_instance.get_volume_of_intersection() > maximum_possible_volume_of_intersection),
-                        msg=testcase)
-                    self.assertTrue(
-                        teto.point_almost_equal(intersection_instance.get_intersection_point(), intersection_point,
-                                                epsilon), msg=testcase)
-                elif almost_zero < volume_of_intersection <= maximum_possible_volume_of_intersection:
-                    # infinitesimal intersection
-                    self.assertTrue(
-                        0 < intersection_instance.get_volume_of_intersection() <= maximum_possible_volume_of_intersection,
-                        msg=testcase)
-                    self.assertTrue(teto.point_almost_equal(intersection_instance.get_intersection_point(),
-                                                            intersection_point,
-                                                            epsilon), msg=testcase)
-                elif 0 <= volume_of_intersection <= almost_zero:
-                    # infinitesimal intersection which can be interpreted as no intersection too
-                    self.assertTrue(
-                        0 <= intersection_instance.get_volume_of_intersection() <= maximum_possible_volume_of_intersection,
-                        msg=testcase)
-                    if intersection_instance.get_volume_of_intersection() != 0:
-                        self.assertTrue(teto.point_almost_equal(intersection_instance.get_intersection_point(),
-                                                                intersection_point,
-                                                                epsilon), msg=testcase)
+                estimated_volume_of_intersection = intersection_instance.get_volume_of_intersection()
+                estimated_point_of_intersection = intersection_instance.get_intersection_point()
+                if volume_of_intersection != 0:
+                    if intersection_instance.get_volume_of_intersection() >= 0:
+                        self.assertTrue(
+                            teto.volume_almost_equal(estimated_volume_of_intersection, volume_of_intersection,
+                                                     epsilon_for_volume), msg=testcase)
+                        self.assertTrue(teto.point_almost_equal(estimated_point_of_intersection, intersection_point,
+                                                                epsilon_for_point_of_intersection), msg=testcase)
                     else:
-                        self.assertEqual(len(intersection_instance.get_intersection_point()), 0)
+                        self.assertTrue(False, msg="The estimated volume is negative!")
                 else:
-                    # no intersection
-                    self.assertAlmostEqual(intersection_instance.get_volume_of_intersection(), 0, msg=testcase)
-                    self.assertEqual(len(intersection_instance.get_intersection_point()), 0)
+                    # if the volume of intersection is zero then no intersection should have been detected by the
+                    # algorithm
+                    self.assertAlmostEqual(0, estimated_volume_of_intersection, msg=testcase)
+                    self.assertEqual(len(estimated_point_of_intersection), 0, msg=testcase)
 
             test_counter += 1
 

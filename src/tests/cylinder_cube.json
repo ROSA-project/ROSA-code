@@ -1,8 +1,9 @@
 {
     "t_1": {
+      "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.d5hkmke83254",
       "accuracy":0.1,
       "maximum_possible_volume_of_intersection":10 ,
-      "almost_zero": 1 ,
+      "epsilon_for_volume": 1 ,
       "epsilon_for_point_of_intersection": 0.5,
       "cylinder": {
         "radius": 3,
@@ -29,9 +30,10 @@
       }
   },
   "t_2": {
+      "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.d5hkmke83254",
       "accuracy":0.05,
       "maximum_possible_volume_of_intersection":10 ,
-      "almost_zero": 1 ,
+      "epsilon_for_volume": 1 ,
       "epsilon_for_point_of_intersection": 0.5,
       "cylinder": {
         "radius": 0.7071,
@@ -58,9 +60,10 @@
       }
   },
   "t_3": {
+      "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.d5hkmke83254",
       "accuracy":0.05,
       "maximum_possible_volume_of_intersection":10 ,
-      "almost_zero": 1 ,
+      "epsilon_for_volume": 1,
       "epsilon_for_point_of_intersection": 0.5,
       "cylinder": {
         "radius": 1.5,
@@ -89,7 +92,7 @@
   "t_4": {
       "accuracy":0.05,
       "maximum_possible_volume_of_intersection":10 ,
-      "almost_zero": 1 ,
+      "epsilon_for_volume": 1 ,
       "epsilon_for_point_of_intersection": 0.5,
       "cylinder": {
         "radius": 2,
@@ -116,9 +119,10 @@
       }
   },
   "t_5": {
+      "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.d5hkmke83254",
       "accuracy":0.05,
       "maximum_possible_volume_of_intersection":10 ,
-      "almost_zero": 1 ,
+      "epsilon_for_volume": 1,
       "epsilon_for_point_of_intersection": 0.5,
       "cylinder": {
         "radius": 2,
@@ -145,9 +149,10 @@
       }
   },
   "t_6": {
+      "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.qxasbmk0oal",
       "accuracy":0.05,
       "maximum_possible_volume_of_intersection":10 ,
-      "almost_zero": 1 ,
+      "epsilon_for_volume": 1 ,
       "epsilon_for_point_of_intersection": 0.5,
       "cylinder": {
         "radius": 2,
@@ -174,9 +179,10 @@
       }
   },
   "t_7": {
+      "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.qxasbmk0oal",
       "accuracy":0.05,
       "maximum_possible_volume_of_intersection":10 ,
-      "almost_zero": 1 ,
+      "epsilon_for_volume": 1,
       "epsilon_for_point_of_intersection": 0.5,
       "cylinder": {
         "radius": 2,
@@ -203,9 +209,10 @@
       }
   },
   "t_8": {
+      "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.qxasbmk0oal",
       "accuracy":0.05,
       "maximum_possible_volume_of_intersection":15 ,
-      "almost_zero": 1 ,
+      "epsilon_for_volume": 1,
       "epsilon_for_point_of_intersection": 0.5,
       "cylinder": {
         "radius": 3,
@@ -232,9 +239,10 @@
       }
   },
   "t_9": {
+      "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.qxasbmk0oal",
       "accuracy":0.05,
       "maximum_possible_volume_of_intersection":10 ,
-      "almost_zero": 1 ,
+      "epsilon_for_volume": 1 ,
       "epsilon_for_point_of_intersection": 0.5,
       "cylinder": {
         "radius": 4,
@@ -261,9 +269,10 @@
       }
   },
   "t_10": {
+      "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.qxasbmk0oal",
       "accuracy":0.05,
       "maximum_possible_volume_of_intersection":10 ,
-      "almost_zero": 1 ,
+      "epsilon_for_volume": 1,
       "epsilon_for_point_of_intersection": 0.5,
       "cylinder": {
         "radius": 2,
@@ -290,9 +299,10 @@
       }
   },
   "t_11": {
+    "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.svb5awkpflx",
     "accuracy": 0.05,
     "maximum_possible_volume_of_intersection": 10,
-    "almost_zero": 1,
+    "epsilon_for_volume": 1,
     "epsilon_for_point_of_intersection": 0.5,
     "cylinder": {
       "radius": 1,
@@ -319,9 +329,10 @@
     }
   },
   "t_12": {
+    "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.svb5awkpflx",
     "accuracy": 0.05,
     "maximum_possible_volume_of_intersection": 10,
-    "almost_zero": 1,
+    "epsilon_for_volume": 1,
     "epsilon_for_point_of_intersection": 0.5,
     "cylinder": {
       "radius": 1,
@@ -348,9 +359,10 @@
     }
   },
   "t_13": {
+    "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.svb5awkpflx",
     "accuracy": 0.05,
     "maximum_possible_volume_of_intersection": 10,
-    "almost_zero": 1,
+    "epsilon_for_volume": 1,
     "epsilon_for_point_of_intersection": 0.5,
     "cylinder": {
       "radius": 1,
@@ -377,9 +389,10 @@
     }
   },
   "t_14": {
+    "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.svb5awkpflx",
     "accuracy": 0.05,
     "maximum_possible_volume_of_intersection": 10,
-    "almost_zero": 1,
+    "epsilon_for_volume": 1,
     "epsilon_for_point_of_intersection": 0.5,
     "cylinder": {
       "radius": 1,
@@ -406,9 +419,10 @@
     }
   },
   "t_15": {
+    "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.svb5awkpflx",
     "accuracy": 0.05,
     "maximum_possible_volume_of_intersection": 10,
-    "almost_zero": 1,
+    "epsilon_for_volume": 1,
     "epsilon_for_point_of_intersection": 0.5,
     "cylinder": {
       "radius": 1,
@@ -435,9 +449,10 @@
     }
   },
   "t_16": {
+    "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.svb5awkpflx",
     "accuracy": 0.05,
     "maximum_possible_volume_of_intersection": 10,
-    "almost_zero": 1,
+    "epsilon_for_volume": 1,
     "epsilon_for_point_of_intersection": 0.5,
     "cylinder": {
       "radius": 1,
@@ -464,9 +479,10 @@
     }
   },
   "t_17": {
+    "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.fjdgbxfc1inv",
     "accuracy": 0.05,
     "maximum_possible_volume_of_intersection": 10,
-    "almost_zero": 1,
+    "epsilon_for_volume": 1,
     "epsilon_for_point_of_intersection": 0.5,
     "cylinder": {
       "radius": 1,
@@ -493,9 +509,10 @@
     }
   },
   "t_18": {
+    "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.fjdgbxfc1inv",
     "accuracy": 0.05,
     "maximum_possible_volume_of_intersection": 10,
-    "almost_zero": 1,
+    "epsilon_for_volume": 1,
     "epsilon_for_point_of_intersection": 0.5,
     "cylinder": {
       "radius": 1,
@@ -522,9 +539,10 @@
     }
   },
   "t_19": {
+    "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.fjdgbxfc1inv",
     "accuracy": 0.05,
     "maximum_possible_volume_of_intersection": 10,
-    "almost_zero": 1,
+    "epsilon_for_volume": 1,
     "epsilon_for_point_of_intersection": 0.5,
     "cylinder": {
       "radius": 1,
@@ -551,9 +569,10 @@
     }
   },
   "t_20": {
+    "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.fjdgbxfc1inv",
     "accuracy": 0.05,
     "maximum_possible_volume_of_intersection": 10,
-    "almost_zero": 1,
+    "epsilon_for_volume": 1,
     "epsilon_for_point_of_intersection": 0.5,
     "cylinder": {
       "radius": 1,
@@ -580,9 +599,10 @@
     }
   },
   "t_21": {
+    "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.an6it337pg4",
     "accuracy": 0.05,
     "maximum_possible_volume_of_intersection": 10,
-    "almost_zero": 1,
+    "epsilon_for_volume": 1,
     "epsilon_for_point_of_intersection": 0.5,
     "cylinder": {
       "radius": 1,
@@ -609,9 +629,10 @@
     }
   },
   "t_22": {
+    "details": "https://docs.google.com/document/d/1Qpozp0yZwMsK1Xs6KcHbctrW3rLOibBlbD8Ov9o5sHk/edit#heading=h.an6it337pg4",
     "accuracy": 0.05,
     "maximum_possible_volume_of_intersection": 10,
-    "almost_zero": 1,
+    "epsilon_for_volume": 1,
     "epsilon_for_point_of_intersection": 0.5,
     "cylinder": {
       "radius": 1.118,
