@@ -16,8 +16,8 @@ class DistanceMeasuringSensor(sensor.Sensor):
                 owner_object: object.Object, registry: object_registry.ObjectRegistry, parameter: float):
         self.position = pos
         new_position = copy.copy(self.position)
-        new_position.x = 0.5 * parameter * np.cos(self.position.phi)
-        new_position.y = 0.5 * parameter * np.sin(self.position.phi)
+        new_position.x = 0.5 * parameter * np.cos(np.deg2rad(self.position.phi))
+        new_position.y = 0.5 * parameter * np.sin(np.deg2rad(self.position.phi))
         new_position.theta = 90
 
         self.beam_object = beam.Beam(registry.get_next_available_id(), name, cylinder.Cylinder(0, parameter),
