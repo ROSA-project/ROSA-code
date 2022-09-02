@@ -102,10 +102,13 @@ class Map:
 
             if parsed[oname]["class"] == "Base":
                 base_list[oname] = obj
-            if parsed[oname]["class"] == "VacuumCleanerV0":
-                for name in base_list:
-                    if name in parsed[oname]["bases"]:
-                        obj.get_base(base_list[name])
 
             obj_map[new_id] = obj
+
+        for oid in this_level_objects:
+            if isinstance(this_level_objects[oid], vc.VacuumCleanerV0):
+                for name in base_list:
+                    if name in parsed[this_level_objects[oid].name]["bases"]:
+                        this_level_objects[oid].get_base(base_list[name])
+
         return this_level_objects

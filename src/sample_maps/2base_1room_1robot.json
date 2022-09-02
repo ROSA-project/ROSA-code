@@ -53,6 +53,18 @@
             }
         }
     },
+    "robot1": {
+        "class": "VacuumCleanerV0",
+        "position": [0,0,0,45,90],
+        "shape": {
+            "class": "Cylinder",
+            "arguments": {
+                "radius": 0.2,
+                "height": 1
+            }
+        },
+        "bases": ["base-A","base-B"]
+    },
     "base-A": {
         "class": "Base",
         "position": [2,2,0,0,0],
@@ -80,17 +92,5 @@
           },
         "standard_deviation" : 0,
         "no_response_gap": 0.25
-    },
-    "robot1": {
-        "class": "VacuumCleanerV0",
-        "position": [0,0,0,45,90],
-        "shape": {
-            "class": "Cylinder",
-            "arguments": {
-                "radius": 0.2,
-                "height": 1
-            }
-        },
-        "bases": ["base-A","base-B"]
     }
 }
