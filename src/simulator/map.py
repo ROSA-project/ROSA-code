@@ -8,6 +8,7 @@ from ball import RigidPointBall
 from vacuum_cleaner import VacuumCleanerV0
 from object_registry import ObjectRegistry
 import json
+import rotating_robot as roro
 
 
 class Map:
@@ -46,6 +47,9 @@ class Map:
         elif cname == "VacuumCleanerV0":
             return VacuumCleanerV0(new_id, name, position, owner, {"diameter": shape.radius, "height": shape.height},
                                    self.registry)
+        elif cname == "RotatingRobot":
+            return roro.RotatingRobot(new_id, name, position, owner, {"diameter": shape.radius, "height": shape.height},
+                                      self.registry)
         else:
             assert cname == "Simple" or cname == "CompoundPhysical", \
                 f"Unknown 'class' name for object: {cname}"
