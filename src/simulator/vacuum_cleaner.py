@@ -113,9 +113,11 @@ class VacuumCleanerV0(Robot):
     def get_base(self, b: base.Base):
         self.bases[b.oid] = b
 
-    def distance(self, oid: object.ObjectId) -> float:
+    def get_distance_from_base(self, oid: object.ObjectId) -> float:
         """
         robot get distance between self and base
         """
         if oid in self.bases:
             return self.bases[oid].get_distance(self.position)
+        else:
+            raise Exception("Error! ID Not found.")

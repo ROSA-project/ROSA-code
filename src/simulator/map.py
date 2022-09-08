@@ -48,7 +48,7 @@ class Map:
             return vc.VacuumCleanerV0(new_id, name, pos, owner, {"diameter": shape.radius, "height": shape.height},
                                       self.registry)
         elif cname == "Base":
-            standard_deviation = obj_json["standard_deviation"]
+            standard_deviation = obj_json["distance_estimation_std"]
             no_response_gap = obj_json["no_response_gap"]
             return base.Base(new_id, name, shape, pos, owner, self.registry, standard_deviation, no_response_gap)
         else:
@@ -100,11 +100,13 @@ class Map:
             else:
                 obj.dependent_objects = {}
 
+            # here we collect the bases and later pass them to the robots.
             if parsed[oname]["class"] == "Base":
                 base_list[oname] = obj
 
             obj_map[new_id] = obj
 
+        # passing bases to the robots
         for oid in this_level_objects:
             if isinstance(this_level_objects[oid], vc.VacuumCleanerV0):
                 for name in base_list:

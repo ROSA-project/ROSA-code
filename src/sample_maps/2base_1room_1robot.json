@@ -71,12 +71,12 @@
         "shape": {
             "class": "Cube",
             "arguments": {
-                        "length": 1,
-                        "height": 3,
-                        "width": 1
+                        "length": 0.2,
+                        "height": 0.2,
+                        "width": 0.2
                     }
           },
-        "standard_deviation" : 0,
+        "distance_estimation_std" : 0,
         "no_response_gap": 0.25
     },
     "base-B": {
@@ -85,12 +85,12 @@
         "shape": {
             "class": "Cube",
             "arguments": {
-                        "length": 2,
-                        "height": 3,
-                        "width": 0.5
+                        "length": 0.2,
+                        "height": 0.2,
+                        "width": 0.2
                     }
           },
-        "standard_deviation" : 0,
+        "distance_estimation_std" : 0,
         "no_response_gap": 0.25
     }
 }
