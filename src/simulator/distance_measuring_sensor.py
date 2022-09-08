@@ -13,15 +13,15 @@ class DistanceMeasuringSensor(sensor.Sensor):
     it is a sensor that measures the distance of an object to where the sensor is located.
     """
     def __int__(self, oid: object.ObjectId, name: str, pos: position.Position,
-                owner_object: object.Object, registry: object_registry.ObjectRegistry, sensor_range: float):
-        self.position = pos
-        new_position = copy.copy(self.position)
-        new_position.x = 0.5 * sensor_range * np.cos(np.deg2rad(self.position.phi)) + self.position.x
-        new_position.y = 0.5 * sensor_range * np.sin(np.deg2rad(self.position.phi)) + self.position.y
-        new_position.theta = 90
-
+                owner_object: object.Object, registry: object_registry.ObjectRegistry, sensor_range: float,
+                phi: float, theta: float):
+        self.position = copy.copy(pos)
+        # the beam of the sensor extends from the anchor point of the sensor with the given orientation.
+        x = 0.5 * sensor_range * np.cos(np.deg2rad(self.position.phi)) + self.position.x
+        y = 0.5 * sensor_range * np.sin(np.deg2rad(self.position.phi)) + self.position.y
+        beam_position = position.Position(x, y, self.position.z, phi, theta)
         self.beam_object = beam.Beam(registry.get_next_available_id(), name, cylinder.Cylinder(0, sensor_range),
-                                     new_position, owner_object, registry)
+                                     beam_position, owner_object, registry)
 
     def sense(self) -> float:
         """
