@@ -1,5 +1,5 @@
 from math import dist
-from object import ObjectId, Object
+import object
 from robot import Robot
 from position import Position
 from cylinder import Cylinder
@@ -8,10 +8,11 @@ from bumper_sensor import BumperSensor
 from object_registry import ObjectRegistry
 import numpy as np
 import copy
+import base
 
 
 class VacuumCleanerV0(Robot):
-    def __init__(self, oid: ObjectId, name: str, position: Position, owner_object: Object, \
+    def __init__(self, oid: object.ObjectId, name: str, position: Position, owner_object: object.Object, \
                  parameters: dict[str,], registry: ObjectRegistry):
         # TODO saeed: making assumption that from the usual inputs of Object constructor
         #   we only need position. e.g. robots have no owner? it still doesn't hurt so I
@@ -23,7 +24,8 @@ class VacuumCleanerV0(Robot):
                        Cylinder(parameters["diameter"], parameters["height"]), position, owner_object, registry)
         # TODO saeed: where does the oid of sensor comes from? fetched from Map? how do we have
         #  acess to Map here?
-        self.sensor: Sensor = BumperSensor(self.registry.get_next_available_id(), name, self.shape, position, self, self.registry)
+        self.sensor: Sensor = BumperSensor(self.registry.get_next_available_id(), name, self.shape, position, self,
+                                           self.registry)
         self.registry.add_objects({self.sensor.oid: self.sensor})
 
         self.forward_speed: float = 1  # unit m/s
@@ -41,8 +43,9 @@ class VacuumCleanerV0(Robot):
         self.elapsed_time_on_state = 0
 
         self.total_elapsed_time = 0
+        self.bases = dict()
 
-    def evolve(self, delta_t: float) -> dict[ObjectId, Object]:
+    def evolve(self, delta_t: float) -> dict[object.ObjectId, object.Object]:
         if self.sensor.sense():
             # a hit occured.
             # State (position) is reverted by Object. Here we just make a decision
@@ -107,3 +110,14 @@ class VacuumCleanerV0(Robot):
         delta_t = min(self.turn_on_hit_angle / self.turning_speed, self.reverse_on_hit_duration) / 10
         return delta_t
 
+    def get_base(self, b: base.Base):
+        self.bases[b.oid] = b
+
+    def get_distance_from_base(self, oid: object.ObjectId) -> float:
+        """
+        robot get distance between self and base
+        """
+        if oid in self.bases:
+            return self.bases[oid].get_distance(self.position)
+        else:
+            raise Exception("Error! ID Not found.")

@@ -1,7 +1,7 @@
 from __future__ import annotations
 from shape import Shape
 from position import Position
-from box import Box
+import box
 
 
 class Cube(Shape):
@@ -51,7 +51,7 @@ class Cube(Shape):
         width = 2 * max([abs(y) for y in new_points[1]])
         height = 2 * max([abs(z) for z in new_points[2]])
 
-        bounding_box = Box(None, None, Cube(length=length, width=width, height=height),
+        bounding_box = box.Box(None, None, Cube(length=length, width=width, height=height),
                            Position(position.x, position.y, position.z, 0, 0),
                            None, None)
         return bounding_box
